@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platba potvrdená — kupujspolu.sk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --site-bg:#070B14;
+      --surface:#0E1625;
+      --card:#121B2E;
+      --ink:#F1F5F9;
+      --ink-mid:#CBD5E1;
+      --neutral:#94A3B8;
+      --border:rgba(148,163,184,.15);
+      --brand:#3B82F6;
+      --brand-dark:#2563EB;
+      --green:#22C55E;
+      --radius:18px;
+      --pill:999px;
+      --shadow:0 10px 40px rgba(0,0,0,.4);
+      --shadow-lg:0 20px 80px rgba(0,0,0,.6);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Outfit',sans-serif;
+      background:var(--site-bg);
+      color:var(--ink);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    nav{
+      height:66px;
+      background:rgba(7,11,20,.93);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      padding:0 5vw;
+    }
+
+    .logo{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.35rem;
+      letter-spacing:.06em;
+      color:var(--ink);
+      text-decoration:none;
+    }
+
+    .logo em{
+      color:var(--brand);
+      font-style:normal;
+    }
+
+    .main{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:4rem 5vw;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:24px;
+      box-shadow:var(--shadow-lg);
+      max-width:780px;
+      width:100%;
+      padding:3rem;
+    }
+
+    .head{
+      display:flex;
+      align-items:center;
+      gap:1.25rem;
+      margin-bottom:1.2rem;
+    }
+
+    .icon{
+      width:76px;
+      height:76px;
+      border-radius:16px;
+      background:rgba(34,197,94,.12);
+      border:2px solid rgba(34,197,94,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2rem;
+      flex-shrink:0;
+    }
+
+    h1{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:3.2rem;
+      line-height:.95;
+      letter-spacing:.02em;
+    }
+
+    .sub{
+      font-size:1rem;
+      color:var(--ink-mid);
+      line-height:1.75;
+      margin-bottom:1.7rem;
+    }
+
+    .info-box{
+      margin-top:1.5rem;
+      text-align:left;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:1.4rem 1.35rem;
+      font-size:1rem;
+      color:var(--ink-mid);
+    }
+
+    .info-title{
+      font-size:1rem;
+      font-weight:700;
+      color:var(--ink);
+      margin-bottom:1rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:.5rem 1rem;
+    }
+
+    .k{
+      color:var(--ink);
+      font-weight:700;
+    }
+
+    .v{
+      color:var(--ink-mid);
+      word-break:break-word;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.35rem .75rem;
+      border-radius:999px;
+      font-size:.85rem;
+      font-weight:700;
+      background:rgba(59,130,246,.15);
+      color:#93c5fd;
+      border:1px solid rgba(59,130,246,.25);
+    }
+
+    .actions{
+      display:flex;
+      gap:.9rem;
+      flex-wrap:wrap;
+      margin-top:2rem;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.4rem;
+      padding:.95rem 1.5rem;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:.95rem;
+      transition:.2s ease;
+    }
+
+    .btn-primary{
+      background:var(--brand);
+      color:#fff;
+      box-shadow:0 4px 22px rgba(59,130,246,.35);
+    }
+
+    .btn-primary:hover{
+      background:var(--brand-dark);
+      transform:translateY(-1px);
+    }
+
+    .btn-outline{
+      border:1.5px solid var(--border);
+      color:var(--ink-mid);
+    }
+
+    .btn-outline:hover{
+      border-color:rgba(59,130,246,.35);
+      color:var(--ink);
+    }
+
+    footer{
+      background:var(--site-bg);
+      color:var(--neutral);
+      padding:1.6rem 5vw;
+      text-align:center;
+      font-size:.77rem;
+      border-top:1px solid var(--border);
+    }
+
+    @media(max-width:760px){
+      .card{padding:2rem 1.25rem}
+      .head{align-items:flex-start}
+      h1{font-size:2.3rem}
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" href="index.html">kupuj<em>spolu</em>.sk</a>
+  </nav>
+
+  <div class="main">
+    <div class="card">
+      <div class="head">
+        <div class="icon">✅</div>
+        <div>
+          <h1>Platba potvrdená</h1>
+        </div>
+      </div>
+
+      <p class="sub">
+        Ďakujeme. Vaša ponuka je v systéme. Nižšie vidíte detaily odoslanej ponuky.
+      </p>
+
+      <div id="uploadInfo" class="info-box">
+        Načítavam detaily ponuky...
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="upload.html">Nahrať ďalšiu ponuku</a>
+        <a class="btn btn-outline" href="index.html">Späť na hlavnú</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2026 kupujspolu.sk
+  </footer>
+
+  <script>
+    async function loadUploadInfo() {
+      const box = document.getElementById('uploadInfo');
+      const params = new URLSearchParams(window.location.search);
+      const uploadId = params.get('uploadId');
+      const fee = params.get('fee');
+
+      if (!uploadId) {
+        box.innerHTML = '<div class="info-title">Chyba</div><div>Upload ID sa nenašiel v URL adrese.</div>';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/upload/${encodeURIComponent(uploadId)}`);
+        const data = await res.json();
+
+        if (!res.ok || !data.ok || !data.upload) {
+          box.innerHTML = '<div class="info-title">Chyba</div><div>Nepodarilo sa načítať detaily ponuky.</div>';
+          return;
+        }
+
+        const u = data.upload;
+
+        let planText = '—';
+        if (fee === '129') planText = 'Štandard (129 €)';
+        if (fee === '399') planText = 'Garancia+ (399 €)';
+
+        box.innerHTML = `
+          <div class="info-title">Detaily ponuky</div>
+          <div class="grid">
+            <div class="k">Upload ID:</div><div class="v">${u.uploadId}</div>
+            <div class="k">Značka:</div><div class="v">${u.znacka}</div>
+            <div class="k">Model:</div><div class="v">${u.model}</div>
+            <div class="k">Cena:</div><div class="v">${u.cena} €</div>
+            <div class="k">Typ kupujúceho:</div><div class="v">${u.buyerType}</div>
+            <div class="k">Email:</div><div class="v">${u.email}</div>
+            <div class="k">Plán:</div><div class="v">${planText}</div>
+            <div class="k">Stav:</div><div class="v"><span class="status">${u.status}</span></div>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        box.innerHTML = '<div class="info-title">Chyba</div><div>Pri načítaní detailov nastala chyba.</div>';
+      }
+    }
+
+    loadUploadInfo();
+  </script>
+</body>
+</html>

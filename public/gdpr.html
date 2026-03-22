@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ochrana osobných údajov — kupujspolu.sk</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--site-bg:#070B14;--surface:#0E1625;--card:#121B2E;--ink:#F1F5F9;--ink-mid:#CBD5E1;--neutral:#94A3B8;--border:rgba(148,163,184,.15);--soft:rgba(148,163,184,.08);--brand:#3B82F6;--brand-dark:#2563EB;--brand-soft:rgba(59,130,246,.15);--brand-border:rgba(59,130,246,.35);--green:#22C55E;--green-soft:rgba(34,197,94,.12);--radius:18px;--pill:999px;--shadow:0 10px 40px rgba(0,0,0,.4);--shadow-lg:0 20px 80px rgba(0,0,0,.6)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--site-bg);min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+nav{height:66px;background:rgba(7,11,20,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;flex-shrink:0}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.06em;color:var(--ink);text-decoration:none}
+.logo em{color:var(--brand);font-style:normal}
+.back{color:var(--neutral);text-decoration:none;font-weight:600;font-size:.86rem;transition:color .18s}
+.back:hover{color:var(--ink)}
+.page-wrap{flex:1;padding:3rem 5vw 5rem;display:flex;justify-content:center}
+main{width:100%;max-width:820px;background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-lg);padding:3rem 3.5rem;color:var(--ink);line-height:1.75}
+.chip{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);margin-bottom:1.2rem}
+.chip::before{content:'';width:20px;height:2px;background:var(--brand);border-radius:2px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:.02em;line-height:.95;color:var(--ink);margin-bottom:.4rem}
+.doc-meta{font-size:.8rem;color:var(--neutral);margin-bottom:2rem}
+h2{font-size:.97rem;font-weight:700;color:var(--ink);margin:2.2rem 0 .6rem;padding-top:.9rem;border-top:1px solid var(--soft)}
+h2:first-of-type{border-top:none;padding-top:0}
+p{color:var(--ink-mid);line-height:1.8;margin-bottom:.85rem;font-weight:300;font-size:.93rem}
+ul,ol{color:var(--ink-mid);font-weight:300;line-height:1.8;margin-bottom:.85rem;padding-left:1.6rem;font-size:.93rem}
+li{margin-bottom:.3rem}
+strong{font-weight:700;color:var(--ink)}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+mark.todo{background:#FFF3A3;color:#111;padding:0 .3rem;border-radius:5px;font-weight:600;font-size:.88em}
+table.dt{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:1.1rem}
+table.dt th{background:var(--surface);color:var(--neutral);font-weight:700;text-align:left;padding:.58rem .8rem;border-bottom:2px solid var(--border);font-size:.73rem;letter-spacing:.05em;text-transform:uppercase}
+table.dt td{padding:.58rem .8rem;border-bottom:1px solid var(--soft);color:var(--ink-mid);vertical-align:top;font-weight:300}
+table.dt td:first-child{font-weight:600;color:var(--ink);width:32%;white-space:normal}
+footer{background:var(--site-bg);color:var(--neutral);padding:1.6rem 5vw;text-align:center;font-size:.78rem;border-top:1px solid var(--border)}
+footer a{color:var(--neutral);text-decoration:none;transition:color .18s}
+footer a:hover{color:var(--ink)}
+@media(max-width:700px){main{padding:1.8rem 1.3rem}table.dt td:first-child{width:auto;white-space:normal}}
+.whatsapp-btn{position:fixed;bottom:2rem;right:2rem;z-index:190;width:56px;height:56px;background:var(--card);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);cursor:pointer;transition:all .25s;text-decoration:none}
+.whatsapp-btn:hover{transform:translateY(-3px);box-shadow:0 15px 60px rgba(0,0,0,.5);border-color:rgba(37,211,102,.4)}
+.whatsapp-btn svg{width:28px;height:28px;fill:#25D366}
+.whatsapp-btn::after{content:'Podpora WhatsApp';position:absolute;right:calc(100% + 12px);background:var(--card);border:1px solid var(--border);padding:.5rem .85rem;border-radius:8px;font-size:.75rem;color:var(--ink);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;box-shadow:var(--shadow)}
+.whatsapp-btn:hover::after{opacity:1}
+@media(max-width:960px){.whatsapp-btn{bottom:1.5rem;right:1.5rem;width:52px;height:52px}.whatsapp-btn svg{width:26px;height:26px}.whatsapp-btn::after{display:none}}
+</style>
+</head>
+<body>
+<nav><a class="logo" href="index.html">kupuj<em>spolu</em>.sk</a><a class="back" href="index.html">← Späť</a></nav>
+<div class="page-wrap">
+<main>
+  <div class="chip">Ochrana osobných údajov</div>
+  <h1>Zásady ochrany osobných údajov</h1>
+  <p class="doc-meta">Verzia 1.0 · Platné od 1. januára 2026 · Nariadenie GDPR (EÚ) 2016/679 · Zákon č. 18/2018 Z. z.</p>
+
+  <h2>1. Prevádzkovateľ (Controller)</h2>
+  <p>
+    <strong>Obchodné meno:</strong> quantivo s.r.o.<br>
+    <strong>IČO:</strong> 57532711<br>
+    <strong>Sídlo:</strong> Ulica B. Nemcovej 1022/17, 984 03 Lučenec, Slovenská republika<br>
+    <strong>Email:</strong> info@kupujspolu.sk<br>
+    <strong>Telefón:</strong> +421 904 111 311
+  </p>
+  <p>Prevádzkovateľ spracúva osobné údaje zodpovedne a v súlade s nariadením GDPR (EÚ) 2016/679 a zákonom č. 18/2018 Z. z. o ochrane osobných údajov.</p>
+
+  <h2>2. Kategórie spracúvaných osobných údajov</h2>
+  <table class="dt">
+    <tr><th>Kategória</th><th>Konkrétne údaje</th></tr>
+    <tr><td>Identifikácia — fyzická osoba</td><td>Meno a priezvisko; fakturačná adresa (ulica, mesto, PSČ)</td></tr>
+    <tr><td>Identifikácia — právnická osoba</td><td>Názov firmy, IČO, DIČ (vol.), IČ DPH (vol.), kontaktná osoba, fakturačná adresa</td></tr>
+    <tr><td>Kontaktné údaje</td><td>Emailová adresa; voliteľne telefónne číslo; poznámka k faktúre</td></tr>
+    <tr><td>Vozidlová ponuka</td><td>Značka, model, cena z ponuky; nahratý súbor (PDF/JPG/PNG)</td></tr>
+    <tr><td>Platobné identifikátory</td><td>identifikátor transakcie platobnej brány; citlivé platobné údaje o karte sú spracúvané výhradne externým poskytovateľom platobnej brány</td></tr>
+    <tr><td>Prevádzkové záznamy</td><td>Čas a stav spracovania Ponuky; IP adresa (na rate limiting a bezpečnosť)</td></tr>
+  </table>
+
+  <h2>3. Účely a právne základy spracúvania</h2>
+  <table class="dt">
+    <tr><th>Účel</th><th>Právny základ (GDPR)</th></tr>
+    <tr><td>Overenie a anonymizácia Ponuky</td><td>Plnenie zmluvy — čl. 6 ods. 1 písm. b)</td></tr>
+    <tr><td>Zaradenie do Skupiny a skupinové vyjednávanie</td><td>Plnenie zmluvy — čl. 6 ods. 1 písm. b)</td></tr>
+    <tr><td>Emailová komunikácia (potvrdenie, Výsledok)</td><td>Plnenie zmluvy — čl. 6 ods. 1 písm. b)</td></tr>
+    <tr><td>Spracovanie platby cez externú platobnú bránu</td><td>Plnenie zmluvy — čl. 6 ods. 1 písm. b)</td></tr>
+    <tr><td>Vedenie účtovnej a fakturačnej dokumentácie</td><td>Právna povinnosť — čl. 6 ods. 1 písm. c)</td></tr>
+    <tr><td>Prevencia podvodu a duplicitných Ponúk</td><td>Oprávnený záujem — čl. 6 ods. 1 písm. f)</td></tr>
+    <tr><td>Bezpečnosť systému (rate limiting, logy)</td><td>Oprávnený záujem — čl. 6 ods. 1 písm. f)</td></tr>
+  </table>
+
+  <h2>4. Príjemcovia osobných údajov</h2>
+  <ul>
+    <li><strong>Externý poskytovateľ platobnej brány</strong> — sprostredkovateľ platobných transakcií využívaný prevádzkovateľom platformy. Tento subjekt spracúva citlivé platobné údaje ako samostatný prevádzkovateľ alebo sprostredkovateľ podľa vlastných právnych a bezpečnostných pravidiel. Platforma kupujspolu.sk neukladá kompletné údaje o platobnej karte.</li>
+    <li><strong>Poskytovateľ emailových služieb</strong> — emailový poskytovateľ prevádzkovateľa — pre odosielanie potvrdení a Výsledku.</li>
+    <li><strong>Poskytovateľ hostingu a servera</strong> — hostingový a serverový poskytovateľ prevádzkovateľa — ukladanie súborov a databázy ponúk.</li>
+    <li><strong>Dealeri / Predajcovia</strong> — dostávajú výhradne <strong>anonymizované, agregované</strong> dáta Skupiny. Žiadne osobné identifikačné údaje Zákazníka nie sú zdieľané s Dealermi.</li>
+  <li><a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk.%20M%C3%B4j%20uploadId%20je%3A%20____" target="_blank" rel="noopener">Kontaktovať podporu</a></li>
+  </ul>
+
+  <h2>5. Cezhraničné prenosy osobných údajov</h2>
+  <p>Niektorí sprostredkovatelia vrátane poskytovateľov platobnej infraštruktúry môžu spracúvať osobné údaje mimo Európskeho hospodárskeho priestoru (EHP). V takýchto prípadoch sú prenosy realizované na základe štandardných zmluvných doložiek (SCC) schválených Európskou komisiou podľa čl. 46 ods. 2 písm. c) GDPR alebo iného primeraného mechanizmu ochrany.</p>
+
+  <h2>6. Doby uchovávania osobných údajov</h2>
+  <table class="dt">
+    <tr><th>Kategória údajov</th><th>Doba uchovávania</th></tr>
+    <tr><td>Kontaktné a fakturačné údaje (email, meno / firma, adresa)</td><td>Do 90 dní od doručenia Výsledku alebo odmietnutia / vylúčenia Ponuky, potom bezodkladne vymazané.</td></tr>
+    <tr><td>Súbor Ponuky (PDF/JPG/PNG)</td><td>Do 90 dní od doručenia Výsledku alebo uzavretia prípadu, potom vymazaný.</td></tr>
+    <tr><td>Platobné záznamy (identifikátor transakcie, výška poplatku, fakturačné údaje)</td><td>10 rokov — zákonná povinnosť podľa zákona č. 431/2002 Z. z. o účtovníctve.</td></tr>
+    <tr><td>Prevádzkové logy</td><td>30 dní od vzniku, potom automaticky prepísané / odstránené.</td></tr>
+  </table>
+
+  <h2>7. Práva dotknutej osoby</h2>
+  <p>V zmysle GDPR máte nasledujúce práva, ktoré si môžete uplatniť kedykoľvek:</p>
+  <ul>
+    <li><strong>Právo na prístup (čl. 15)</strong> — získať potvrdenie o spracúvaní a prístup k svojim údajom.</li>
+    <li><strong>Právo na opravu (čl. 16)</strong> — požadovať opravu nesprávnych alebo doplnenie neúplných údajov.</li>
+    <li><strong>Právo na vymazanie — „právo byť zabudnutý" (čl. 17)</strong> — vymazanie údajov, ak sú splnené zákonné podmienky (napr. odvolanie súhlasu, odpadnutie účelu).</li>
+    <li><strong>Právo na obmedzenie spracúvania (čl. 18)</strong> — požiadať o pozastavenie spracúvania počas riešenia námietky alebo opravy.</li>
+    <li><strong>Právo na prenosnosť (čl. 20)</strong> — získať vlastné údaje v štruktúrovanom, strojovo čitateľnom formáte a preniesť ich inému prevádzkovateľovi.</li>
+    <li><strong>Právo namietať (čl. 21)</strong> — namietať spracúvanie realizované na základe oprávneného záujmu.</li>
+    <li><strong>Právo podať sťažnosť (čl. 77)</strong> — Úrad na ochranu osobných údajov SR, <a href="https://www.uoou.sk" target="_blank" rel="noopener">www.uoou.sk</a>, tel. +421 2 3231 3214.</li>
+  <li><a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk.%20M%C3%B4j%20uploadId%20je%3A%20____" target="_blank" rel="noopener">Kontaktovať podporu</a></li>
+  </ul>
+
+  <h2>8. Ako uplatniť svoje práva</h2>
+  <p>Žiadosť zasielajte emailom na info@kupujspolu.sk s predmetom „Ochrana osobných údajov – žiadosť". Odpovieme do <strong>30 dní</strong> od doručenia žiadosti. V prípade komplexných alebo viacpočetných žiadostí si vyhradzujeme právo predĺžiť lehotu o ďalších 60 dní, pričom vás o predĺžení vopred informujeme.</p>
+
+  <h2>9. Bezpečnostné opatrenia</h2>
+  <p>Platforma uplatňuje najmä tieto technické a organizačné opatrenia na ochranu osobných údajov:</p>
+  <ul>
+    <li>Šifrovaná HTTPS komunikácia (TLS) pre všetky požiadavky medzi klientom a serverom.</li>
+    <li>Anonymizácia Ponúk pred zdieľaním — meno, email, telefón a identifikačné údaje dealera sú odstránené.</li>
+    <li>Rate limiting — obmedzenie počtu požiadaviek na IP adresu znižuje riziko automatizovaného zneužitia.</li>
+    <li>Obmedzený prístup k súborom a databáze (princíp minimálnych oprávnení — least privilege).</li>
+    <li>Pravidelná rotácia logov; kontaktné a fakturačné údaje sú vymazávané po uplynutí retenčnej lehoty.</li>
+    <li>Súbory Ponúk sú uložené mimo webového koreňového adresára (nie sú priamo prístupné cez URL).</li>
+  <li><a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk.%20M%C3%B4j%20uploadId%20je%3A%20____" target="_blank" rel="noopener">Kontaktovať podporu</a></li>
+  </ul>
+
+  <h2>10. Cookies</h2>
+  <p>Platforma v súčasnosti <strong>nepoužíva analytické ani marketingové cookies</strong>. Používajú sa výhradne technické cookies nevyhnutné pre správne fungovanie platobného procesu cez externú platobnú bránu. Tieto cookies sú dočasné a sú vymazané po ukončení relácie. Ak platforma v budúcnosti implementuje analytické nástroje, bude zavedený primeraný informačný banner a mechanizmus súhlasu v súlade s § 55 ods. 5 zákona č. 452/2021 Z. z. (elektronické komunikácie).</p>
+
+  <h2>11. Zmeny týchto zásad</h2>
+  <p>O materiálnych zmenách týchto zásad budú Zákazníci informovaní emailom na adresu uvedenú pri registrácii alebo viditeľným oznámením na platforme. Aktuálna verzia je vždy k dispozícii na tejto stránke. Dátum poslednej aktualizácie je uvedený v záhlaví dokumentu.</p>
+</main>
+</div>
+<footer>© 2026 kupujspolu.sk · <a href="vop.html">Obchodné podmienky</a> · <a href="kontakt.html">Kontakt</a></footer>
+<a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk.%20M%C3%B4j%20uploadId%20je%3A%20____" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="WhatsApp podpora">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+</body>
+</html>

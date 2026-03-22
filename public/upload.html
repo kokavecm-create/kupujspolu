@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nahrať ponuku — kupujspolu.sk</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--site-bg:#070B14;--surface:#0E1625;--card:#121B2E;--ink:#F1F5F9;--ink-mid:#CBD5E1;--neutral:#94A3B8;--border:rgba(148,163,184,.15);--soft:rgba(148,163,184,.08);--brand:#3B82F6;--brand-dark:#2563EB;--brand-soft:rgba(59,130,246,.15);--brand-border:rgba(59,130,246,.35);--green:#22C55E;--green-soft:rgba(34,197,94,.12);--radius:18px;--pill:999px;--shadow:0 10px 40px rgba(0,0,0,.4);--shadow-lg:0 20px 80px rgba(0,0,0,.6)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--site-bg);color:var(--ink);min-height:100vh;font-size:15px}
+.nowrap{white-space:nowrap}
+nav{height:66px;background:rgba(7,11,20,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;position:sticky;top:0;z-index:50}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.06em;color:var(--ink);text-decoration:none}
+.logo em{color:var(--brand);font-style:normal}
+.back{color:var(--neutral);text-decoration:none;font-weight:600;font-size:.86rem;transition:color .18s}
+.back:hover{color:var(--ink)}
+.wrap{max-width:1100px;margin:0 auto;padding:3.5rem 5vw 7rem;display:grid;grid-template-columns:1fr 1.38fr;gap:3.5rem;align-items:start}
+.side{position:sticky;top:90px}
+.eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);margin-bottom:1.1rem}
+.eyebrow::before{content:'';width:22px;height:2px;background:var(--brand);border-radius:2px}
+.side-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.9rem,3.2vw,2.7rem);letter-spacing:.02em;line-height:.95;margin-bottom:.9rem;color:var(--ink)}
+.side-sub{color:var(--ink-mid);font-weight:300;line-height:1.78;margin-bottom:1.5rem;font-size:.91rem}
+.checks{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.6rem}
+.check{display:flex;gap:.6rem;align-items:flex-start;color:var(--ink-mid);font-size:.89rem}
+.check::before{content:'✓';color:var(--green);font-weight:900;margin-top:.06rem;flex-shrink:0}
+.side-note{background:var(--brand-soft);border:1px solid var(--brand-border);border-radius:12px;padding:.9rem 1rem;font-size:.78rem;color:#93c5fd;line-height:1.6}
+.side-note strong{display:block;margin-bottom:.25rem;color:var(--ink)}
+.plan-previews{margin-top:1.6rem;display:flex;flex-direction:column;gap:.65rem}
+.pp{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem;display:flex;align-items:center;gap:.9rem;transition:border-color .2s}
+.pp.active{border-color:var(--brand-border);background:var(--brand-soft)}
+.pp-price{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.03em;color:var(--ink);width:52px;flex-shrink:0}
+.pp-name{font-size:.82rem;font-weight:700;color:var(--ink)}
+.pp-desc{font-size:.7rem;color:var(--neutral);margin-top:.08rem}
+.pp-badge{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:var(--green);padding:.14rem .5rem;border-radius:var(--pill)}
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:2.5rem;box-shadow:var(--shadow-lg)}
+.prog{display:flex;align-items:center;gap:.8rem;margin-bottom:2rem}
+.prog-bar{flex:1;height:5px;border-radius:var(--pill);background:var(--soft);overflow:hidden}
+.prog-fill{height:100%;background:var(--brand);border-radius:var(--pill);transition:width .35s ease;box-shadow:0 0 10px rgba(59,130,246,.5)}
+.prog-lbl{font-size:.78rem;color:var(--neutral);font-weight:600;white-space:nowrap}
+.prog-lbl b{color:var(--brand)}
+.fc-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.04em;color:var(--ink);margin-bottom:.25rem}
+.fc-sub{font-size:.86rem;color:var(--neutral);margin-bottom:1.9rem}
+.fg{margin-bottom:1.15rem}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem}
+label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--neutral);margin-bottom:.38rem}
+.req::after{content:' *';color:var(--brand)}
+.opt-lbl{text-transform:none;letter-spacing:0;font-weight:400;font-size:.72rem;color:var(--neutral)}
+input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{font-family:'Outfit',sans-serif;font-size:.93rem;color:var(--ink);background:var(--surface);border:1.5px solid var(--border);border-radius:11px;padding:.8rem 1rem;width:100%;outline:none;transition:all .18s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{background:var(--card);border-color:var(--brand-border);box-shadow:0 0 0 3px var(--brand-soft)}
+input.err-f,select.err-f,textarea.err-f{border-color:#ef4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.15)!important}
+select option{color:#0B1220;background:#FFFFFF}
+select option[value=""]{color:#64748B}
+.err{display:none;font-size:.71rem;color:#f87171;font-weight:600;margin-top:.26rem}
+textarea{resize:vertical;min-height:76px;line-height:1.6}
+.buyer-toggle{display:flex;gap:.7rem}
+.bt-opt{flex:1;position:relative}
+.bt-opt input{position:absolute;opacity:0;width:0;height:0}
+.bt-opt label{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.82rem;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;transition:all .2s;background:var(--surface);font-size:.88rem;font-weight:600;color:var(--neutral);text-transform:none;letter-spacing:0}
+.bt-opt label:hover{border-color:var(--brand-border);color:var(--ink)}
+.bt-opt input:checked+label{border-color:var(--brand);background:var(--brand-soft);color:#93c5fd}
+.buyer-fields{display:none}
+.buyer-fields.active{display:block}
+.drop-z{border:2px dashed var(--border);border-radius:14px;background:var(--surface);padding:1.8rem 1.2rem;text-align:center;position:relative;transition:all .2s;cursor:pointer}
+.drop-z:hover,.drop-z.dov{border-color:var(--brand-border);background:var(--brand-soft)}
+.drop-z.has-file{border-style:solid;border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.08)}
+.drop-z input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{font-size:1.7rem;margin-bottom:.4rem}
+.drop-main{display:block;font-size:.88rem;font-weight:600;color:var(--ink);margin-bottom:.18rem}
+.drop-sub{font-size:.75rem;color:var(--neutral)}
+.drop-fname{display:none;margin-top:.6rem;font-size:.82rem;color:var(--green);font-weight:700}
+.sec-div{margin:1.8rem 0 1.3rem;padding-bottom:.65rem;border-bottom:1px solid var(--soft);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--neutral);display:flex;align-items:center;gap:.6rem}
+.sec-div::after{content:'';flex:1;height:1px;background:var(--soft)}
+.plan-toggle{display:flex;gap:.8rem}
+.plan-opt{flex:1;position:relative}
+.plan-opt input{position:absolute;opacity:0;width:0;height:0}
+.plan-opt label{display:flex;flex-direction:column;padding:1.1rem;border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all .2s;background:var(--surface);text-transform:none;letter-spacing:0}
+.plan-opt label:hover{border-color:var(--brand-border)}
+.plan-opt input:checked+label{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+.po-price{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.03em;color:var(--brand);display:block}
+.po-name{font-weight:700;font-size:.82rem;color:var(--ink);display:block;margin:.2rem 0}
+.po-desc{font-size:.73rem;color:var(--neutral);font-weight:400;display:block}
+.po-refund{font-size:.7rem;color:var(--green);font-weight:700;display:block;margin-top:.38rem}
+.gdpr-row{display:flex;align-items:flex-start;gap:.7rem;padding:.9rem 1rem;background:var(--surface);border-radius:11px;margin-bottom:1.3rem;border:1px solid var(--border)}
+.gdpr-row input[type=checkbox]{width:15px;height:15px;flex-shrink:0;margin-top:2px;accent-color:var(--brand);cursor:pointer}
+.gdpr-row span{font-size:.75rem;color:var(--neutral);line-height:1.58}
+.gdpr-row a{color:var(--brand);text-decoration:none}
+.actions{display:flex;gap:.8rem;margin-top:.5rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:none;border-radius:var(--pill);padding:1rem 1.1rem;font-weight:700;cursor:pointer;transition:all .22s;font-family:'Outfit',sans-serif;font-size:.92rem;width:100%;letter-spacing:.01em}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:0 4px 22px rgba(59,130,246,.35)}
+.btn-primary:hover{background:var(--brand-dark);box-shadow:0 10px 42px rgba(59,130,246,.55);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--neutral)}
+.btn-ghost:hover{border-color:var(--brand-border);color:var(--ink)}
+.form-note{text-align:center;font-size:.73rem;color:var(--neutral);margin-top:.7rem}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.step2{display:none}
+@media(max-width:960px){.wrap{grid-template-columns:1fr}.side{position:static}.fr,.fr3,.plan-toggle,.buyer-toggle{grid-template-columns:1fr;flex-direction:column}}
+.whatsapp-btn{position:fixed;bottom:2rem;right:2rem;z-index:190;width:56px;height:56px;background:var(--card);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);cursor:pointer;transition:all .25s;text-decoration:none}
+.whatsapp-btn:hover{transform:translateY(-3px);box-shadow:0 15px 60px rgba(0,0,0,.5);border-color:rgba(37,211,102,.4)}
+.whatsapp-btn svg{width:28px;height:28px;fill:#25D366}
+.whatsapp-btn::after{content:'Podpora WhatsApp';position:absolute;right:calc(100% + 12px);background:var(--card);border:1px solid var(--border);padding:.5rem .85rem;border-radius:8px;font-size:.75rem;color:var(--ink);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;box-shadow:var(--shadow)}
+.whatsapp-btn:hover::after{opacity:1}
+@media(max-width:960px){.whatsapp-btn{bottom:1.5rem;right:1.5rem;width:52px;height:52px}.whatsapp-btn svg{width:26px;height:26px}.whatsapp-btn::after{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">kupuj<em>spolu</em>.sk</a>
+  <a class="back" href="index.html">← Späť</a>
+</nav>
+<div class="wrap">
+  <aside class="side">
+    <div class="eyebrow">Nahratie ponuky</div>
+    <h1 class="side-h">Nahraj ponuku.<br><span style="color:var(--brand)">My vyjednáme.</span></h1>
+    <p class="side-sub">Ponuku anonymizujeme a zaradíme do skupiny. Po nazbieraní 10 ponúk spúšťame vyjednávanie s dealermi.</p>
+    <div class="checks">
+      <div class="check">PDF, JPG alebo PNG z konfigurátora alebo od dealera</div>
+      <div class="check">129 € = garancia min. úspory <span class="nowrap">700&nbsp;€</span> (inak plná refundácia)</div>
+      <div class="check">399 € = garancia min. úspory <span class="nowrap">1&nbsp;400&nbsp;€</span> (inak plná refundácia)</div>
+      <div class="check">Výsledok: konkrétna suma alebo zľavový kód</div>
+    </div>
+    <div class="side-note">
+      <strong>Ochrana súkromia</strong>
+      Kontaktné a fakturačné údaje používame len na doručenie výsledku a vystavenie dokladu. Pred zdieľaním ponuky sa anonymizujú.
+    </div>
+    <div class="plan-previews">
+      <div class="pp" id="pp129"><div class="pp-price">129 €</div><div><div class="pp-name">Štandard</div><div class="pp-desc"><span style="text-decoration:line-through;opacity:.75">150 €</span> → teraz 129 €</div><div class="pp-desc">Garancia <span class="nowrap">700&nbsp;€</span> · Refundovateľný</div></div></div>
+      <div class="pp" id="pp399"><div class="pp-price">399 €</div><div><div class="pp-name">Garancia+</div><div class="pp-desc"><span style="text-decoration:line-through;opacity:.75">450 €</span> → teraz 399 €</div><div class="pp-desc">Garancia <span class="nowrap">1&nbsp;400&nbsp;€</span> · Refundovateľný</div></div><div class="pp-badge">Odp.</div></div>
+    </div>
+  </aside>
+
+  <main class="form-card">
+    <div class="prog">
+      <div class="prog-lbl"><b id="stepLbl">Krok 1</b> z 2</div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:50%"></div></div>
+    </div>
+
+    <div id="step1">
+      <div class="fc-title">Ponuka a fakturačné údaje</div>
+      <div class="fc-sub">Povinné polia sú označené *. Max veľkosť súboru: 10 MB.</div>
+
+      <div class="fg">
+        <label class="req">Ponuka (1 príloha: PDF / JPG / scan)</label>
+        <div class="drop-z" id="dropZ">
+          <input type="file" id="offerFile" accept=".pdf,.jpg,.jpeg,.png">
+          <div class="drop-icon" id="dropIcon">📎</div>
+          <span class="drop-main" id="dropMain">Klikni alebo presuň súbor sem</span>
+          <span class="drop-sub">Len 1 príloha · PDF/JPG/scan · max 10 MB</span>
+          <div class="drop-fname" id="dropFname"></div>
+        </div>
+        <div class="err" id="errFile">Prilož ponuku (PDF/JPG/PNG).</div>
+      </div>
+
+      <div class="fr">
+        <div class="fg">
+          <label class="req" for="znacka">Značka auta</label>
+          <select id="znacka">
+            <option value="">— Vyber značku —</option>
+            <option>Škoda</option><option>Volkswagen</option><option>Toyota</option>
+            <option>Kia</option><option>Hyundai</option><option value="ina">Iná značka</option>
+          </select>
+          <div class="err" id="errZnacka">Vyber značku auta.</div>
+        </div>
+        <div class="fg" id="inaWrap" style="display:none">
+          <label class="req" for="inaZnacka">Zadaj značku</label>
+          <input type="text" id="inaZnacka" placeholder="napr. BMW, Mercedes...">
+          <div class="err" id="errInaZnacka">Zadaj názov značky.</div>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="req" for="model">Model auta</label>
+          <input type="text" id="model" placeholder="napr. Octavia 2.0 TDI">
+          <div class="err" id="errModel">Uveď model auta.</div>
+        </div>
+        <div class="fg">
+          <label class="req" for="cena">Cena z ponuky (€)</label>
+          <input type="number" id="cena" min="1000" placeholder="napr. 28900">
+          <div class="err" id="errCena">Uveď cenu (min. 1 000 €).</div>
+        </div>
+      </div>
+
+      <div class="sec-div">Fakturačné údaje</div>
+      <div class="fg">
+        <label class="req">Typ kupujúceho</label>
+        <div class="buyer-toggle">
+          <div class="bt-opt"><input type="radio" name="buyerType" id="bt-private" value="private"><label for="bt-private">👤 Súkromná osoba</label></div>
+          <div class="bt-opt"><input type="radio" name="buyerType" id="bt-company" value="company"><label for="bt-company">🏢 Právnická osoba</label></div>
+        </div>
+        <div class="err" id="errBuyerType">Vyber typ kupujúceho.</div>
+      </div>
+
+      <div id="fieldsPrivate" class="buyer-fields">
+        <div class="fg">
+          <label class="req" for="fullName">Meno a priezvisko</label>
+          <input type="text" id="fullName" placeholder="napr. Ján Novák">
+          <div class="err" id="errFullName">Zadaj meno a priezvisko.</div>
+        </div>
+      </div>
+
+      <div id="fieldsCompany" class="buyer-fields">
+        <div class="fg">
+          <label class="req" for="companyName">Názov firmy</label>
+          <input type="text" id="companyName" placeholder="napr. Firma s.r.o.">
+          <div class="err" id="errCompanyName">Zadaj názov firmy.</div>
+        </div>
+        <div class="fr3">
+          <div class="fg">
+            <label class="req" for="ico">IČO</label>
+            <input type="text" id="ico" placeholder="12345678" inputmode="numeric">
+            <div class="err" id="errIco">IČO: 6–10 číslic.</div>
+          </div>
+          <div class="fg">
+            <label for="dic">DIČ <span class="opt-lbl">(vol.)</span></label>
+            <input type="text" id="dic" placeholder="2012345678">
+          </div>
+          <div class="fg">
+            <label for="icdph">IČ DPH <span class="opt-lbl">(vol.)</span></label>
+            <input type="text" id="icdph" placeholder="SK2012345678">
+          </div>
+        </div>
+        <div class="fg">
+          <label class="req" for="contactPerson">Kontaktná osoba</label>
+          <input type="text" id="contactPerson" placeholder="Meno kontaktnej osoby">
+          <div class="err" id="errContactPerson">Zadaj kontaktnú osobu.</div>
+        </div>
+      </div>
+
+      <div id="billingBlock" style="display:none">
+        <div class="fg">
+          <label class="req" for="billingAddressStreet">Ulica a číslo</label>
+          <input type="text" id="billingAddressStreet" placeholder="Hlavná 12">
+          <div class="err" id="errStreet">Uveď ulicu a číslo.</div>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label class="req" for="billingAddressCity">Mesto</label>
+            <input type="text" id="billingAddressCity" placeholder="Bratislava">
+            <div class="err" id="errCity">Uveď mesto.</div>
+          </div>
+          <div class="fg">
+            <label class="req" for="billingAddressZip">PSČ</label>
+            <input type="text" id="billingAddressZip" placeholder="81101" inputmode="numeric">
+            <div class="err" id="errZip">Uveď PSČ.</div>
+          </div>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label class="req" for="email">Email</label>
+            <input type="email" id="email" placeholder="meno@email.sk">
+            <div class="err" id="errEmail">Zadaj platný email.</div>
+          </div>
+          <div class="fg">
+            <label for="telefon">Telefón <span class="opt-lbl">(voliteľné)</span></label>
+            <input type="tel" id="telefon" placeholder="+421...">
+          </div>
+        </div>
+        <div class="fg">
+          <label for="billingNote">Poznámka k faktúre <span class="opt-lbl">(voliteľné)</span></label>
+          <textarea id="billingNote" placeholder="napr. variabilný symbol, referencia objednávky..."></textarea>
+        </div>
+      </div>
+
+      <div class="actions"><button class="btn btn-primary" id="toStep2">Pokračovať →</button></div>
+      <p class="form-note">Krok 2 = výber plánu + bezpečná platba cez GoPay.</p>
+    </div>
+
+    <div id="step2" class="step2">
+      <div class="fc-title">Výber plánu a platba</div>
+      <div class="fc-sub">Oba plány sú refundovateľné, ak nedosiahneme garantovanú úsporu.</div>
+      <div class="fg">
+        <label class="req">Plán</label>
+        <div class="plan-toggle">
+          <div class="plan-opt">
+            <input type="radio" name="fee" id="fee129" value="129">
+            <label for="fee129">
+              <span class="po-price">129 €</span><span class="po-name">Štandard</span>
+              <span class="po-desc"><span style="text-decoration:line-through;opacity:.75">150 €</span> → teraz 129 €</span>
+              <span class="po-desc">Garancia min. <span class="nowrap">700&nbsp;€</span></span>
+              <span class="po-refund">✓ Refund ak <span class="nowrap">700&nbsp;€</span> nedosiahneme</span>
+            </label>
+          </div>
+          <div class="plan-opt">
+            <input type="radio" name="fee" id="fee399" value="399" checked>
+            <label for="fee399">
+              <span class="po-price">399 €</span><span class="po-name">Garancia+</span>
+              <span class="po-desc"><span style="text-decoration:line-through;opacity:.75">450 €</span> → teraz 399 €</span>
+              <span class="po-desc">Garancia min. <span class="nowrap">1&nbsp;400&nbsp;€</span></span>
+              <span class="po-refund">✓ Refund ak <span class="nowrap">1&nbsp;400&nbsp;€</span> nedosiahneme</span>
+            </label>
+          </div>
+        </div>
+        <div class="err" id="errPlan">Vyber plán.</div>
+      </div>
+      <div class="gdpr-row">
+        <input type="checkbox" id="gdpr">
+        <span>Súhlasím so spracovaním osobných a fakturačných údajov. Ponuka bude anonymizovaná. Prečítal/a som si <a href="vop.html">Obchodné podmienky</a> a <a href="gdpr.html">Zásady ochrany súkromia</a>.</span>
+      </div>
+      <div class="err" id="errGdpr" style="margin-bottom:.9rem">Súhlas s podmienkami je povinný.</div>
+      <div class="actions">
+        <button class="btn btn-ghost" id="back1" style="max-width:130px">← Späť</button>
+        <button class="btn btn-primary" id="payBtn">
+          <span id="payText">Prejsť na platbu</span>
+          <span class="spinner" id="paySpin"></span>
+        </button>
+      </div>
+      <p class="form-note">🔒 Platba prebieha bezpečne cez GoPay · Po platbe príde emailové potvrdenie.</p>
+    </div>
+  </main>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const qp=new URLSearchParams(location.search);
+const fi=$('offerFile'),dz=$('dropZ');
+fi.addEventListener('change',()=>{const f=fi.files?.[0];if(f){dz.classList.add('has-file');$('dropIcon').textContent='✅';$('dropMain').textContent='Súbor nahratý';$('dropFname').style.display='block';$('dropFname').textContent=f.name;$('errFile').style.display='none';}else{dz.classList.remove('has-file');$('dropIcon').textContent='📎';$('dropMain').textContent='Klikni alebo presuň súbor sem';$('dropFname').style.display='none';}});
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dov');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('dov'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dov');const f=e.dataTransfer.files[0];if(f){const dt=new DataTransfer();dt.items.add(f);fi.files=dt.files;fi.dispatchEvent(new Event('change'));}});
+$('znacka').addEventListener('change',()=>{const s=$('znacka').value==='ina';$('inaWrap').style.display=s?'block':'none';if(!s){$('inaZnacka').value='';$('errInaZnacka').style.display='none';}});
+document.querySelectorAll('input[name=buyerType]').forEach(r=>{r.addEventListener('change',()=>{$('fieldsPrivate').classList.toggle('active',r.value==='private');$('fieldsCompany').classList.toggle('active',r.value==='company');$('billingBlock').style.display='block';$('errBuyerType').style.display='none';});});
+function syncPlan(){const v=document.querySelector('input[name=fee]:checked')?.value;$('pp129').classList.toggle('active',v==='129');$('pp399').classList.toggle('active',v==='399');}
+document.querySelectorAll('input[name=fee]').forEach(r=>r.addEventListener('change',syncPlan));
+if(qp.get('plan')==='129')$('fee129').checked=true;
+syncPlan();
+const show=(id,on)=>{const e=$(id);if(e)e.style.display=on?'block':'none';};
+const mark=(id,err)=>{const e=$(id);if(e)e.classList.toggle('err-f',err);};
+const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v||'').trim());
+const validIco=v=>/^\d{6,10}$/.test(String(v||'').trim());
+const req=v=>String(v||'').trim().length>0;
+function validateStep1(){
+  let ok=true;
+  const f=fi.files?.[0];show('errFile',!f);if(!f)ok=false;
+  const z=$('znacka').value;show('errZnacka',!z);mark('znacka',!z);if(!z)ok=false;
+  if(z==='ina'){const i=$('inaZnacka').value.trim();show('errInaZnacka',!i);mark('inaZnacka',!i);if(!i)ok=false;}
+  const m=$('model').value.trim();show('errModel',!m);mark('model',!m);if(!m)ok=false;
+  const c=Number($('cena').value);show('errCena',!c||c<1000);mark('cena',!c||c<1000);if(!c||c<1000)ok=false;
+  const bt=document.querySelector('input[name=buyerType]:checked')?.value;show('errBuyerType',!bt);if(!bt)ok=false;
+  if(bt==='private'){const fn=$('fullName').value.trim();show('errFullName',!fn);mark('fullName',!fn);if(!fn)ok=false;}
+  if(bt==='company'){const cn=$('companyName').value.trim();show('errCompanyName',!cn);mark('companyName',!cn);if(!cn)ok=false;const ic=$('ico').value.trim();show('errIco',!validIco(ic));mark('ico',!validIco(ic));if(!validIco(ic))ok=false;const cp=$('contactPerson').value.trim();show('errContactPerson',!cp);mark('contactPerson',!cp);if(!cp)ok=false;}
+  if(bt){const str=$('billingAddressStreet').value.trim();show('errStreet',!str);mark('billingAddressStreet',!str);if(!str)ok=false;const city=$('billingAddressCity').value.trim();show('errCity',!city);mark('billingAddressCity',!city);if(!city)ok=false;const zip=$('billingAddressZip').value.trim();show('errZip',!zip);mark('billingAddressZip',!zip);if(!zip)ok=false;const em=$('email').value.trim();show('errEmail',!validEmail(em));mark('email',!validEmail(em));if(!validEmail(em))ok=false;}
+  return ok;
+}
+function goStep(n){$('step1').style.display=n===1?'block':'none';$('step2').style.display=n===2?'block':'none';$('stepLbl').textContent='Krok '+n;$('progFill').style.width=n===1?'50%':'100%';if(n===2)window.scrollTo(0,0);}
+$('toStep2').addEventListener('click',e=>{e.preventDefault();if(validateStep1())goStep(2);});
+$('back1').addEventListener('click',e=>{e.preventDefault();goStep(1);});
+goStep(1);
+function setLoading(on){$('payBtn').disabled=on;$('paySpin').style.display=on?'inline-block':'none';$('payText').style.display=on?'none':'inline';}
+$('payBtn').addEventListener('click',async e=>{
+  e.preventDefault();
+  const fee=document.querySelector('input[name=fee]:checked')?.value;
+  if(!fee){show('errPlan',true);return;}if(!$('gdpr').checked){show('errGdpr',true);return;}
+  show('errPlan',false);show('errGdpr',false);
+  try{
+    setLoading(true);
+    const bt=document.querySelector('input[name=buyerType]:checked')?.value;
+    const zr=$('znacka').value,zv=zr==='ina'?$('inaZnacka').value.trim():zr;
+    const fd=new FormData();
+    fd.append('offerFile',fi.files[0]);fd.append('znacka',zv);fd.append('model',$('model').value.trim());fd.append('cena',$('cena').value.trim());fd.append('buyerType',bt);
+    if(bt==='private')fd.append('fullName',$('fullName').value.trim());
+    if(bt==='company'){fd.append('companyName',$('companyName').value.trim());fd.append('ico',$('ico').value.trim());fd.append('dic',$('dic').value.trim());fd.append('icdph',$('icdph').value.trim());fd.append('contactPerson',$('contactPerson').value.trim());}
+    fd.append('billingAddressStreet',$('billingAddressStreet').value.trim());fd.append('billingAddressCity',$('billingAddressCity').value.trim());fd.append('billingAddressZip',$('billingAddressZip').value.trim());fd.append('email',$('email').value.trim());fd.append('telefon',$('telefon').value.trim());fd.append('billingNote',$('billingNote').value.trim());
+    const up=await fetch('/api/upload-offer',{method:'POST',body:fd});const uj=await up.json();if(!up.ok)throw new Error(uj.error||'Upload zlyhal.');
+    const pr=await fetch('/api/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fee,uploadId:uj.uploadId})});const pj=await pr.json();if(!pr.ok)throw new Error(pj.error||'Platba zlyhala.');
+    window.location.href=pj.url;
+  }catch(err){alert('Chyba: '+err.message);setLoading(false);}
+});
+</script>
+<a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk.%20M%C3%B4j%20uploadId%20je%3A%20____" target="_blank" rel="noopener" class="whatsapp-btn" id="waBtn" aria-label="WhatsApp podpora">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+</body>
+</html>
