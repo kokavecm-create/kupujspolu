@@ -1,260 +1,449 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Platba potvrdená — kupujspolu.sk</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --site-bg:#070B14;
+      --bg:#070B14;
       --surface:#0E1625;
       --card:#121B2E;
+      --card-2:#18243A;
       --ink:#F1F5F9;
-      --ink-mid:#CBD5E1;
-      --neutral:#94A3B8;
-      --border:rgba(148,163,184,.15);
+      --muted:#CBD5E1;
+      --muted-2:#94A3B8;
+      --line:rgba(148,163,184,.14);
+      --soft:rgba(148,163,184,.08);
       --brand:#3B82F6;
       --brand-dark:#2563EB;
-      --green:#22C55E;
-      --radius:18px;
+      --brand-soft:rgba(59,130,246,.12);
+      --ok:#22C55E;
+      --ok-soft:rgba(34,197,94,.12);
+      --warn:#F59E0B;
+      --warn-soft:rgba(245,158,11,.12);
+      --danger:#EF4444;
+      --danger-soft:rgba(239,68,68,.12);
+      --radius:22px;
       --pill:999px;
-      --shadow:0 10px 40px rgba(0,0,0,.4);
-      --shadow-lg:0 20px 80px rgba(0,0,0,.6);
+      --shadow:0 18px 60px rgba(0,0,0,.42);
+      --max:980px;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{box-sizing:border-box}
     body{
+      margin:0;
       font-family:'Outfit',sans-serif;
-      background:var(--site-bg);
+      background:linear-gradient(180deg,#050912 0%, #08101c 100%);
       color:var(--ink);
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
+      line-height:1.65;
     }
 
-    nav{
-      height:66px;
-      background:rgba(7,11,20,.93);
-      backdrop-filter:blur(20px);
-      border-bottom:1px solid var(--border);
+    a{color:#93c5fd;text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .topbar{
+      border-bottom:1px solid var(--line);
+      background:rgba(7,11,20,.88);
+      backdrop-filter:blur(16px);
+    }
+
+    .topbar-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:16px 24px;
       display:flex;
       align-items:center;
-      padding:0 5vw;
+      justify-content:space-between;
+      gap:16px;
     }
 
     .logo{
       font-family:'Bebas Neue',sans-serif;
+      letter-spacing:.05em;
       font-size:1.35rem;
-      letter-spacing:.06em;
       color:var(--ink);
-      text-decoration:none;
     }
 
     .logo em{
-      color:var(--brand);
       font-style:normal;
+      color:var(--brand);
     }
 
-    .main{
-      flex:1;
-      display:flex;
+    .hero{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:42px 24px 24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
       align-items:center;
-      justify-content:center;
-      padding:4rem 5vw;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:var(--pill);
+      background:var(--ok-soft);
+      color:#dcfce7;
+      border:1px solid rgba(34,197,94,.24);
+      font-size:.8rem;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
     }
 
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:24px;
-      box-shadow:var(--shadow-lg);
-      max-width:780px;
-      width:100%;
-      padding:3rem;
-    }
-
-    .head{
-      display:flex;
-      align-items:center;
-      gap:1.25rem;
-      margin-bottom:1.2rem;
-    }
-
-    .icon{
-      width:76px;
-      height:76px;
-      border-radius:16px;
-      background:rgba(34,197,94,.12);
-      border:2px solid rgba(34,197,94,.35);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:2rem;
-      flex-shrink:0;
+    .eyebrow::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--ok);
+      box-shadow:0 0 0 6px rgba(34,197,94,.12);
     }
 
     h1{
+      margin:18px 0 10px;
       font-family:'Bebas Neue',sans-serif;
-      font-size:3.2rem;
+      font-size:clamp(2.4rem,5vw,4.1rem);
       line-height:.95;
       letter-spacing:.02em;
     }
 
-    .sub{
+    .hero-sub{
+      max-width:760px;
+      color:var(--muted);
       font-size:1rem;
-      color:var(--ink-mid);
-      line-height:1.75;
-      margin-bottom:1.7rem;
+      font-weight:300;
     }
 
-    .info-box{
-      margin-top:1.5rem;
-      text-align:left;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:1.4rem 1.35rem;
-      font-size:1rem;
-      color:var(--ink-mid);
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 24px 70px;
+      display:grid;
+      gap:18px;
     }
 
-    .info-title{
-      font-size:1rem;
-      font-weight:700;
-      color:var(--ink);
-      margin-bottom:1rem;
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow);
+    }
+
+    .card h2{
+      margin:0 0 10px;
+      font-size:1.25rem;
+      line-height:1.2;
+    }
+
+    .card p{
+      margin:0 0 12px;
+      color:var(--muted);
     }
 
     .grid{
       display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+    }
+
+    .summary{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .row{
+      display:grid;
       grid-template-columns:220px 1fr;
-      gap:.5rem 1rem;
+      gap:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:var(--card-2);
+      border:1px solid var(--line);
     }
 
-    .k{
-      color:var(--ink);
-      font-weight:700;
-    }
+    .row strong{color:var(--ink)}
 
-    .v{
-      color:var(--ink-mid);
-      word-break:break-word;
-    }
-
-    .status{
+    .badge{
       display:inline-flex;
       align-items:center;
-      gap:.45rem;
-      padding:.35rem .75rem;
-      border-radius:999px;
-      font-size:.85rem;
-      font-weight:700;
-      background:rgba(59,130,246,.15);
-      color:#93c5fd;
-      border:1px solid rgba(59,130,246,.25);
+      justify-content:center;
+      padding:6px 12px;
+      border-radius:var(--pill);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .badge.pending{
+      background:rgba(245,158,11,.14);
+      border-color:rgba(245,158,11,.24);
+      color:#fde68a;
+    }
+
+    .badge.paid{
+      background:rgba(34,197,94,.14);
+      border-color:rgba(34,197,94,.24);
+      color:#dcfce7;
+    }
+
+    .badge.default{
+      background:rgba(255,255,255,.04);
+      color:var(--ink);
+    }
+
+    .notice{
+      border-radius:16px;
+      padding:16px;
+      border:1px solid var(--line);
+    }
+
+    .notice.info{
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+    }
+
+    .notice.ok{
+      background:var(--ok-soft);
+      border-color:rgba(34,197,94,.22);
+      color:#dcfce7;
+    }
+
+    .steps{
+      display:grid;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .step{
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:var(--card-2);
+    }
+
+    .step strong{
+      display:block;
+      margin-bottom:4px;
+      color:var(--ink);
+    }
+
+    .step span{
+      color:var(--muted);
+      font-size:.95rem;
     }
 
     .actions{
       display:flex;
-      gap:.9rem;
+      gap:12px;
       flex-wrap:wrap;
-      margin-top:2rem;
+      margin-top:18px;
     }
 
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:.4rem;
-      padding:.95rem 1.5rem;
+      padding:13px 18px;
       border-radius:999px;
       text-decoration:none;
-      font-weight:700;
-      font-size:.95rem;
-      transition:.2s ease;
+      font-weight:800;
+      transition:.18s ease;
+      border:1px solid var(--line);
     }
 
     .btn-primary{
       background:var(--brand);
       color:#fff;
-      box-shadow:0 4px 22px rgba(59,130,246,.35);
+      border-color:transparent;
     }
 
     .btn-primary:hover{
       background:var(--brand-dark);
-      transform:translateY(-1px);
+      text-decoration:none;
     }
 
-    .btn-outline{
-      border:1.5px solid var(--border);
-      color:var(--ink-mid);
-    }
-
-    .btn-outline:hover{
-      border-color:rgba(59,130,246,.35);
+    .btn-secondary{
+      background:rgba(255,255,255,.02);
       color:var(--ink);
     }
 
-    footer{
-      background:var(--site-bg);
-      color:var(--neutral);
-      padding:1.6rem 5vw;
-      text-align:center;
-      font-size:.77rem;
-      border-top:1px solid var(--border);
+    .btn-secondary:hover{
+      text-decoration:none;
+      border-color:rgba(59,130,246,.35);
     }
 
-    @media(max-width:760px){
-      .card{padding:2rem 1.25rem}
-      .head{align-items:flex-start}
-      h1{font-size:2.3rem}
-      .grid{grid-template-columns:1fr}
+    .loading{
+      color:var(--muted);
+    }
+
+    .footer{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 24px 48px;
+      color:var(--muted-2);
+      font-size:.86rem;
+    }
+
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      margin-top:12px;
+    }
+
+    @media (max-width: 900px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .row{
+        grid-template-columns:1fr;
+      }
+
+      .hero{
+        padding:32px 16px 16px;
+      }
+
+      .wrap{
+        padding:0 16px 56px;
+      }
+
+      .topbar-inner{
+        padding:14px 16px;
+      }
+
+      .footer{
+        padding:0 16px 42px;
+      }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <a class="logo" href="index.html">kupuj<em>spolu</em>.sk</a>
-  </nav>
-
-  <div class="main">
-    <div class="card">
-      <div class="head">
-        <div class="icon">✅</div>
-        <div>
-          <h1>Platba potvrdená</h1>
-        </div>
-      </div>
-
-      <p class="sub">
-        Ďakujeme. Vaša ponuka je v systéme. Nižšie vidíte detaily odoslanej ponuky.
-      </p>
-
-      <div id="uploadInfo" class="info-box">
-        Načítavam detaily ponuky...
-      </div>
-
-      <div class="actions">
-        <a class="btn btn-primary" href="upload.html">Nahrať ďalšiu ponuku</a>
-        <a class="btn btn-outline" href="index.html">Späť na hlavnú</a>
-      </div>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="/index.html">kupuj<em>spolu</em>.sk</a>
+      <a href="/index.html">Späť na hlavnú stránku</a>
     </div>
   </div>
 
-  <footer>
-    © 2026 kupujspolu.sk
+  <section class="hero">
+    <div class="eyebrow">Potvrdenie</div>
+    <h1>Platba potvrdená</h1>
+    <p class="hero-sub">
+      Ďakujeme. Tvoja ponuka bola prijatá do systému a nižšie nájdeš detail odoslaného prípadu.
+      Ďalšie spracovanie prebieha elektronicky podľa zvoleného plánu a obchodných podmienok.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <div class="grid">
+      <div class="card">
+        <h2>Detaily ponuky</h2>
+        <div id="uploadInfo" class="summary">
+          <div class="loading">Načítavam detaily ponuky...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Čo nasleduje ďalej</h2>
+        <p>
+          Tvoja ponuka je uložená a zaradená do ďalšieho spracovania. Platforma pokračuje podľa typu prípadu,
+          relevantnosti konfigurácie a aktuálneho stavu skupinového vyjednávania.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <strong>1. Overenie a spracovanie ponuky</strong>
+            <span>Skontrolujeme použiteľnosť nahratej ponuky a technickú úplnosť prípadu.</span>
+          </div>
+
+          <div class="step">
+            <strong>2. Zaradenie do skupiny</strong>
+            <span>Ponuka bude použitá v procese porovnania a skupinového vyjednávania porovnateľných konfigurácií.</span>
+          </div>
+
+          <div class="step">
+            <strong>3. Doručenie výsledku</strong>
+            <span>Výsledok vyjednávania alebo ďalšie informácie budú doručené elektronicky podľa priebehu procesu.</span>
+          </div>
+        </div>
+
+        <div class="notice info" style="margin-top:16px;">
+          Ak potrebuješ pomoc, pozri <a href="/kontakt.html">kontakt</a> alebo nám napíš na
+          <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>.
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="/upload.html">Nahrať ďalšiu ponuku</a>
+          <a class="btn btn-secondary" href="/index.html">Späť na hlavnú</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>© 2026 kupujspolu.sk</div>
+    <div class="footer-links">
+      <a href="/vop.html">Obchodné podmienky</a>
+      <a href="/gdpr.html">Ochrana osobných údajov</a>
+      <a href="/kontakt.html">Kontakt</a>
+    </div>
   </footer>
 
   <script>
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatPlan(fee) {
+      if (String(fee) === '399') return 'Garancia+ (399 EUR)';
+      if (String(fee) === '129') return 'Štandard (129 EUR)';
+      return fee ? `${escapeHtml(fee)} EUR` : 'Neuvedené';
+    }
+
+    function formatStatus(status) {
+      const normalized = String(status || '').trim();
+      if (!normalized) {
+        return '<span class="badge default">neuvedené</span>';
+      }
+
+      if (normalized === 'pending_payment') {
+        return '<span class="badge pending">pending_payment</span>';
+      }
+
+      if (normalized === 'paid') {
+        return '<span class="badge paid">paid</span>';
+      }
+
+      return `<span class="badge default">${escapeHtml(normalized)}</span>`;
+    }
+
     async function loadUploadInfo() {
       const box = document.getElementById('uploadInfo');
+      if (!box) return;
+
       const params = new URLSearchParams(window.location.search);
       const uploadId = params.get('uploadId');
-      const fee = params.get('fee');
 
       if (!uploadId) {
-        box.innerHTML = '<div class="info-title">Chyba</div><div>Upload ID sa nenašiel v URL adrese.</div>';
+        box.innerHTML = `
+          <div class="notice" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:#fecaca;">
+            Upload ID sa nenašiel v adrese stránky.
+          </div>
+        `;
         return;
       }
 
@@ -262,33 +451,32 @@
         const res = await fetch(`/api/upload/${encodeURIComponent(uploadId)}`);
         const data = await res.json();
 
-        if (!res.ok || !data.ok || !data.upload) {
-          box.innerHTML = '<div class="info-title">Chyba</div><div>Nepodarilo sa načítať detaily ponuky.</div>';
+        if (!res.ok) {
+          box.innerHTML = `
+            <div class="notice" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:#fecaca;">
+              Nepodarilo sa načítať detaily ponuky.
+            </div>
+          `;
           return;
         }
 
-        const u = data.upload;
-
-        let planText = '—';
-        if (fee === '129') planText = 'Štandard (129 €)';
-        if (fee === '399') planText = 'Garancia+ (399 €)';
-
         box.innerHTML = `
-          <div class="info-title">Detaily ponuky</div>
-          <div class="grid">
-            <div class="k">Upload ID:</div><div class="v">${u.uploadId}</div>
-            <div class="k">Značka:</div><div class="v">${u.znacka}</div>
-            <div class="k">Model:</div><div class="v">${u.model}</div>
-            <div class="k">Cena:</div><div class="v">${u.cena} €</div>
-            <div class="k">Typ kupujúceho:</div><div class="v">${u.buyerType}</div>
-            <div class="k">Email:</div><div class="v">${u.email}</div>
-            <div class="k">Plán:</div><div class="v">${planText}</div>
-            <div class="k">Stav:</div><div class="v"><span class="status">${u.status}</span></div>
-          </div>
+          <div class="row"><strong>Upload ID</strong><div>${escapeHtml(data.uploadId || '')}</div></div>
+          <div class="row"><strong>Značka</strong><div>${escapeHtml(data.znacka || '')}</div></div>
+          <div class="row"><strong>Model</strong><div>${escapeHtml(data.model || '')}</div></div>
+          <div class="row"><strong>Cena</strong><div>${escapeHtml(data.cena || '')} EUR</div></div>
+          <div class="row"><strong>Typ kupujúceho</strong><div>${escapeHtml(data.buyerType || '')}</div></div>
+          <div class="row"><strong>E-mail</strong><div>${escapeHtml(data.email || '')}</div></div>
+          <div class="row"><strong>Plán</strong><div>${formatPlan(data.fee || new URLSearchParams(window.location.search).get('fee'))}</div></div>
+          <div class="row"><strong>Stav</strong><div>${formatStatus(data.status || '')}</div></div>
         `;
       } catch (err) {
         console.error(err);
-        box.innerHTML = '<div class="info-title">Chyba</div><div>Pri načítaní detailov nastala chyba.</div>';
+        box.innerHTML = `
+          <div class="notice" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:#fecaca;">
+            Chyba pri načítaní detailov.
+          </div>
+        `;
       }
     }
 
