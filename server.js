@@ -21,7 +21,7 @@ const {
   STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET,
   SMTP_HOST,
-  SMTP_PORT = '465',
+  SMTP_PORT = '587',
   SMTP_USER,
   SMTP_PASS,
   MAIL_FROM = 'Kupujspolu.sk <info@kupujspolu.sk>',
@@ -39,17 +39,25 @@ const stripe =
     ? new Stripe(STRIPE_SECRET_KEY)
     : null;
 
-const mailerConfigured =
-  SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASS;
+const mailerConfigured = Boolean(
+  SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASS
+);
 
 const transporter = mailerConfigured
   ? nodemailer.createTransport({
       host: SMTP_HOST,
       port: Number(SMTP_PORT),
       secure: Number(SMTP_PORT) === 465,
+      requireTLS: Number(SMTP_PORT) === 587,
       auth: {
         user: SMTP_USER,
         pass: SMTP_PASS
+      },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000,
+      tls: {
+        servername: SMTP_HOST
       }
     })
   : null;
@@ -82,6 +90,36 @@ function getCustomerName(order) {
 function getPlanNameFromFee(fee) {
   if (String(fee) === '399') return 'Garancia+';
   return 'Štandard';
+}
+
+function logSmtpConfig() {
+  console.log('SMTP CONFIG CHECK:', {
+    host: SMTP_HOST || '',
+    port: SMTP_PORT || '',
+    user: SMTP_USER || '',
+    hasPass: Boolean(SMTP_PASS),
+    mailFrom: MAIL_FROM || '',
+    adminEmail: ADMIN_EMAIL || '',
+    secure: Number(SMTP_PORT) === 465,
+    requireTLS: Number(SMTP_PORT) === 587
+  });
+}
+
+async function verifyMailer() {
+  if (!transporter) {
+    console.warn('SMTP verify skipped: transporter nie je nakonfigurovaný.');
+    return false;
+  }
+
+  try {
+    logSmtpConfig();
+    await transporter.verify();
+    console.log('SMTP VERIFY OK');
+    return true;
+  } catch (err) {
+    console.error('SMTP VERIFY ERROR:', err);
+    return false;
+  }
 }
 
 async function sendAdminEmail(order) {
@@ -158,11 +196,20 @@ async function sendAdminEmail(order) {
     </div>
   `;
 
-  await transporter.sendMail({
+  console.log(`SEND ADMIN EMAIL START: ${order.upload_id}`);
+
+  const info = await transporter.sendMail({
     from: MAIL_FROM,
     to: ADMIN_EMAIL,
     subject: 'Nová objednávka – kupujspolu.sk',
     html
+  });
+
+  console.log('SEND ADMIN EMAIL OK:', {
+    messageId: info.messageId,
+    accepted: info.accepted,
+    rejected: info.rejected,
+    response: info.response
   });
 }
 
@@ -211,7 +258,7 @@ async function sendCustomerEmail(order) {
             <ol style="padding-left:20px;line-height:1.8;font-size:16px;">
               <li>Skontrolujeme vaše zadané údaje a špecifikáciu dopytu.</li>
               <li>Anonymizovane oslovíme relevantných predajcov a partnerov.</li>
-              <li>Zozierrame a porovnáme dostupné ponuky.</li>
+              <li>Zozbierame a porovnáme dostupné ponuky.</li>
               <li>Vyberieme pre vás najvýhodnejšie riešenie podľa zadaných parametrov.</li>
               <li>Výslednú ponuku vám doručíme emailom.</li>
             </ol>
@@ -236,11 +283,20 @@ async function sendCustomerEmail(order) {
     </div>
   `;
 
-  await transporter.sendMail({
+  console.log(`SEND CUSTOMER EMAIL START: ${order.upload_id} -> ${order.email}`);
+
+  const info = await transporter.sendMail({
     from: MAIL_FROM,
     to: order.email,
     subject: 'Potvrdenie prijatia objednávky – kupujspolu.sk',
     html
+  });
+
+  console.log('SEND CUSTOMER EMAIL OK:', {
+    messageId: info.messageId,
+    accepted: info.accepted,
+    rejected: info.rejected,
+    response: info.response
   });
 }
 
@@ -484,8 +540,86 @@ app.get('/api/health', (req, res) => {
     ok: true,
     provider: PAYMENT_PROVIDER,
     env: process.env.NODE_ENV || 'development',
-    mailerConfigured: Boolean(mailerConfigured)
+    mailerConfigured: Boolean(mailerConfigured),
+    smtpHost: SMTP_HOST || '',
+    smtpPort: SMTP_PORT || ''
   });
+});
+
+app.get('/api/test-mailer', async (req, res) => {
+  try {
+    if (!transporter) {
+      return res.status(500).json({
+        ok: false,
+        error: 'SMTP nie je nakonfigurované.'
+      });
+    }
+
+    logSmtpConfig();
+
+    await transporter.verify();
+
+    return res.json({
+      ok: true,
+      message: 'SMTP verify prebehlo úspešne.'
+    });
+  } catch (error) {
+    console.error('TEST MAILER ERROR:', error);
+    return res.status(500).json({
+      ok: false,
+      error: error.message || 'SMTP verify zlyhalo.'
+    });
+  }
+});
+
+app.get('/api/test-email', async (req, res) => {
+  try {
+    if (!transporter) {
+      return res.status(500).json({
+        ok: false,
+        error: 'SMTP nie je nakonfigurované.'
+      });
+    }
+
+    const testTo = req.query.to || ADMIN_EMAIL;
+
+    console.log(`TEST EMAIL START -> ${testTo}`);
+    logSmtpConfig();
+
+    const info = await transporter.sendMail({
+      from: MAIL_FROM,
+      to: testTo,
+      subject: 'Test email – kupujspolu.sk',
+      html: `
+        <div style="font-family:Arial,sans-serif;padding:20px;">
+          <h2>Test email z kupujspolu.sk</h2>
+          <p>Ak čítaš tento email, SMTP funguje správne.</p>
+          <p><strong>Čas odoslania:</strong> ${new Date().toISOString()}</p>
+        </div>
+      `
+    });
+
+    console.log('TEST EMAIL OK:', {
+      messageId: info.messageId,
+      accepted: info.accepted,
+      rejected: info.rejected,
+      response: info.response
+    });
+
+    return res.json({
+      ok: true,
+      message: 'Test email bol odoslaný.',
+      accepted: info.accepted,
+      rejected: info.rejected,
+      response: info.response
+    });
+  } catch (error) {
+    console.error('TEST EMAIL ERROR:', error);
+    return res.status(500).json({
+      ok: false,
+      error: error.message || 'Odoslanie test emailu zlyhalo.'
+    });
+  }
 });
 
 app.get('/api/uploads', async (req, res) => {
@@ -742,7 +876,11 @@ app.use((err, req, res, next) => {
   return res.status(400).json({ error: err.message || 'Nastala chyba pri spracovaní požiadavky.' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server beží na ${BASE_URL}`);
   console.log(`Mailer configured: ${mailerConfigured ? 'áno' : 'nie'}`);
+
+  if (mailerConfigured) {
+    await verifyMailer();
+  }
 });
