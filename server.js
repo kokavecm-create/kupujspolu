@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
+const Stripe = require('stripe');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,14 +16,107 @@ const {
   SUPABASE_SERVICE_ROLE_KEY,
   SUPABASE_BUCKET = 'offer-files',
   PAYMENT_PROVIDER = 'test',
-  BASE_URL = `http://localhost:${PORT}`
+  BASE_URL = `http://localhost:${PORT}`,
+  STRIPE_SECRET_KEY,
+  STRIPE_WEBHOOK_SECRET
 } = process.env;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error('Chýba SUPABASE_URL alebo SUPABASE_SERVICE_ROLE_KEY v .env / Render Environment.');
+  throw new Error('Chýba SUPABASE_URL alebo SUPABASE_SERVICE_ROLE_KEY.');
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+const stripe =
+  STRIPE_SECRET_KEY && STRIPE_SECRET_KEY.trim()
+    ? new Stripe(STRIPE_SECRET_KEY)
+    : null;
+
+/**
+ * Stripe webhook musí ísť pred express.json(),
+ * inak sa rozbije verifikácia podpisu.
+ */
+app.post(
+  '/api/stripe/webhook',
+  express.raw({ type: 'application/json' }),
+  async (req, res) => {
+    try {
+      if (!stripe) {
+        return res.status(500).send('Stripe nie je nakonfigurovaný.');
+      }
+
+      if (!STRIPE_WEBHOOK_SECRET) {
+        return res.status(500).send('Chýba STRIPE_WEBHOOK_SECRET.');
+      }
+
+      const signature = req.headers['stripe-signature'];
+      if (!signature) {
+        return res.status(400).send('Chýba Stripe signature.');
+      }
+
+      let event;
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.body,
+          signature,
+          STRIPE_WEBHOOK_SECRET
+        );
+      } catch (err) {
+        console.error('Stripe webhook signature error:', err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+      }
+
+      if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+        const uploadId = session.metadata?.uploadId || null;
+        const fee = session.metadata?.fee || '';
+
+        if (uploadId) {
+          const { error } = await supabase
+            .from('uploads')
+            .update({
+              status: 'paid',
+              fee,
+              updated_at: new Date().toISOString()
+            })
+            .eq('upload_id', uploadId);
+
+          if (error) {
+            console.error('Supabase update after checkout.session.completed:', error);
+            return res.status(500).send('Nepodarilo sa aktualizovať stav objednávky.');
+          }
+        }
+      }
+
+      if (event.type === 'checkout.session.async_payment_failed') {
+        const session = event.data.object;
+        const uploadId = session.metadata?.uploadId || null;
+        const fee = session.metadata?.fee || '';
+
+        if (uploadId) {
+          const { error } = await supabase
+            .from('uploads')
+            .update({
+              status: 'payment_failed',
+              fee,
+              updated_at: new Date().toISOString()
+            })
+            .eq('upload_id', uploadId);
+
+          if (error) {
+            console.error('Supabase update after async_payment_failed:', error);
+            return res.status(500).send('Nepodarilo sa aktualizovať stav objednávky.');
+          }
+        }
+      }
+
+      return res.json({ received: true });
+    } catch (error) {
+      console.error('Stripe webhook fatal error:', error);
+      return res.status(500).send('Webhook processing error.');
+    }
+  }
+);
 
 app.use(cors());
 app.use(express.json());
@@ -91,6 +185,22 @@ function mapDbRow(row) {
   };
 }
 
+function priceLabelFromFee(fee) {
+  if (String(fee) === '399') {
+    return {
+      amount: 39900,
+      label: 'Kupujspolu.sk — Garancia+',
+      description: 'Digitálna služba skupinového vyjednávania — Garancia+'
+    };
+  }
+
+  return {
+    amount: 12900,
+    label: 'Kupujspolu.sk — Štandard',
+    description: 'Digitálna služba skupinového vyjednávania — Štandard'
+  };
+}
+
 async function updateUploadStatus(uploadId, patch) {
   const payload = {
     ...patch,
@@ -123,9 +233,7 @@ app.get('/api/uploads', async (req, res) => {
       .order('created_at', { ascending: false })
       .limit(50);
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     res.json({
       uploads: (data || []).map(mapDbRow)
@@ -299,7 +407,45 @@ app.post('/api/create-checkout-session', async (req, res) => {
     }
 
     if (PAYMENT_PROVIDER === 'stripe') {
-      return res.status(501).json({ error: 'Stripe ešte nie je nakonfigurovaný.' });
+      if (!stripe) {
+        return res.status(500).json({ error: 'Stripe nie je nakonfigurovaný.' });
+      }
+
+      const pricing = priceLabelFromFee(normalizedFee);
+
+      await updateUploadStatus(uploadId, {
+        fee: normalizedFee,
+        status: 'checkout_created'
+      });
+
+      const session = await stripe.checkout.sessions.create({
+        mode: 'payment',
+        success_url: `${BASE_URL}/success.html?uploadId=${encodeURIComponent(uploadId)}&fee=${encodeURIComponent(normalizedFee)}&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${BASE_URL}/upload.html?plan=${encodeURIComponent(normalizedFee)}`,
+        customer_email: existingUpload.email || undefined,
+        metadata: {
+          uploadId,
+          fee: normalizedFee
+        },
+        line_items: [
+          {
+            quantity: 1,
+            price_data: {
+              currency: 'eur',
+              unit_amount: pricing.amount,
+              product_data: {
+                name: pricing.label,
+                description: pricing.description
+              }
+            }
+          }
+        ]
+      });
+
+      return res.json({
+        ok: true,
+        url: session.url
+      });
     }
 
     if (PAYMENT_PROVIDER === 'gopay') {
