@@ -140,18 +140,45 @@ async function updateUploadStatus(uploadId, patch) {
   }
 }
 
-async function sendEmail({ to, subject, html }) {
+async function getAttachmentFromStorage(order) {
+  if (!order.file_storage_path) {
+    return null;
+  }
+
+  const { data, error } = await supabase.storage
+    .from(SUPABASE_BUCKET)
+    .download(order.file_storage_path);
+
+  if (error) {
+    throw error;
+  }
+
+  const arrayBuffer = await data.arrayBuffer();
+  const base64Content = Buffer.from(arrayBuffer).toString('base64');
+
+  return {
+    filename: order.file_original_name || path.basename(order.file_storage_path),
+    content: base64Content
+  };
+}
+
+async function sendEmail({ to, subject, html, attachments = [] }) {
   if (!resend) {
     throw new Error('Resend nie je nakonfigurovaný. Chýba RESEND_API_KEY.');
   }
 
-  const result = await resend.emails.send({
+  const payload = {
     from: 'Kupujspolu.sk <info@kupujspolu.sk>',
     to,
     subject,
     html
-  });
+  };
 
+  if (attachments.length > 0) {
+    payload.attachments = attachments;
+  }
+
+  const result = await resend.emails.send(payload);
   console.log('RESEND RESULT:', JSON.stringify(result));
   return result;
 }
@@ -159,6 +186,16 @@ async function sendEmail({ to, subject, html }) {
 async function sendAdminEmail(order) {
   const customerName = getCustomerName(order);
   const planName = getPlanNameFromFee(order.fee);
+
+  let attachments = [];
+  try {
+    const attachment = await getAttachmentFromStorage(order);
+    if (attachment) {
+      attachments = [attachment];
+    }
+  } catch (err) {
+    console.error(`Nepodarilo sa pripraviť prílohu pre admin email ${order.upload_id}:`, err);
+  }
 
   const html = `
     <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827;padding:20px;">
@@ -218,10 +255,14 @@ async function sendAdminEmail(order) {
           <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.billing_note || '-')}</td>
         </tr>
         <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Súbor</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Nahratý súbor</strong></td>
           <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.file_original_name || '-')}</td>
         </tr>
       </table>
+
+      <p style="margin-top:20px;">
+        ${attachments.length > 0 ? 'Príloha bola pridaná k emailu.' : 'Prílohu sa nepodarilo pridať k emailu.'}
+      </p>
     </div>
   `;
 
@@ -230,7 +271,8 @@ async function sendAdminEmail(order) {
   await sendEmail({
     to: ADMIN_EMAIL,
     subject: 'Nová objednávka – kupujspolu.sk',
-    html
+    html,
+    attachments
   });
 
   console.log(`SEND ADMIN EMAIL OK: ${order.upload_id}`);
