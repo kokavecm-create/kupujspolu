@@ -6,6 +6,7 @@ const cors = require('cors');
 const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
 const Stripe = require('stripe');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +19,13 @@ const {
   PAYMENT_PROVIDER = 'test',
   BASE_URL = `http://localhost:${PORT}`,
   STRIPE_SECRET_KEY,
-  STRIPE_WEBHOOK_SECRET
+  STRIPE_WEBHOOK_SECRET,
+  SMTP_HOST,
+  SMTP_PORT = '465',
+  SMTP_USER,
+  SMTP_PASS,
+  MAIL_FROM = 'Kupujspolu.sk <info@kupujspolu.sk>',
+  ADMIN_EMAIL = 'info@kupujspolu.sk'
 } = process.env;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
@@ -31,6 +38,240 @@ const stripe =
   STRIPE_SECRET_KEY && STRIPE_SECRET_KEY.trim()
     ? new Stripe(STRIPE_SECRET_KEY)
     : null;
+
+const mailerConfigured =
+  SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASS;
+
+const transporter = mailerConfigured
+  ? nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: Number(SMTP_PORT),
+      secure: Number(SMTP_PORT) === 465,
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASS
+      }
+    })
+  : null;
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function getCustomerName(order) {
+  if (order.full_name && String(order.full_name).trim()) {
+    return String(order.full_name).trim();
+  }
+
+  if (order.contact_person && String(order.contact_person).trim()) {
+    return String(order.contact_person).trim();
+  }
+
+  if (order.company_name && String(order.company_name).trim()) {
+    return String(order.company_name).trim();
+  }
+
+  return 'zákazník';
+}
+
+function getPlanNameFromFee(fee) {
+  if (String(fee) === '399') return 'Garancia+';
+  return 'Štandard';
+}
+
+async function sendAdminEmail(order) {
+  if (!transporter) {
+    console.warn('SMTP nie je nakonfigurované. Admin email sa neposlal.');
+    return;
+  }
+
+  const customerName = getCustomerName(order);
+  const planName = getPlanNameFromFee(order.fee);
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827;padding:20px;">
+      <h2 style="margin-top:0;">Nová zaplatená objednávka – kupujspolu.sk</h2>
+      <p>Bola prijatá nová objednávka po úspešnej platbe cez Stripe.</p>
+
+      <table style="border-collapse:collapse;width:100%;max-width:760px;">
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Upload ID</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.upload_id)}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Stav</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.status || 'paid')}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Plán</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(planName)} (${escapeHtml(order.fee)} €)</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Značka / model</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.znacka)} / ${escapeHtml(order.model)}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Požadovaná cena vozidla</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.cena)}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Typ kupujúceho</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.buyer_type)}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Meno / kontakt</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(customerName)}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Firma</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.company_name || '-')}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Email</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.email || '-')}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Telefón</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.telefon || '-')}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Adresa</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">
+            ${escapeHtml(order.billing_address_street || '-')}<br>
+            ${escapeHtml(order.billing_address_zip || '')} ${escapeHtml(order.billing_address_city || '')}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Poznámka</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.billing_note || '-')}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Súbor</strong></td>
+          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.file_original_name || '-')}</td>
+        </tr>
+      </table>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: MAIL_FROM,
+    to: ADMIN_EMAIL,
+    subject: 'Nová objednávka – kupujspolu.sk',
+    html
+  });
+}
+
+async function sendCustomerEmail(order) {
+  if (!transporter) {
+    console.warn('SMTP nie je nakonfigurované. Zákaznícky email sa neposlal.');
+    return;
+  }
+
+  if (!order.email) {
+    console.warn(`Objednávka ${order.upload_id} nemá email zákazníka.`);
+    return;
+  }
+
+  const customerName = getCustomerName(order);
+  const planName = getPlanNameFromFee(order.fee);
+
+  const html = `
+    <div style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,sans-serif;color:#0f172a;">
+      <div style="max-width:640px;margin:0 auto;padding:30px 20px;">
+        <div style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.08);">
+          <div style="background:#0f172a;padding:28px 32px;">
+            <h1 style="margin:0;color:#ffffff;font-size:28px;">kupujspolu.sk</h1>
+            <p style="margin:8px 0 0 0;color:#cbd5e1;font-size:15px;">
+              Potvrdenie prijatia objednávky
+            </p>
+          </div>
+
+          <div style="padding:32px;">
+            <p style="margin-top:0;font-size:16px;">Dobrý deň ${escapeHtml(customerName)},</p>
+
+            <p style="font-size:16px;line-height:1.7;">
+              ďakujeme za vašu objednávku a dôveru. Vašu platbu sme úspešne prijali
+              a váš dopyt je teraz zaradený do spracovania.
+            </p>
+
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin:24px 0;">
+              <h2 style="margin:0 0 12px 0;font-size:18px;">Prehľad objednávky</h2>
+              <p style="margin:6px 0;"><strong>Referenčné číslo:</strong> ${escapeHtml(order.upload_id)}</p>
+              <p style="margin:6px 0;"><strong>Plán:</strong> ${escapeHtml(planName)}</p>
+              <p style="margin:6px 0;"><strong>Popis dopytu:</strong> ${escapeHtml(order.znacka)} ${escapeHtml(order.model)}</p>
+            </div>
+
+            <h2 style="font-size:20px;margin:28px 0 12px;">Čo bude nasledovať?</h2>
+
+            <ol style="padding-left:20px;line-height:1.8;font-size:16px;">
+              <li>Skontrolujeme vaše zadané údaje a špecifikáciu dopytu.</li>
+              <li>Anonymizovane oslovíme relevantných predajcov a partnerov.</li>
+              <li>Zozierrame a porovnáme dostupné ponuky.</li>
+              <li>Vyberieme pre vás najvýhodnejšie riešenie podľa zadaných parametrov.</li>
+              <li>Výslednú ponuku vám doručíme emailom.</li>
+            </ol>
+
+            <p style="font-size:16px;line-height:1.7;">
+              Ak bude potrebné doplniť akékoľvek údaje, budeme vás kontaktovať.
+            </p>
+
+            <p style="font-size:16px;line-height:1.7;">
+              S pozdravom<br>
+              <strong>Tím kupujspolu.sk</strong>
+            </p>
+          </div>
+
+          <div style="background:#f8fafc;padding:18px 32px;border-top:1px solid #e2e8f0;">
+            <p style="margin:0;font-size:13px;color:#64748b;">
+              Toto je automatické potvrdenie prijatia objednávky po úspešnej úhrade.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: MAIL_FROM,
+    to: order.email,
+    subject: 'Potvrdenie prijatia objednávky – kupujspolu.sk',
+    html
+  });
+}
+
+async function sendOrderEmails(uploadId) {
+  const { data: order, error } = await supabase
+    .from('uploads')
+    .select('*')
+    .eq('upload_id', uploadId)
+    .single();
+
+  if (error || !order) {
+    console.error('Nepodarilo sa načítať objednávku pre email:', error);
+    return;
+  }
+
+  try {
+    console.log(`Odosielam admin email pre uploadId=${uploadId}`);
+    await sendAdminEmail(order);
+    console.log(`Admin email úspešne odoslaný pre uploadId=${uploadId}`);
+  } catch (err) {
+    console.error(`Chyba pri odosielaní admin emailu pre uploadId=${uploadId}:`, err);
+  }
+
+  try {
+    console.log(`Odosielam zákaznícky email pre uploadId=${uploadId}`);
+    await sendCustomerEmail(order);
+    console.log(`Zákaznícky email úspešne odoslaný pre uploadId=${uploadId}`);
+  } catch (err) {
+    console.error(`Chyba pri odosielaní zákazníckeho emailu pre uploadId=${uploadId}:`, err);
+  }
+}
 
 /**
  * Stripe webhook musí ísť pred express.json(),
@@ -66,12 +307,27 @@ app.post(
         return res.status(400).send(`Webhook Error: ${err.message}`);
       }
 
+      console.log('Stripe webhook received:', event.type);
+
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         const uploadId = session.metadata?.uploadId || null;
         const fee = session.metadata?.fee || '';
 
         if (uploadId) {
+          const { data: existingOrder, error: fetchError } = await supabase
+            .from('uploads')
+            .select('*')
+            .eq('upload_id', uploadId)
+            .single();
+
+          if (fetchError || !existingOrder) {
+            console.error('Supabase fetch before paid update failed:', fetchError);
+            return res.status(500).send('Nepodarilo sa načítať objednávku.');
+          }
+
+          const wasAlreadyPaid = existingOrder.status === 'paid';
+
           const { error } = await supabase
             .from('uploads')
             .update({
@@ -84,6 +340,12 @@ app.post(
           if (error) {
             console.error('Supabase update after checkout.session.completed:', error);
             return res.status(500).send('Nepodarilo sa aktualizovať stav objednávky.');
+          }
+
+          if (!wasAlreadyPaid) {
+            await sendOrderEmails(uploadId);
+          } else {
+            console.log(`Objednávka ${uploadId} už bola paid, emaily znova neposielam.`);
           }
         }
       }
@@ -221,7 +483,8 @@ app.get('/api/health', (req, res) => {
   res.json({
     ok: true,
     provider: PAYMENT_PROVIDER,
-    env: process.env.NODE_ENV || 'development'
+    env: process.env.NODE_ENV || 'development',
+    mailerConfigured: Boolean(mailerConfigured)
   });
 });
 
@@ -481,4 +744,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Server beží na ${BASE_URL}`);
+  console.log(`Mailer configured: ${mailerConfigured ? 'áno' : 'nie'}`);
 });
