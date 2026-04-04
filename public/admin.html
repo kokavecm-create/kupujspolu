@@ -16,6 +16,7 @@
       --blue:#2563eb;
       --blue-2:#1d4ed8;
       --green:#16a34a;
+      --green-2:#15803d;
       --orange:#f59e0b;
       --red:#ef4444;
       --gray:#64748b;
@@ -23,6 +24,7 @@
     }
 
     *{box-sizing:border-box}
+
     body{
       margin:0;
       font-family:Arial, sans-serif;
@@ -32,13 +34,18 @@
     }
 
     .wrap{
-      max-width:1400px;
+      max-width:1450px;
       margin:0 auto;
     }
 
     h1{
       margin:0 0 18px;
       font-size:34px;
+    }
+
+    h2{
+      margin:0 0 14px;
+      font-size:22px;
     }
 
     .box{
@@ -51,7 +58,7 @@
 
     .grid{
       display:grid;
-      grid-template-columns:1fr 1fr 180px 180px 180px;
+      grid-template-columns:1.1fr 1.2fr 220px 180px 180px;
       gap:12px;
       align-items:end;
     }
@@ -107,19 +114,29 @@
     }
 
     .btn-green:hover{
-      background:#15803d;
+      background:var(--green-2);
+    }
+
+    .btn-orange{
+      background:#b45309;
+    }
+
+    .btn-orange:hover{
+      background:#92400e;
     }
 
     .error{
       color:#fecaca;
       margin-top:10px;
       font-size:14px;
+      min-height:18px;
     }
 
     .ok{
       color:#bbf7d0;
       margin-top:10px;
       font-size:14px;
+      min-height:18px;
     }
 
     .meta{
@@ -141,7 +158,7 @@
     table{
       width:100%;
       border-collapse:collapse;
-      min-width:1100px;
+      min-width:1350px;
       background:var(--card-2);
     }
 
@@ -159,6 +176,7 @@
       position:sticky;
       top:0;
       z-index:1;
+      white-space:nowrap;
     }
 
     tr.data-row{
@@ -183,6 +201,16 @@
     .status-checkout_created{ background:rgba(37,99,235,.18); color:#bfdbfe; }
     .status-payment_failed{ background:rgba(239,68,68,.18); color:#fecaca; }
     .status-other{ background:rgba(100,116,139,.25); color:#e2e8f0; }
+
+    .invoice-nevystavena{
+      background:rgba(245,158,11,.18);
+      color:#fde68a;
+    }
+
+    .invoice-vystavena{
+      background:rgba(22,163,74,.18);
+      color:#bbf7d0;
+    }
 
     .detail-grid{
       display:grid;
@@ -216,6 +244,21 @@
       grid-column:1 / -1;
     }
 
+    .invoice-panel{
+      margin-top:18px;
+      padding:16px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#0b1324;
+    }
+
+    .invoice-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 220px 220px;
+      gap:12px;
+      align-items:end;
+    }
+
     .muted{
       color:var(--muted-2);
     }
@@ -224,10 +267,20 @@
       display:none;
     }
 
-    @media (max-width: 1100px){
+    .selected-id{
+      color:#93c5fd;
+      font-weight:700;
+    }
+
+    @media (max-width: 1200px){
       .grid{
         grid-template-columns:1fr;
       }
+
+      .invoice-grid{
+        grid-template-columns:1fr;
+      }
+
       .detail-grid{
         grid-template-columns:1fr;
       }
@@ -251,7 +304,7 @@
         </div>
 
         <div class="field">
-          <label for="statusFilter">Status</label>
+          <label for="statusFilter">Status objednávky</label>
           <select id="statusFilter">
             <option value="all">Všetky</option>
             <option value="paid">paid</option>
@@ -272,8 +325,8 @@
         </div>
       </div>
 
-      <div id="error" class="error"></div>
-      <div id="ok" class="ok"></div>
+      <div class="error" id="error"></div>
+      <div class="ok" id="ok"></div>
 
       <div class="meta">
         <div>Načítané záznamy: <strong id="countAll">0</strong></div>
@@ -294,7 +347,10 @@
               <th>Email</th>
               <th>Typ</th>
               <th>Plán</th>
-              <th>Status</th>
+              <th>Status objednávky</th>
+              <th>Faktúra</th>
+              <th>Číslo faktúry</th>
+              <th>Dátum vystavenia</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -303,14 +359,53 @@
     </div>
 
     <div class="box hidden" id="detailBox">
-      <h2 style="margin-top:0;">Detail objednávky</h2>
+      <h2>Detail objednávky</h2>
       <div class="detail-grid" id="detailGrid"></div>
+
+      <div class="invoice-panel">
+        <h2 style="font-size:20px;">Fakturácia pre: <span class="selected-id" id="selectedUploadId">—</span></h2>
+
+        <div class="invoice-grid">
+          <div class="field">
+            <label for="invoiceStatus">Stav faktúry</label>
+            <select id="invoiceStatus">
+              <option value="nevystavena">nevystavena</option>
+              <option value="vystavena">vystavena</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="invoiceNumber">Číslo faktúry</label>
+            <input type="text" id="invoiceNumber" placeholder="napr. 2026-001" />
+          </div>
+
+          <div class="field">
+            <label for="invoiceIssuedAt">Dátum vystavenia</label>
+            <input type="datetime-local" id="invoiceIssuedAt" />
+          </div>
+
+          <div class="field">
+            <label>&nbsp;</label>
+            <button id="saveInvoiceBtn" class="btn-green">Uložiť faktúru</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;display:grid;grid-template-columns:220px 220px;gap:12px;">
+          <button id="markIssuedNowBtn" class="btn-orange">Označiť vystavenú teraz</button>
+          <button id="markNotIssuedBtn" class="btn-secondary">Označiť ako nevystavenú</button>
+        </div>
+
+        <div class="muted" style="margin-top:12px;">
+          Po kliknutí na riadok nižšie vieš upraviť stav fakturácie, dátum a číslo faktúry.
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
     let allUploads = [];
     let filteredUploads = [];
+    let selectedUpload = null;
 
     const secretInput = document.getElementById('secret');
     const searchInput = document.getElementById('search');
@@ -324,6 +419,14 @@
     const countFiltered = document.getElementById('countFiltered');
     const detailBox = document.getElementById('detailBox');
     const detailGrid = document.getElementById('detailGrid');
+
+    const selectedUploadIdEl = document.getElementById('selectedUploadId');
+    const invoiceStatusEl = document.getElementById('invoiceStatus');
+    const invoiceNumberEl = document.getElementById('invoiceNumber');
+    const invoiceIssuedAtEl = document.getElementById('invoiceIssuedAt');
+    const saveInvoiceBtn = document.getElementById('saveInvoiceBtn');
+    const markIssuedNowBtn = document.getElementById('markIssuedNowBtn');
+    const markNotIssuedBtn = document.getElementById('markNotIssuedBtn');
 
     function showError(msg) {
       errorDiv.textContent = msg || '';
@@ -371,6 +474,26 @@
       return 'status-other';
     }
 
+    function getInvoiceClass(status) {
+      if (status === 'vystavena') return 'invoice-vystavena';
+      return 'invoice-nevystavena';
+    }
+
+    function toDatetimeLocalValue(value) {
+      if (!value) return '';
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return '';
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function datetimeLocalToIso(value) {
+      if (!value) return null;
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return null;
+      return d.toISOString();
+    }
+
     function renderTable(rows) {
       tbody.innerHTML = '';
 
@@ -388,6 +511,9 @@
           <td>${escapeHtml(formatBuyerType(u.buyerType || ''))}</td>
           <td>${escapeHtml(formatFee(u.fee || ''))}</td>
           <td><span class="status ${getStatusClass(u.status)}">${escapeHtml(u.status || '')}</span></td>
+          <td><span class="status ${getInvoiceClass(u.invoiceStatus)}">${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></td>
+          <td>${escapeHtml(u.invoiceNumber || '')}</td>
+          <td>${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</td>
         `;
 
         tr.addEventListener('click', () => renderDetail(u));
@@ -398,6 +524,7 @@
     }
 
     function renderDetail(u) {
+      selectedUpload = u;
       detailBox.classList.remove('hidden');
 
       const fullNameOrCompany = u.buyerType === 'company'
@@ -412,7 +539,7 @@
 
       detailGrid.innerHTML = `
         <div class="detail-item"><strong>Upload ID</strong><span>${escapeHtml(u.uploadId || '')}</span></div>
-        <div class="detail-item"><strong>Status</strong><span>${escapeHtml(u.status || '')}</span></div>
+        <div class="detail-item"><strong>Status objednávky</strong><span>${escapeHtml(u.status || '')}</span></div>
 
         <div class="detail-item"><strong>Dátum vytvorenia</strong><span>${escapeHtml(formatDate(u.createdAt || ''))}</span></div>
         <div class="detail-item"><strong>Posledná zmena</strong><span>${escapeHtml(formatDate(u.updatedAt || ''))}</span></div>
@@ -435,10 +562,20 @@
         <div class="detail-item"><strong>DIČ</strong><span>${escapeHtml(u.dic || '')}</span></div>
         <div class="detail-item"><strong>IČ DPH</strong><span>${escapeHtml(u.icdph || '')}</span></div>
 
+        <div class="detail-item"><strong>Stav faktúry</strong><span>${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></div>
+        <div class="detail-item"><strong>Číslo faktúry</strong><span>${escapeHtml(u.invoiceNumber || '')}</span></div>
+
+        <div class="detail-item"><strong>Dátum vystavenia</strong><span>${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</span></div>
+        <div class="detail-item"><strong>Súbor</strong><span>${escapeHtml(u.fileOriginalName || '')}</span></div>
+
         <div class="detail-item full"><strong>Fakturačná adresa</strong><span>${escapeHtml(billingAddress)}</span></div>
-        <div class="detail-item full"><strong>Súbor</strong><span>${escapeHtml(u.fileOriginalName || '')}</span></div>
         <div class="detail-item full"><strong>Poznámka</strong><span>${escapeHtml(u.billingNote || '')}</span></div>
       `;
+
+      selectedUploadIdEl.textContent = u.uploadId || '—';
+      invoiceStatusEl.value = u.invoiceStatus || 'nevystavena';
+      invoiceNumberEl.value = u.invoiceNumber || '';
+      invoiceIssuedAtEl.value = toDatetimeLocalValue(u.invoiceIssuedAt || '');
     }
 
     function applyFilters() {
@@ -459,7 +596,9 @@
           u.ico,
           u.telefon,
           u.status,
-          u.fee
+          u.fee,
+          u.invoiceStatus,
+          u.invoiceNumber
         ]
           .filter(Boolean)
           .join(' ')
@@ -479,6 +618,7 @@
       showOk('');
       detailBox.classList.add('hidden');
       detailGrid.innerHTML = '';
+      selectedUpload = null;
 
       if (!secret) {
         showError('Zadaj ADMIN SECRET.');
@@ -548,6 +688,9 @@
         'Updated At',
         'Status',
         'Fee',
+        'Invoice Status',
+        'Invoice Issued At',
+        'Invoice Number',
         'Buyer Type',
         'Full Name',
         'Company Name',
@@ -574,6 +717,9 @@
         u.updatedAt || '',
         u.status || '',
         u.fee || '',
+        u.invoiceStatus || '',
+        u.invoiceIssuedAt || '',
+        u.invoiceNumber || '',
         u.buyerType || '',
         u.fullName || '',
         u.companyName || '',
@@ -614,10 +760,95 @@
       showOk('Export bol vytvorený. Súbor otvoríš v Exceli.');
     }
 
+    async function saveInvoice(customStatus = null, useNowAsDate = false) {
+      if (!selectedUpload) {
+        showError('Najprv klikni na konkrétnu objednávku v tabuľke.');
+        return;
+      }
+
+      const secret = secretInput.value.trim();
+      if (!secret) {
+        showError('Zadaj ADMIN SECRET.');
+        return;
+      }
+
+      let finalStatus = customStatus || invoiceStatusEl.value;
+      let finalIssuedAt = invoiceIssuedAtEl.value;
+
+      if (useNowAsDate) {
+        finalIssuedAt = toDatetimeLocalValue(new Date().toISOString());
+        invoiceIssuedAtEl.value = finalIssuedAt;
+      }
+
+      if (finalStatus === 'nevystavena') {
+        finalIssuedAt = '';
+      }
+
+      saveInvoiceBtn.disabled = true;
+      saveInvoiceBtn.textContent = 'Ukladám...';
+      showError('');
+      showOk('');
+
+      try {
+        const res = await fetch('/api/admin/invoice', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-secret': secret
+          },
+          body: JSON.stringify({
+            uploadId: selectedUpload.uploadId,
+            invoiceStatus: finalStatus,
+            invoiceNumber: invoiceNumberEl.value.trim(),
+            invoiceIssuedAt: finalStatus === 'vystavena'
+              ? (datetimeLocalToIso(finalIssuedAt) || new Date().toISOString())
+              : null
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Nepodarilo sa uložiť faktúru.');
+        }
+
+        const updated = data.upload;
+        if (!updated) {
+          throw new Error('Server nevrátil aktualizovaný záznam.');
+        }
+
+        allUploads = allUploads.map((u) =>
+          u.uploadId === updated.uploadId ? updated : u
+        );
+
+        applyFilters();
+        renderDetail(updated);
+        selectedUpload = updated;
+
+        showOk('Fakturačné údaje boli uložené.');
+      } catch (err) {
+        showError(err.message || 'Chyba pri ukladaní faktúry.');
+      } finally {
+        saveInvoiceBtn.disabled = false;
+        saveInvoiceBtn.textContent = 'Uložiť faktúru';
+      }
+    }
+
     loadBtn.addEventListener('click', loadData);
     exportBtn.addEventListener('click', exportToExcelCsv);
     searchInput.addEventListener('input', applyFilters);
     statusFilter.addEventListener('change', applyFilters);
+
+    saveInvoiceBtn.addEventListener('click', () => saveInvoice());
+    markIssuedNowBtn.addEventListener('click', () => {
+      invoiceStatusEl.value = 'vystavena';
+      saveInvoice('vystavena', true);
+    });
+    markNotIssuedBtn.addEventListener('click', () => {
+      invoiceStatusEl.value = 'nevystavena';
+      invoiceIssuedAtEl.value = '';
+      saveInvoice('nevystavena', false);
+    });
   </script>
 </body>
 </html>
