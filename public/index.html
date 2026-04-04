@@ -588,23 +588,23 @@ h1.hero-h .acc{color:var(--brand)}
   font-weight:300
 }
 
-.test-g{
+.scenario-g{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:1.4rem
 }
-.tc{
+.scenario-c{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:var(--radius);
   padding:1.8rem;
   transition:all .22s
 }
-.tc:hover{
+.scenario-c:hover{
   border-color:var(--brand-border);
   box-shadow:var(--shadow)
 }
-.tc-saving{
+.scenario-saving{
   font-family:'Bebas Neue',sans-serif;
   font-size:1.3rem;
   letter-spacing:.04em;
@@ -612,39 +612,23 @@ h1.hero-h .acc{color:var(--brand)}
   margin-bottom:.75rem;
   display:block
 }
-.tc-text{
+.scenario-title{
+  font-weight:700;
+  font-size:.88rem;
+  color:var(--ink);
+  margin-bottom:.55rem
+}
+.scenario-text{
   font-size:.88rem;
   line-height:1.72;
   color:var(--ink-mid);
   font-weight:300;
-  font-style:italic;
-  margin-bottom:1.2rem
+  margin-bottom:1rem
 }
-.tc-author{
-  display:flex;
-  align-items:center;
-  gap:.7rem
-}
-.tc-av{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  background:var(--brand);
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:'Bebas Neue',sans-serif;
-  font-size:.9rem
-}
-.tc-name{
-  font-weight:700;
-  font-size:.82rem;
-  color:var(--ink)
-}
-.tc-loc{
-  font-size:.72rem;
-  color:var(--neutral)
+.scenario-note{
+  font-size:.74rem;
+  color:var(--neutral);
+  line-height:1.55
 }
 
 .final-cta{
@@ -761,7 +745,7 @@ footer{
 @media(max-width:960px){
   .hero{grid-template-columns:1fr}
   .hero-r{display:none}
-  .steps-g,.test-g,.how-g{grid-template-columns:1fr}
+  .steps-g,.scenario-g,.how-g{grid-template-columns:1fr}
   .plans-g{grid-template-columns:1fr}
   .priv-strip{grid-template-columns:1fr 1fr}
   .nav-links{display:none}
@@ -814,30 +798,29 @@ footer{
     </div>
 
     <div class="hero-stats">
-      <div><span class="sv">200+</span><span class="sl">ponúk v systéme</span></div>
-      <div><span class="sv"><span class="g">6–12%</span></span><span class="sl">typická vyjednaná úspora</span></div>
-      <div><span class="sv">10+</span><span class="sl">ponúk spúšťa vyjednávanie</span></div>
+      <div><span class="sv"><span class="g">6–12%</span></span><span class="sl">typický priestor na vyjednávanie</span></div>
+      <div><span class="sv">od 10</span><span class="sl">porovnateľných ponúk sa proces zoskupuje</span></div>
     </div>
   </div>
 
   <div class="hero-r">
     <div class="hero-card">
       <div class="hc-head">
-        <span class="hc-title">Ukážka skupiny</span>
-        <span class="tag-waiting">Čaká na plnenie</span>
+        <span class="hc-title">Príklad skupiny</span>
+        <span class="tag-waiting">Ilustračný príklad</span>
       </div>
 
       <div class="hc-row"><span class="hc-k">Typ prípadu</span><span class="hc-v">Nové vozidlo</span></div>
       <div class="hc-row"><span class="hc-k">Model</span><span class="hc-v">Škoda Octavia</span></div>
-      <div class="hc-row"><span class="hc-k">Aktívne ponuky</span><span class="hc-v">4 z 10</span></div>
-      <div class="hc-row"><span class="hc-k">Priemerná cena</span><span class="hc-v nowrap">26&nbsp;200&nbsp;€</span></div>
+      <div class="hc-row"><span class="hc-k">Príklad stavu skupiny</span><span class="hc-v">4 z 10</span></div>
+      <div class="hc-row"><span class="hc-k">Príklad ceny z ponuky</span><span class="hc-v nowrap">26&nbsp;200&nbsp;€</span></div>
 
       <div class="hc-notice">
-        Vyjednávanie sa aktivuje po nazbieraní minimálne 10 porovnateľných a overených ponúk.
+        Tento box je ilustračný príklad. Vyjednávanie sa typicky aktivuje po nazbieraní dostatočného počtu porovnateľných a overených ponúk.
       </div>
 
       <div class="hc-saving">
-        <span class="hc-saving-lbl">Typický priestor na úsporu</span>
+        <span class="hc-saving-lbl">Typický priestor na vyjednávanie</span>
         <span class="hc-saving-val">6–12%</span>
       </div>
     </div>
@@ -986,44 +969,44 @@ footer{
 
 <section class="sec rev" style="background:var(--site-bg)">
   <div style="text-align:center;margin-bottom:2.8rem">
-    <div class="eyebrow" style="justify-content:center">Výsledky</div>
-    <h2 class="sec-h" style="text-align:center">Typické obchodné výsledky</h2>
+    <div class="eyebrow" style="justify-content:center">Modelové situácie</div>
+    <h2 class="sec-h" style="text-align:center">Príklady možného priebehu</h2>
+    <p class="sec-sub" style="margin:0 auto;text-align:center">
+      Nasledujúce karty sú ilustračné scenáre. Nejde o individuálne recenzie ani prísľub konkrétneho výsledku.
+    </p>
   </div>
 
-  <div class="test-g">
-    <div class="tc">
-      <span class="tc-saving">Úspora <span class="nowrap">1&nbsp;120&nbsp;€</span></span>
-      <p class="tc-text">„Mal som hotovú ponuku na nové auto od dealera. Po zaradení do systému sa podarilo dosiahnuť ešte lepší výsledok, než som mal pôvodne k dispozícii."</p>
-      <div class="tc-author">
-        <div class="tc-av">M</div>
-        <div>
-          <div class="tc-name">Martin K.</div>
-          <div class="tc-loc">Bratislava · Škoda Octavia</div>
-        </div>
+  <div class="scenario-g">
+    <div class="scenario-c">
+      <span class="scenario-saving">Príklad úspory <span class="nowrap">700–1&nbsp;200&nbsp;€</span></span>
+      <div class="scenario-title">Bežná konfigurácia nového vozidla</div>
+      <p class="scenario-text">
+        Pri štandardnej konfigurácii môže skupinové vyjednávanie priniesť zaujímavejší výsledok oproti pôvodnej ponuke od dealera.
+      </p>
+      <div class="scenario-note">
+        Ilustračný modelový príklad. Skutočný výsledok závisí od konkrétnej ponuky, konfigurácie, trhu a reakcie predajcov.
       </div>
     </div>
 
-    <div class="tc">
-      <span class="tc-saving">Úspora <span class="nowrap">1&nbsp;650&nbsp;€</span></span>
-      <p class="tc-text">„Oceňujem, že bolo od začiatku jasné, čo nahrávam, čo kupujem a čo sa bude diať ďalej. Proces pôsobil profesionálne a zrozumiteľne."</p>
-      <div class="tc-author">
-        <div class="tc-av" style="background:#166534">J</div>
-        <div>
-          <div class="tc-name">Jana P.</div>
-          <div class="tc-loc">Košice · Toyota Corolla</div>
-        </div>
+    <div class="scenario-c">
+      <span class="scenario-saving">Príklad úspory <span class="nowrap">1&nbsp;000–1&nbsp;800&nbsp;€</span></span>
+      <div class="scenario-title">Vyššia konfigurácia alebo drahší model</div>
+      <p class="scenario-text">
+        Pri drahších alebo lepšie vybavených vozidlách môže byť priestor na vyjednávanie vyšší, najmä ak sa v skupine zídu porovnateľné prípady.
+      </p>
+      <div class="scenario-note">
+        Ilustračný modelový príklad. Nejde o garantovaný individuálny výsledok mimo podmienok zvoleného plánu.
       </div>
     </div>
 
-    <div class="tc">
-      <span class="tc-saving">Úspora <span class="nowrap">900&nbsp;€</span></span>
-      <p class="tc-text">„Najviac mi vyhovovalo, že som nenahrával nič neurčité. Išlo o konkrétnu ponuku na nové vozidlo a platforma s ňou ďalej reálne pracovala."</p>
-      <div class="tc-author">
-        <div class="tc-av" style="background:#1e3a5f">T</div>
-        <div>
-          <div class="tc-name">Tomáš H.</div>
-          <div class="tc-loc">Žilina · Volkswagen Golf</div>
-        </div>
+    <div class="scenario-c">
+      <span class="scenario-saving">Možný výsledok</span>
+      <div class="scenario-title">Lepšia cena alebo výhodnejšie podmienky</div>
+      <p class="scenario-text">
+        Výstupom nemusí byť len nižšia cena. V konkrétnych prípadoch môže ísť aj o výhodnejšiu celkovú ponuku alebo lepšie obchodné podmienky.
+      </p>
+      <div class="scenario-note">
+        Ilustračný modelový príklad. Každý prípad sa vyhodnocuje individuálne podľa porovnateľnosti ponúk.
       </div>
     </div>
   </div>
