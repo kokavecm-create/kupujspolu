@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin panel | kupujspolu.sk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .box {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    input, button {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-right: 10px;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #334155;
+      text-align: left;
+    }
+
+    tr:hover {
+      background: #1e293b;
+    }
+
+    .status {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .paid {
+      background: #16a34a;
+    }
+
+    .pending_payment {
+      background: #f59e0b;
+    }
+
+    .error {
+      color: #ef4444;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🔐 Admin panel</h1>
+
+<div class="box">
+  <input type="password" id="secret" placeholder="ADMIN SECRET" />
+  <button onclick="loadData()">Načítať objednávky</button>
+  <div id="error" class="error"></div>
+</div>
+
+<div class="box">
+  <table id="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Dátum</th>
+        <th>Značka</th>
+        <th>Model</th>
+        <th>Cena</th>
+        <th>Email</th>
+        <th>Plán</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+async function loadData() {
+  const secret = document.getElementById('secret').value;
+  const errorDiv = document.getElementById('error');
+  errorDiv.innerText = '';
+
+  try {
+    const res = await fetch('/api/uploads', {
+      headers: {
+        'x-admin-secret': secret
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error('Unauthorized alebo chyba servera');
+    }
+
+    const data = await res.json();
+    const uploads = data.uploads || [];
+
+    const tbody = document.querySelector('#table tbody');
+    tbody.innerHTML = '';
+
+    uploads.forEach(u => {
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+        <td>${u.uploadId}</td>
+        <td>${new Date(u.createdAt).toLocaleString()}</td>
+        <td>${u.znacka || ''}</td>
+        <td>${u.model || ''}</td>
+        <td>${u.cena || ''} €</td>
+        <td>${u.email || ''}</td>
+        <td>${u.fee || ''}</td>
+        <td><span class="status ${u.status}">${u.status}</span></td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+
+  } catch (err) {
+    errorDiv.innerText = err.message;
+  }
+}
+</script>
+
+</body>
+</html>
