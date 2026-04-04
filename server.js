@@ -124,7 +124,10 @@ function mapDbRow(row) {
     fileOriginalName: row.file_original_name || '',
     fileStoragePath: row.file_storage_path || '',
     fee: row.fee || '',
-    status: row.status || ''
+    status: row.status || '',
+    invoiceStatus: row.invoice_status || 'nevystavena',
+    invoiceIssuedAt: row.invoice_issued_at || null,
+    invoiceNumber: row.invoice_number || ''
   };
 }
 
@@ -585,7 +588,7 @@ app.get('/api/uploads', requireAdmin, async (req, res) => {
       .from('uploads')
       .select('*')
       .order('created_at', { ascending: false })
-      .limit(50);
+      .limit(100);
 
     if (error) throw error;
 
@@ -616,6 +619,54 @@ app.get('/api/upload/:id', requireAdmin, async (req, res) => {
   } catch (error) {
     console.error('GET /api/upload/:id error:', error);
     res.status(500).json({ error: 'Chyba servera pri načítaní detailu.' });
+  }
+});
+
+app.post('/api/admin/invoice', requireAdmin, async (req, res) => {
+  try {
+    const {
+      uploadId,
+      invoiceStatus,
+      invoiceNumber,
+      invoiceIssuedAt
+    } = req.body;
+
+    if (!uploadId) {
+      return res.status(400).json({ error: 'Chýba uploadId.' });
+    }
+
+    const normalizedStatus =
+      invoiceStatus === 'vystavena' ? 'vystavena' : 'nevystavena';
+
+    const patch = {
+      invoice_status: normalizedStatus,
+      invoice_number: invoiceNumber ? String(invoiceNumber).trim() : null,
+      invoice_issued_at:
+        normalizedStatus === 'vystavena'
+          ? (invoiceIssuedAt || new Date().toISOString())
+          : null,
+      updated_at: new Date().toISOString()
+    };
+
+    const { data, error } = await supabase
+      .from('uploads')
+      .update(patch)
+      .eq('upload_id', uploadId)
+      .select('*')
+      .single();
+
+    if (error || !data) {
+      console.error('POST /api/admin/invoice error:', error);
+      return res.status(500).json({ error: 'Nepodarilo sa uložiť stav faktúry.' });
+    }
+
+    return res.json({
+      ok: true,
+      upload: mapDbRow(data)
+    });
+  } catch (error) {
+    console.error('POST /api/admin/invoice fatal error:', error);
+    return res.status(500).json({ error: 'Chyba servera pri ukladaní faktúry.' });
   }
 });
 
@@ -748,7 +799,10 @@ app.post('/api/upload-offer', upload.single('offerFile'), async (req, res) => {
       file_original_name: req.file.originalname,
       file_storage_path: storagePath,
       fee: '',
-      status: 'pending_payment'
+      status: 'pending_payment',
+      invoice_status: 'nevystavena',
+      invoice_issued_at: null,
+      invoice_number: null
     };
 
     const { data, error } = await supabase
