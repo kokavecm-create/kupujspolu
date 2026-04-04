@@ -4,154 +4,620 @@
   <meta charset="UTF-8" />
   <title>Admin panel | kupujspolu.sk</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #fff;
-      margin: 0;
-      padding: 20px;
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --card-2:#0f172a;
+      --line:#24314d;
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --muted-2:#94a3b8;
+      --blue:#2563eb;
+      --blue-2:#1d4ed8;
+      --green:#16a34a;
+      --orange:#f59e0b;
+      --red:#ef4444;
+      --gray:#64748b;
+      --radius:16px;
     }
 
-    h1 {
-      margin-bottom: 20px;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      padding:20px;
     }
 
-    .box {
-      background: #1e293b;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 15px;
+    .wrap{
+      max-width:1400px;
+      margin:0 auto;
     }
 
-    input, button {
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      margin-right: 10px;
+    h1{
+      margin:0 0 18px;
+      font-size:34px;
     }
 
-    button {
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
+    .box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:16px;
+      margin-bottom:16px;
     }
 
-    button:hover {
-      background: #1d4ed8;
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 180px 180px 180px;
+      gap:12px;
+      align-items:end;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
     }
 
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #334155;
-      text-align: left;
+    .field label{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:700;
     }
 
-    tr:hover {
-      background: #1e293b;
+    input, select, button, textarea{
+      width:100%;
+      border:none;
+      border-radius:10px;
+      padding:12px 14px;
+      font:inherit;
     }
 
-    .status {
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 12px;
+    input, select, textarea{
+      background:#0b1324;
+      color:var(--text);
+      border:1px solid var(--line);
     }
 
-    .paid {
-      background: #16a34a;
+    button{
+      background:var(--blue);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
     }
 
-    .pending_payment {
-      background: #f59e0b;
+    button:hover{
+      background:var(--blue-2);
     }
 
-    .error {
-      color: #ef4444;
-      margin-top: 10px;
+    .btn-secondary{
+      background:#334155;
+    }
+
+    .btn-secondary:hover{
+      background:#475569;
+    }
+
+    .btn-green{
+      background:var(--green);
+    }
+
+    .btn-green:hover{
+      background:#15803d;
+    }
+
+    .error{
+      color:#fecaca;
+      margin-top:10px;
+      font-size:14px;
+    }
+
+    .ok{
+      color:#bbf7d0;
+      margin-top:10px;
+      font-size:14px;
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      color:var(--muted-2);
+      font-size:14px;
+      margin-top:10px;
+    }
+
+    .table-wrap{
+      overflow:auto;
+      border-radius:12px;
+      border:1px solid var(--line);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:1100px;
+      background:var(--card-2);
+    }
+
+    th, td{
+      padding:12px 10px;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+      font-size:14px;
+      vertical-align:top;
+    }
+
+    th{
+      background:#0b1324;
+      color:var(--muted);
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+
+    tr.data-row{
+      cursor:pointer;
+    }
+
+    tr.data-row:hover{
+      background:#16213a;
+    }
+
+    .status{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .status-paid{ background:rgba(22,163,74,.18); color:#bbf7d0; }
+    .status-pending_payment{ background:rgba(245,158,11,.18); color:#fde68a; }
+    .status-checkout_created{ background:rgba(37,99,235,.18); color:#bfdbfe; }
+    .status-payment_failed{ background:rgba(239,68,68,.18); color:#fecaca; }
+    .status-other{ background:rgba(100,116,139,.25); color:#e2e8f0; }
+
+    .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .detail-item{
+      background:#0b1324;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px;
+    }
+
+    .detail-item strong{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:6px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    .detail-item span{
+      color:var(--text);
+      word-break:break-word;
+      white-space:pre-wrap;
+    }
+
+    .detail-item.full{
+      grid-column:1 / -1;
+    }
+
+    .muted{
+      color:var(--muted-2);
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    @media (max-width: 1100px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+      .detail-grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <h1>🔐 Admin panel</h1>
 
-<h1>🔐 Admin panel</h1>
+    <div class="box">
+      <div class="grid">
+        <div class="field">
+          <label for="secret">ADMIN SECRET</label>
+          <input type="password" id="secret" placeholder="Zadaj admin heslo" />
+        </div>
 
-<div class="box">
-  <input type="password" id="secret" placeholder="ADMIN SECRET" />
-  <button onclick="loadData()">Načítať objednávky</button>
-  <div id="error" class="error"></div>
-</div>
+        <div class="field">
+          <label for="search">Vyhľadávanie</label>
+          <input type="text" id="search" placeholder="Upload ID, email, značka, model, meno, firma..." />
+        </div>
 
-<div class="box">
-  <table id="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Dátum</th>
-        <th>Značka</th>
-        <th>Model</th>
-        <th>Cena</th>
-        <th>Email</th>
-        <th>Plán</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+        <div class="field">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="all">Všetky</option>
+            <option value="paid">paid</option>
+            <option value="pending_payment">pending_payment</option>
+            <option value="checkout_created">checkout_created</option>
+            <option value="payment_failed">payment_failed</option>
+          </select>
+        </div>
 
-<script>
-async function loadData() {
-  const secret = document.getElementById('secret').value;
-  const errorDiv = document.getElementById('error');
-  errorDiv.innerText = '';
+        <div class="field">
+          <label>&nbsp;</label>
+          <button id="loadBtn">Načítať objednávky</button>
+        </div>
 
-  try {
-    const res = await fetch('/api/uploads', {
-      headers: {
-        'x-admin-secret': secret
-      }
-    });
+        <div class="field">
+          <label>&nbsp;</label>
+          <button id="exportBtn" class="btn-green">Export do Excelu</button>
+        </div>
+      </div>
 
-    if (!res.ok) {
-      throw new Error('Unauthorized alebo chyba servera');
+      <div id="error" class="error"></div>
+      <div id="ok" class="ok"></div>
+
+      <div class="meta">
+        <div>Načítané záznamy: <strong id="countAll">0</strong></div>
+        <div>Zobrazené po filtroch: <strong id="countFiltered">0</strong></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="table-wrap">
+        <table id="table">
+          <thead>
+            <tr>
+              <th>Upload ID</th>
+              <th>Dátum</th>
+              <th>Značka</th>
+              <th>Model</th>
+              <th>Cena</th>
+              <th>Email</th>
+              <th>Typ</th>
+              <th>Plán</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="box hidden" id="detailBox">
+      <h2 style="margin-top:0;">Detail objednávky</h2>
+      <div class="detail-grid" id="detailGrid"></div>
+    </div>
+  </div>
+
+  <script>
+    let allUploads = [];
+    let filteredUploads = [];
+
+    const secretInput = document.getElementById('secret');
+    const searchInput = document.getElementById('search');
+    const statusFilter = document.getElementById('statusFilter');
+    const loadBtn = document.getElementById('loadBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const errorDiv = document.getElementById('error');
+    const okDiv = document.getElementById('ok');
+    const tbody = document.querySelector('#table tbody');
+    const countAll = document.getElementById('countAll');
+    const countFiltered = document.getElementById('countFiltered');
+    const detailBox = document.getElementById('detailBox');
+    const detailGrid = document.getElementById('detailGrid');
+
+    function showError(msg) {
+      errorDiv.textContent = msg || '';
+      okDiv.textContent = '';
     }
 
-    const data = await res.json();
-    const uploads = data.uploads || [];
+    function showOk(msg) {
+      okDiv.textContent = msg || '';
+      errorDiv.textContent = '';
+    }
 
-    const tbody = document.querySelector('#table tbody');
-    tbody.innerHTML = '';
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
-    uploads.forEach(u => {
-      const tr = document.createElement('tr');
+    function formatDate(value) {
+      if (!value) return '';
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return value;
+      return d.toLocaleString('sk-SK');
+    }
 
-      tr.innerHTML = `
-        <td>${u.uploadId}</td>
-        <td>${new Date(u.createdAt).toLocaleString()}</td>
-        <td>${u.znacka || ''}</td>
-        <td>${u.model || ''}</td>
-        <td>${u.cena || ''} €</td>
-        <td>${u.email || ''}</td>
-        <td>${u.fee || ''}</td>
-        <td><span class="status ${u.status}">${u.status}</span></td>
+    function formatBuyerType(value) {
+      if (value === 'company') return 'Firma / podnikateľ';
+      if (value === 'private') return 'Súkromná osoba';
+      return value || '';
+    }
+
+    function formatFee(value) {
+      if (String(value) === '399') return '399 EUR';
+      if (String(value) === '129') return '129 EUR';
+      return value || '';
+    }
+
+    function getStatusClass(status) {
+      if (status === 'paid') return 'status-paid';
+      if (status === 'pending_payment') return 'status-pending_payment';
+      if (status === 'checkout_created') return 'status-checkout_created';
+      if (status === 'payment_failed') return 'status-payment_failed';
+      return 'status-other';
+    }
+
+    function renderTable(rows) {
+      tbody.innerHTML = '';
+
+      rows.forEach((u) => {
+        const tr = document.createElement('tr');
+        tr.className = 'data-row';
+
+        tr.innerHTML = `
+          <td>${escapeHtml(u.uploadId || '')}</td>
+          <td>${escapeHtml(formatDate(u.createdAt || ''))}</td>
+          <td>${escapeHtml(u.znacka || '')}</td>
+          <td>${escapeHtml(u.model || '')}</td>
+          <td>${escapeHtml(u.cena || '')} €</td>
+          <td>${escapeHtml(u.email || '')}</td>
+          <td>${escapeHtml(formatBuyerType(u.buyerType || ''))}</td>
+          <td>${escapeHtml(formatFee(u.fee || ''))}</td>
+          <td><span class="status ${getStatusClass(u.status)}">${escapeHtml(u.status || '')}</span></td>
+        `;
+
+        tr.addEventListener('click', () => renderDetail(u));
+        tbody.appendChild(tr);
+      });
+
+      countFiltered.textContent = String(rows.length);
+    }
+
+    function renderDetail(u) {
+      detailBox.classList.remove('hidden');
+
+      const fullNameOrCompany = u.buyerType === 'company'
+        ? (u.companyName || '')
+        : (u.fullName || '');
+
+      const billingAddress = [
+        u.billingAddressStreet || '',
+        u.billingAddressCity || '',
+        u.billingAddressZip || ''
+      ].filter(Boolean).join(', ');
+
+      detailGrid.innerHTML = `
+        <div class="detail-item"><strong>Upload ID</strong><span>${escapeHtml(u.uploadId || '')}</span></div>
+        <div class="detail-item"><strong>Status</strong><span>${escapeHtml(u.status || '')}</span></div>
+
+        <div class="detail-item"><strong>Dátum vytvorenia</strong><span>${escapeHtml(formatDate(u.createdAt || ''))}</span></div>
+        <div class="detail-item"><strong>Posledná zmena</strong><span>${escapeHtml(formatDate(u.updatedAt || ''))}</span></div>
+
+        <div class="detail-item"><strong>Značka</strong><span>${escapeHtml(u.znacka || '')}</span></div>
+        <div class="detail-item"><strong>Model</strong><span>${escapeHtml(u.model || '')}</span></div>
+
+        <div class="detail-item"><strong>Cena</strong><span>${escapeHtml(u.cena || '')} €</span></div>
+        <div class="detail-item"><strong>Plán</strong><span>${escapeHtml(formatFee(u.fee || ''))}</span></div>
+
+        <div class="detail-item"><strong>Typ zákazníka</strong><span>${escapeHtml(formatBuyerType(u.buyerType || ''))}</span></div>
+        <div class="detail-item"><strong>Meno / firma</strong><span>${escapeHtml(fullNameOrCompany)}</span></div>
+
+        <div class="detail-item"><strong>Kontaktná osoba</strong><span>${escapeHtml(u.contactPerson || '')}</span></div>
+        <div class="detail-item"><strong>Email</strong><span>${escapeHtml(u.email || '')}</span></div>
+
+        <div class="detail-item"><strong>Telefón</strong><span>${escapeHtml(u.telefon || '')}</span></div>
+        <div class="detail-item"><strong>IČO</strong><span>${escapeHtml(u.ico || '')}</span></div>
+
+        <div class="detail-item"><strong>DIČ</strong><span>${escapeHtml(u.dic || '')}</span></div>
+        <div class="detail-item"><strong>IČ DPH</strong><span>${escapeHtml(u.icdph || '')}</span></div>
+
+        <div class="detail-item full"><strong>Fakturačná adresa</strong><span>${escapeHtml(billingAddress)}</span></div>
+        <div class="detail-item full"><strong>Súbor</strong><span>${escapeHtml(u.fileOriginalName || '')}</span></div>
+        <div class="detail-item full"><strong>Poznámka</strong><span>${escapeHtml(u.billingNote || '')}</span></div>
       `;
+    }
 
-      tbody.appendChild(tr);
-    });
+    function applyFilters() {
+      const q = searchInput.value.trim().toLowerCase();
+      const status = statusFilter.value;
 
-  } catch (err) {
-    errorDiv.innerText = err.message;
-  }
-}
-</script>
+      filteredUploads = allUploads.filter((u) => {
+        const matchesStatus = status === 'all' ? true : (u.status === status);
 
+        const haystack = [
+          u.uploadId,
+          u.email,
+          u.znacka,
+          u.model,
+          u.fullName,
+          u.companyName,
+          u.contactPerson,
+          u.ico,
+          u.telefon,
+          u.status,
+          u.fee
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+
+        const matchesSearch = q ? haystack.includes(q) : true;
+
+        return matchesStatus && matchesSearch;
+      });
+
+      renderTable(filteredUploads);
+    }
+
+    async function loadData() {
+      const secret = secretInput.value.trim();
+      showError('');
+      showOk('');
+      detailBox.classList.add('hidden');
+      detailGrid.innerHTML = '';
+
+      if (!secret) {
+        showError('Zadaj ADMIN SECRET.');
+        return;
+      }
+
+      loadBtn.disabled = true;
+      loadBtn.textContent = 'Načítavam...';
+
+      try {
+        const res = await fetch('/api/uploads', {
+          headers: {
+            'x-admin-secret': secret
+          }
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Unauthorized alebo chyba servera.');
+        }
+
+        allUploads = Array.isArray(data.uploads) ? data.uploads : [];
+        countAll.textContent = String(allUploads.length);
+
+        applyFilters();
+        showOk('Objednávky boli úspešne načítané.');
+      } catch (err) {
+        allUploads = [];
+        filteredUploads = [];
+        countAll.textContent = '0';
+        countFiltered.textContent = '0';
+        tbody.innerHTML = '';
+        showError(err.message || 'Nepodarilo sa načítať objednávky.');
+      } finally {
+        loadBtn.disabled = false;
+        loadBtn.textContent = 'Načítať objednávky';
+      }
+    }
+
+    function downloadCsv(filename, content) {
+      const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function csvEscape(value) {
+      const str = String(value ?? '');
+      return '"' + str.replace(/"/g, '""') + '"';
+    }
+
+    function exportToExcelCsv() {
+      if (!filteredUploads.length) {
+        showError('Nie sú žiadne dáta na export.');
+        return;
+      }
+
+      const headers = [
+        'Upload ID',
+        'Created At',
+        'Updated At',
+        'Status',
+        'Fee',
+        'Buyer Type',
+        'Full Name',
+        'Company Name',
+        'Contact Person',
+        'Email',
+        'Telefon',
+        'Znacka',
+        'Model',
+        'Cena',
+        'ICO',
+        'DIC',
+        'ICDPH',
+        'Billing Street',
+        'Billing City',
+        'Billing ZIP',
+        'Billing Note',
+        'File Original Name',
+        'File Storage Path'
+      ];
+
+      const rows = filteredUploads.map((u) => ([
+        u.uploadId || '',
+        u.createdAt || '',
+        u.updatedAt || '',
+        u.status || '',
+        u.fee || '',
+        u.buyerType || '',
+        u.fullName || '',
+        u.companyName || '',
+        u.contactPerson || '',
+        u.email || '',
+        u.telefon || '',
+        u.znacka || '',
+        u.model || '',
+        u.cena || '',
+        u.ico || '',
+        u.dic || '',
+        u.icdph || '',
+        u.billingAddressStreet || '',
+        u.billingAddressCity || '',
+        u.billingAddressZip || '',
+        u.billingNote || '',
+        u.fileOriginalName || '',
+        u.fileStoragePath || ''
+      ]));
+
+      const csv =
+        '\uFEFF' +
+        headers.map(csvEscape).join(';') +
+        '\n' +
+        rows.map(r => r.map(csvEscape).join(';')).join('\n');
+
+      const date = new Date();
+      const stamp = [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, '0'),
+        String(date.getDate()).padStart(2, '0'),
+        '_',
+        String(date.getHours()).padStart(2, '0'),
+        String(date.getMinutes()).padStart(2, '0')
+      ].join('');
+
+      downloadCsv(`kupujspolu_export_${stamp}.csv`, csv);
+      showOk('Export bol vytvorený. Súbor otvoríš v Exceli.');
+    }
+
+    loadBtn.addEventListener('click', loadData);
+    exportBtn.addEventListener('click', exportToExcelCsv);
+    searchInput.addEventListener('input', applyFilters);
+    statusFilter.addEventListener('change', applyFilters);
+  </script>
 </body>
 </html>
