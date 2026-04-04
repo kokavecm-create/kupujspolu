@@ -21,6 +21,7 @@ const {
   STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET,
   RESEND_API_KEY,
+  EMAIL_FROM = 'Kupujspolu.sk <info@kupujspolu.sk>',
   ADMIN_EMAIL = 'info@kupujspolu.sk'
 } = process.env;
 
@@ -35,15 +36,13 @@ const stripe =
     ? new Stripe(STRIPE_SECRET_KEY)
     : null;
 
-const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
+const resend =
+  RESEND_API_KEY && RESEND_API_KEY.trim()
+    ? new Resend(RESEND_API_KEY)
+    : null;
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+function isResendConfigured() {
+  return Boolean(resend && EMAIL_FROM && ADMIN_EMAIL);
 }
 
 function sanitizeFilename(name) {
@@ -57,25 +56,45 @@ function makeUploadId() {
   return `UPL-${Date.now()}`;
 }
 
-function getCustomerName(order) {
-  if (order.full_name && String(order.full_name).trim()) {
-    return String(order.full_name).trim();
-  }
-
-  if (order.contact_person && String(order.contact_person).trim()) {
-    return String(order.contact_person).trim();
-  }
-
-  if (order.company_name && String(order.company_name).trim()) {
-    return String(order.company_name).trim();
-  }
-
-  return 'zákazník';
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
-function getPlanNameFromFee(fee) {
-  if (String(fee) === '399') return 'Garancia+';
-  return 'Štandard';
+function formatCurrencyEur(value) {
+  const num = Number(value || 0);
+  if (!Number.isFinite(num)) return '—';
+  return new Intl.NumberFormat('sk-SK', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 2
+  }).format(num);
+}
+
+function planMetaFromFee(fee) {
+  if (String(fee) === '399') {
+    return {
+      fee: '399',
+      amount: 39900,
+      label: 'Kupujspolu.sk — Garancia+',
+      shortLabel: 'Garancia+ (399 EUR)',
+      description: 'Digitálna služba skupinového vyjednávania — Garancia+',
+      guaranteeText: 'Garantovaná minimálna úspora 1 400 EUR oproti predloženej ponuke.'
+    };
+  }
+
+  return {
+    fee: '129',
+    amount: 12900,
+    label: 'Kupujspolu.sk — Štandard',
+    shortLabel: 'Štandard (129 EUR)',
+    description: 'Digitálna služba skupinového vyjednávania — Štandard',
+    guaranteeText: 'Garantovaná minimálna úspora 700 EUR oproti predloženej ponuke.'
+  };
 }
 
 function mapDbRow(row) {
@@ -108,20 +127,287 @@ function mapDbRow(row) {
   };
 }
 
-function priceLabelFromFee(fee) {
-  if (String(fee) === '399') {
-    return {
-      amount: 39900,
-      label: 'Kupujspolu.sk — Garancia+',
-      description: 'Digitálna služba skupinového vyjednávania — Garancia+'
-    };
+function customerDisplayName(row) {
+  if (row.buyer_type === 'company') {
+    if (row.contact_person) return row.contact_person;
+    if (row.company_name) return row.company_name;
+    return 'zákazník';
   }
 
-  return {
-    amount: 12900,
-    label: 'Kupujspolu.sk — Štandard',
-    description: 'Digitálna služba skupinového vyjednávania — Štandard'
+  return row.full_name || 'zákazník';
+}
+
+function customerEntityLabel(row) {
+  if (row.buyer_type === 'company') {
+    return row.company_name || 'Firma / podnikateľ';
+  }
+  return row.full_name || 'Súkromná osoba';
+}
+
+function buildAdminEmailHtml(row) {
+  const plan = planMetaFromFee(row.fee);
+  const billingAddress = [
+    row.billing_address_street,
+    row.billing_address_city,
+    row.billing_address_zip
+  ]
+    .filter(Boolean)
+    .join(', ');
+
+  return `
+  <div style="margin:0;padding:0;background:#f4f7fb;">
+    <div style="max-width:760px;margin:0 auto;padding:24px 12px;">
+      <div style="background:#0b1220;border-radius:22px;overflow:hidden;border:1px solid #1f2a44;">
+        <div style="padding:28px 28px 18px;background:linear-gradient(135deg,#08101c 0%,#10213f 100%);">
+          <div style="display:inline-block;padding:8px 14px;border-radius:999px;background:#12331f;color:#dcfce7;border:1px solid #1f6b3a;font:700 12px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;">
+            Nová platená objednávka
+          </div>
+          <h1 style="margin:18px 0 8px;font:700 42px Arial,sans-serif;line-height:1.02;color:#ffffff;">
+            Prišla nová objednávka
+          </h1>
+          <p style="margin:0;color:#cbd5e1;font:400 15px Arial,sans-serif;line-height:1.7;">
+            Platba bola úspešne potvrdená a prípad bol označený ako paid.
+          </p>
+        </div>
+
+        <div style="padding:24px 28px;background:#0f172a;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Upload ID</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.upload_id)}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Plán</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(plan.shortLabel)}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Značka / model</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.znacka)} / ${escapeHtml(row.model)}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Cena z ponuky</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(formatCurrencyEur(row.cena))}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Typ zákazníka</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${row.buyer_type === 'company' ? 'Firma / podnikateľ' : 'Súkromná osoba'}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Meno / firma</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(customerEntityLabel(row))}</td>
+            </tr>
+            ${row.contact_person ? `
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Kontaktná osoba</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.contact_person)}</td>
+            </tr>` : ''}
+            ${row.ico ? `
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">IČO</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.ico)}</td>
+            </tr>` : ''}
+            ${row.dic ? `
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">DIČ</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.dic)}</td>
+            </tr>` : ''}
+            ${row.icdph ? `
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">IČ DPH</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.icdph)}</td>
+            </tr>` : ''}
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">E-mail</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.email)}</td>
+            </tr>
+            ${row.telefon ? `
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Telefón</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.telefon)}</td>
+            </tr>` : ''}
+            ${billingAddress ? `
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Fakturačná adresa</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(billingAddress)}</td>
+            </tr>` : ''}
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Súbor</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.file_original_name || '—')}</td>
+            </tr>
+            ${row.billing_note ? `
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Poznámka</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.billing_note)}</td>
+            </tr>` : ''}
+          </table>
+
+          <div style="margin-top:18px;padding:16px 18px;background:#0b162b;border:1px solid #23314f;border-radius:16px;">
+            <div style="color:#ffffff;font:700 14px Arial,sans-serif;margin-bottom:6px;">Čo ďalej</div>
+            <div style="color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.7;">
+              Skontroluj použiteľnosť ponuky, prípad zarad do spracovania a priprav vystavenie faktúry.
+              Faktúra zákazníkovi má odísť spravidla do 2–3 pracovných dní.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function buildCustomerEmailHtml(row) {
+  const plan = planMetaFromFee(row.fee);
+  const displayName = customerDisplayName(row);
+
+  return `
+  <div style="margin:0;padding:0;background:#f4f7fb;">
+    <div style="max-width:760px;margin:0 auto;padding:24px 12px;">
+      <div style="background:#0b1220;border-radius:22px;overflow:hidden;border:1px solid #1f2a44;">
+        <div style="padding:28px 28px 18px;background:linear-gradient(135deg,#08101c 0%,#10213f 100%);">
+          <div style="display:inline-block;padding:8px 14px;border-radius:999px;background:#12331f;color:#dcfce7;border:1px solid #1f6b3a;font:700 12px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;">
+            Platba potvrdená
+          </div>
+          <h1 style="margin:18px 0 8px;font:700 42px Arial,sans-serif;line-height:1.02;color:#ffffff;">
+            Ďakujeme, ${escapeHtml(displayName)}
+          </h1>
+          <p style="margin:0;color:#cbd5e1;font:400 15px Arial,sans-serif;line-height:1.7;">
+            Tvoja objednávka digitálnej služby bola úspešne prijatá a tvoja ponuka na nové vozidlo bola zaradená do systému.
+          </p>
+        </div>
+
+        <div style="padding:24px 28px;background:#0f172a;">
+          <div style="margin:0 0 16px;padding:16px 18px;background:#0b162b;border:1px solid #23314f;border-radius:16px;">
+            <div style="color:#ffffff;font:700 15px Arial,sans-serif;margin-bottom:8px;">Prehľad prípadu</div>
+            <div style="color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.8;">
+              <div><strong style="color:#ffffff;">Upload ID:</strong> ${escapeHtml(row.upload_id)}</div>
+              <div><strong style="color:#ffffff;">Značka / model:</strong> ${escapeHtml(row.znacka)} / ${escapeHtml(row.model)}</div>
+              <div><strong style="color:#ffffff;">Cena z ponuky:</strong> ${escapeHtml(formatCurrencyEur(row.cena))}</div>
+              <div><strong style="color:#ffffff;">Vybraný plán:</strong> ${escapeHtml(plan.shortLabel)}</div>
+              <div><strong style="color:#ffffff;">Stav:</strong> PAID</div>
+            </div>
+          </div>
+
+          <div style="margin:0 0 16px;padding:16px 18px;background:#0b162b;border:1px solid #23314f;border-radius:16px;">
+            <div style="color:#ffffff;font:700 15px Arial,sans-serif;margin-bottom:10px;">Čo sa bude diať ďalej</div>
+            <ol style="margin:0;padding-left:18px;color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.8;">
+              <li>Skontrolujeme, či je nahraná ponuka použiteľná a či ide o ponuku na nové auto od autorizovaného dealera alebo z oficiálneho konfigurátora.</li>
+              <li>Tvoj prípad zaradíme medzi porovnateľné ponuky a pripravíme ho na anonymizované porovnanie a skupinové vyjednávanie.</li>
+              <li>Faktúru za službu zasielame spravidla do 2–3 pracovných dní na email uvedený v objednávke.</li>
+              <li>Po spracovaní a priebehu vyjednávania ti doručíme výsledok elektronicky podľa zvoleného plánu a obchodných podmienok.</li>
+            </ol>
+          </div>
+
+          <div style="margin:0 0 16px;padding:16px 18px;background:#10213f;border:1px solid #24457b;border-radius:16px;">
+            <div style="color:#ffffff;font:700 15px Arial,sans-serif;margin-bottom:8px;">Tvoj plán</div>
+            <div style="color:#dbeafe;font:400 14px Arial,sans-serif;line-height:1.8;">
+              ${escapeHtml(plan.guaranteeText)}
+            </div>
+          </div>
+
+          <div style="color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.8;">
+            Ak budeme potrebovať doplniť údaje alebo spresniť konfiguráciu, budeme ťa kontaktovať emailom.
+            V prípade otázok nám môžeš napísať na <a href="mailto:info@kupujspolu.sk" style="color:#93c5fd;">info@kupujspolu.sk</a>.
+          </div>
+
+          <div style="margin-top:18px;padding-top:18px;border-top:1px solid #23314f;color:#94a3b8;font:400 12px Arial,sans-serif;line-height:1.8;">
+            Tento email je informačný. Vozidlo nekupuješ od kupujspolu.sk.
+            Kupuješ digitálnu službu spracovania ponuky, zaradenia do systému a skupinového vyjednávania.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+async function getStoredAttachment(row) {
+  if (!row || !row.file_storage_path || !row.file_original_name) {
+    return null;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .storage
+      .from(SUPABASE_BUCKET)
+      .download(row.file_storage_path);
+
+    if (error || !data) {
+      console.error('Nepodarilo sa stiahnuť prílohu zo Supabase:', error);
+      return null;
+    }
+
+    const arrayBuffer = await data.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    return {
+      filename: sanitizeFilename(row.file_original_name),
+      content: buffer.toString('base64')
+    };
+  } catch (error) {
+    console.error('getStoredAttachment error:', error);
+    return null;
+  }
+}
+
+async function sendAdminEmail(row) {
+  if (!isResendConfigured()) {
+    console.warn('Resend nie je nakonfigurovaný, admin email sa neposiela.');
+    return;
+  }
+
+  const attachment = await getStoredAttachment(row);
+  const payload = {
+    from: EMAIL_FROM,
+    to: [ADMIN_EMAIL],
+    subject: `Nová platená objednávka — ${row.upload_id} — ${row.znacka} ${row.model}`,
+    html: buildAdminEmailHtml(row)
   };
+
+  if (attachment) {
+    payload.attachments = [attachment];
+  }
+
+  const result = await resend.emails.send(payload);
+  if (result.error) {
+    throw new Error(`Resend admin email error: ${result.error.message || 'unknown error'}`);
+  }
+}
+
+async function sendCustomerEmail(row) {
+  if (!isResendConfigured()) {
+    console.warn('Resend nie je nakonfigurovaný, zákaznícky email sa neposiela.');
+    return;
+  }
+
+  if (!row.email) {
+    console.warn('Chýba zákaznícky email, potvrdenie sa neposiela.');
+    return;
+  }
+
+  const result = await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [row.email],
+    subject: `Potvrdenie objednávky — ${row.upload_id}`,
+    html: buildCustomerEmailHtml(row)
+  });
+
+  if (result.error) {
+    throw new Error(`Resend customer email error: ${result.error.message || 'unknown error'}`);
+  }
+}
+
+async function sendPaymentEmailsForUpload(uploadId) {
+  const { data: row, error } = await supabase
+    .from('uploads')
+    .select('*')
+    .eq('upload_id', uploadId)
+    .single();
+
+  if (error || !row) {
+    throw new Error('Nepodarilo sa načítať údaje uploadu pre odoslanie emailov.');
+  }
+
+  await sendAdminEmail(row);
+  await sendCustomerEmail(row);
 }
 
 async function updateUploadStatus(uploadId, patch) {
@@ -137,245 +423,6 @@ async function updateUploadStatus(uploadId, patch) {
 
   if (error) {
     throw error;
-  }
-}
-
-async function getAttachmentFromStorage(order) {
-  if (!order.file_storage_path) {
-    return null;
-  }
-
-  const { data, error } = await supabase.storage
-    .from(SUPABASE_BUCKET)
-    .download(order.file_storage_path);
-
-  if (error) {
-    throw error;
-  }
-
-  const arrayBuffer = await data.arrayBuffer();
-  const base64Content = Buffer.from(arrayBuffer).toString('base64');
-
-  return {
-    filename: order.file_original_name || path.basename(order.file_storage_path),
-    content: base64Content
-  };
-}
-
-async function sendEmail({ to, subject, html, attachments = [] }) {
-  if (!resend) {
-    throw new Error('Resend nie je nakonfigurovaný. Chýba RESEND_API_KEY.');
-  }
-
-  const payload = {
-    from: 'Kupujspolu.sk <info@kupujspolu.sk>',
-    to,
-    subject,
-    html
-  };
-
-  if (attachments.length > 0) {
-    payload.attachments = attachments;
-  }
-
-  const result = await resend.emails.send(payload);
-  console.log('RESEND RESULT:', JSON.stringify(result));
-  return result;
-}
-
-async function sendAdminEmail(order) {
-  const customerName = getCustomerName(order);
-  const planName = getPlanNameFromFee(order.fee);
-
-  let attachments = [];
-  try {
-    const attachment = await getAttachmentFromStorage(order);
-    if (attachment) {
-      attachments = [attachment];
-    }
-  } catch (err) {
-    console.error(`Nepodarilo sa pripraviť prílohu pre admin email ${order.upload_id}:`, err);
-  }
-
-  const html = `
-    <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827;padding:20px;">
-      <h2 style="margin-top:0;">Nová zaplatená objednávka – kupujspolu.sk</h2>
-      <p>Bola prijatá nová objednávka po úspešnej platbe.</p>
-
-      <table style="border-collapse:collapse;width:100%;max-width:760px;">
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Upload ID</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.upload_id)}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Stav</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.status || 'paid')}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Plán</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(planName)} (${escapeHtml(order.fee)} EUR)</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Značka / model</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.znacka)} / ${escapeHtml(order.model)}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Požadovaná cena</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.cena)}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Typ kupujúceho</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.buyer_type)}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Meno / kontakt</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(customerName)}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Firma</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.company_name || '-')}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Email</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.email || '-')}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Telefón</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.telefon || '-')}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Adresa</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">
-            ${escapeHtml(order.billing_address_street || '-')}<br>
-            ${escapeHtml(order.billing_address_zip || '')} ${escapeHtml(order.billing_address_city || '')}
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Poznámka</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.billing_note || '-')}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px;border:1px solid #d1d5db;"><strong>Nahratý súbor</strong></td>
-          <td style="padding:10px;border:1px solid #d1d5db;">${escapeHtml(order.file_original_name || '-')}</td>
-        </tr>
-      </table>
-
-      <p style="margin-top:20px;">
-        ${attachments.length > 0 ? 'Príloha bola pridaná k emailu.' : 'Prílohu sa nepodarilo pridať k emailu.'}
-      </p>
-    </div>
-  `;
-
-  console.log(`SEND ADMIN EMAIL START: ${order.upload_id}`);
-
-  await sendEmail({
-    to: ADMIN_EMAIL,
-    subject: 'Nová objednávka – kupujspolu.sk',
-    html,
-    attachments
-  });
-
-  console.log(`SEND ADMIN EMAIL OK: ${order.upload_id}`);
-}
-
-async function sendCustomerEmail(order) {
-  if (!order.email) {
-    console.warn(`Objednávka ${order.upload_id} nemá email zákazníka.`);
-    return;
-  }
-
-  const customerName = getCustomerName(order);
-  const planName = getPlanNameFromFee(order.fee);
-
-  const html = `
-    <div style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,sans-serif;color:#0f172a;">
-      <div style="max-width:640px;margin:0 auto;padding:30px 20px;">
-        <div style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.08);">
-          <div style="background:#0f172a;padding:28px 32px;">
-            <h1 style="margin:0;color:#ffffff;font-size:28px;">kupujspolu.sk</h1>
-            <p style="margin:8px 0 0 0;color:#cbd5e1;font-size:15px;">
-              Potvrdenie prijatia objednávky
-            </p>
-          </div>
-
-          <div style="padding:32px;">
-            <p style="margin-top:0;font-size:16px;">Dobrý deň ${escapeHtml(customerName)},</p>
-
-            <p style="font-size:16px;line-height:1.7;">
-              ďakujeme za vašu objednávku a dôveru. Vašu platbu sme úspešne prijali
-              a váš dopyt je teraz zaradený do spracovania.
-            </p>
-
-            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin:24px 0;">
-              <h2 style="margin:0 0 12px 0;font-size:18px;">Prehľad objednávky</h2>
-              <p style="margin:6px 0;"><strong>Referenčné číslo:</strong> ${escapeHtml(order.upload_id)}</p>
-              <p style="margin:6px 0;"><strong>Plán:</strong> ${escapeHtml(planName)}</p>
-              <p style="margin:6px 0;"><strong>Popis dopytu:</strong> ${escapeHtml(order.znacka)} ${escapeHtml(order.model)}</p>
-            </div>
-
-            <h2 style="font-size:20px;margin:28px 0 12px;">Čo bude nasledovať?</h2>
-
-            <ol style="padding-left:20px;line-height:1.8;font-size:16px;">
-              <li>Skontrolujeme vaše zadané údaje a špecifikáciu dopytu.</li>
-              <li>Anonymizovane oslovíme relevantných predajcov a partnerov.</li>
-              <li>Zozbierame a porovnáme dostupné ponuky.</li>
-              <li>Vyberieme pre vás najvýhodnejšie riešenie podľa zadaných parametrov.</li>
-              <li>Výslednú ponuku vám doručíme emailom.</li>
-            </ol>
-
-            <p style="font-size:16px;line-height:1.7;">
-              Ak bude potrebné doplniť akékoľvek údaje, budeme vás kontaktovať.
-            </p>
-
-            <p style="font-size:16px;line-height:1.7;">
-              S pozdravom<br>
-              <strong>Tím kupujspolu.sk</strong>
-            </p>
-          </div>
-
-          <div style="background:#f8fafc;padding:18px 32px;border-top:1px solid #e2e8f0;">
-            <p style="margin:0;font-size:13px;color:#64748b;">
-              Toto je automatické potvrdenie prijatia objednávky po úspešnej úhrade.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  console.log(`SEND CUSTOMER EMAIL START: ${order.upload_id} -> ${order.email}`);
-
-  await sendEmail({
-    to: order.email,
-    subject: 'Potvrdenie prijatia objednávky – kupujspolu.sk',
-    html
-  });
-
-  console.log(`SEND CUSTOMER EMAIL OK: ${order.upload_id}`);
-}
-
-async function sendOrderEmails(uploadId) {
-  const { data: order, error } = await supabase
-    .from('uploads')
-    .select('*')
-    .eq('upload_id', uploadId)
-    .single();
-
-  if (error || !order) {
-    console.error('Nepodarilo sa načítať objednávku pre email:', error);
-    return;
-  }
-
-  try {
-    await sendAdminEmail(order);
-  } catch (err) {
-    console.error(`Chyba pri odosielaní admin emailu pre uploadId=${uploadId}:`, err);
-  }
-
-  try {
-    await sendCustomerEmail(order);
-  } catch (err) {
-    console.error(`Chyba pri odosielaní zákazníckeho emailu pre uploadId=${uploadId}:`, err);
   }
 }
 
@@ -413,45 +460,43 @@ app.post(
         return res.status(400).send(`Webhook Error: ${err.message}`);
       }
 
-      console.log('Stripe webhook received:', event.type);
-
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         const uploadId = session.metadata?.uploadId || null;
         const fee = session.metadata?.fee || '';
 
         if (uploadId) {
-          const { data: existingOrder, error: fetchError } = await supabase
+          const { data: existingRow, error: existingError } = await supabase
             .from('uploads')
             .select('*')
             .eq('upload_id', uploadId)
             .single();
 
-          if (fetchError || !existingOrder) {
-            console.error('Supabase fetch before paid update failed:', fetchError);
-            return res.status(500).send('Nepodarilo sa načítať objednávku.');
+          if (existingError || !existingRow) {
+            console.error('Webhook upload fetch error:', existingError);
+            return res.status(404).send('Upload nebol nájdený.');
           }
 
-          const wasAlreadyPaid = existingOrder.status === 'paid';
+          if (existingRow.status !== 'paid') {
+            const { error } = await supabase
+              .from('uploads')
+              .update({
+                status: 'paid',
+                fee,
+                updated_at: new Date().toISOString()
+              })
+              .eq('upload_id', uploadId);
 
-          const { error } = await supabase
-            .from('uploads')
-            .update({
-              status: 'paid',
-              fee,
-              updated_at: new Date().toISOString()
-            })
-            .eq('upload_id', uploadId);
+            if (error) {
+              console.error('Supabase update after checkout.session.completed:', error);
+              return res.status(500).send('Nepodarilo sa aktualizovať stav objednávky.');
+            }
 
-          if (error) {
-            console.error('Supabase update after checkout.session.completed:', error);
-            return res.status(500).send('Nepodarilo sa aktualizovať stav objednávky.');
-          }
-
-          if (!wasAlreadyPaid) {
-            await sendOrderEmails(uploadId);
-          } else {
-            console.log(`Objednávka ${uploadId} už bola paid, emaily znova neposielam.`);
+            try {
+              await sendPaymentEmailsForUpload(uploadId);
+            } catch (mailError) {
+              console.error('Odoslanie emailov po platbe zlyhalo:', mailError);
+            }
           }
         }
       }
@@ -517,44 +562,8 @@ app.get('/api/health', (req, res) => {
     ok: true,
     provider: PAYMENT_PROVIDER,
     env: process.env.NODE_ENV || 'development',
-    resendConfigured: Boolean(RESEND_API_KEY)
+    resendConfigured: isResendConfigured()
   });
-});
-
-app.get('/api/test-email', async (req, res) => {
-  try {
-    if (!resend) {
-      return res.status(500).json({
-        ok: false,
-        error: 'Resend nie je nakonfigurovaný.'
-      });
-    }
-
-    const testTo = req.query.to || ADMIN_EMAIL;
-
-    const result = await sendEmail({
-      to: testTo,
-      subject: 'Test email – kupujspolu.sk',
-      html: `
-        <div style="font-family:Arial,sans-serif;padding:20px;">
-          <h2>Test email z kupujspolu.sk</h2>
-          <p>Ak čítaš tento email, Resend funguje správne.</p>
-          <p><strong>Čas odoslania:</strong> ${new Date().toISOString()}</p>
-        </div>
-      `
-    });
-
-    return res.json({
-      ok: true,
-      result
-    });
-  } catch (error) {
-    console.error('TEST EMAIL ERROR:', error);
-    return res.status(500).json({
-      ok: false,
-      error: error.message || 'Odoslanie test emailu zlyhalo.'
-    });
-  }
 });
 
 app.get('/api/uploads', async (req, res) => {
@@ -594,6 +603,56 @@ app.get('/api/upload/:id', async (req, res) => {
   } catch (error) {
     console.error('GET /api/upload/:id error:', error);
     res.status(500).json({ error: 'Chyba servera pri načítaní detailu.' });
+  }
+});
+
+app.get('/api/test-email', async (req, res) => {
+  try {
+    if (!isResendConfigured()) {
+      return res.status(500).json({
+        ok: false,
+        error: 'Resend nie je nakonfigurovaný.'
+      });
+    }
+
+    const to = req.query.to ? String(req.query.to).trim() : ADMIN_EMAIL;
+
+    const result = await resend.emails.send({
+      from: EMAIL_FROM,
+      to: [to],
+      subject: 'Test email — kupujspolu.sk',
+      html: `
+        <div style="font-family:Arial,sans-serif;background:#f4f7fb;padding:24px;">
+          <div style="max-width:640px;margin:0 auto;background:#0f172a;border:1px solid #23314f;border-radius:18px;padding:24px;">
+            <h1 style="margin:0 0 12px;color:#fff;font-size:30px;">Test email z kupujspolu.sk</h1>
+            <p style="margin:0 0 10px;color:#cbd5e1;line-height:1.7;">
+              Ak čítaš tento email, Resend funguje správne.
+            </p>
+            <p style="margin:0;color:#94a3b8;line-height:1.7;">
+              Čas odoslania: ${escapeHtml(new Date().toISOString())}
+            </p>
+          </div>
+        </div>
+      `
+    });
+
+    if (result.error) {
+      return res.status(500).json({
+        ok: false,
+        error: result.error.message || 'Nepodarilo sa odoslať test email.'
+      });
+    }
+
+    res.json({
+      ok: true,
+      result
+    });
+  } catch (error) {
+    console.error('GET /api/test-email error:', error);
+    res.status(500).json({
+      ok: false,
+      error: error.message || 'Nepodarilo sa odoslať test email.'
+    });
   }
 });
 
@@ -729,8 +788,14 @@ app.post('/api/create-checkout-session', async (req, res) => {
     if (PAYMENT_PROVIDER === 'test') {
       await updateUploadStatus(uploadId, {
         fee: normalizedFee,
-        status: 'pending_payment'
+        status: 'paid'
       });
+
+      try {
+        await sendPaymentEmailsForUpload(uploadId);
+      } catch (mailError) {
+        console.error('Odoslanie emailov v test režime zlyhalo:', mailError);
+      }
 
       return res.json({
         ok: true,
@@ -743,7 +808,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         return res.status(500).json({ error: 'Stripe nie je nakonfigurovaný.' });
       }
 
-      const pricing = priceLabelFromFee(normalizedFee);
+      const pricing = planMetaFromFee(normalizedFee);
 
       await updateUploadStatus(uploadId, {
         fee: normalizedFee,
@@ -813,5 +878,4 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Server beží na ${BASE_URL}`);
-  console.log(`Resend configured: ${RESEND_API_KEY ? 'áno' : 'nie'}`);
 });

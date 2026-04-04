@@ -3,119 +3,784 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>kupujspolu.sk — Skupinové vyjednávanie. Reálna úspora.</title>
+<title>kupujspolu.sk — Skupinové vyjednávanie pri kúpe nového auta</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--site-bg:#070B14;--surface:#0E1625;--card:#121B2E;--ink:#F1F5F9;--ink-mid:#CBD5E1;--neutral:#94A3B8;--border:rgba(148,163,184,.15);--soft:rgba(148,163,184,.08);--brand:#3B82F6;--brand-dark:#2563EB;--brand-soft:rgba(59,130,246,.15);--brand-border:rgba(59,130,246,.35);--green:#22C55E;--green-soft:rgba(34,197,94,.12);--radius:18px;--pill:999px;--shadow:0 10px 40px rgba(0,0,0,.4);--shadow-lg:0 20px 80px rgba(0,0,0,.6)}
+:root{
+  --site-bg:#070B14;
+  --surface:#0E1625;
+  --card:#121B2E;
+  --ink:#F1F5F9;
+  --ink-mid:#CBD5E1;
+  --neutral:#94A3B8;
+  --border:rgba(148,163,184,.15);
+  --soft:rgba(148,163,184,.08);
+  --brand:#3B82F6;
+  --brand-dark:#2563EB;
+  --brand-soft:rgba(59,130,246,.15);
+  --brand-border:rgba(59,130,246,.35);
+  --green:#22C55E;
+  --green-soft:rgba(34,197,94,.12);
+  --warn:#F59E0B;
+  --warn-soft:rgba(245,158,11,.12);
+  --radius:18px;
+  --pill:999px;
+  --shadow:0 10px 40px rgba(0,0,0,.4);
+  --shadow-lg:0 20px 80px rgba(0,0,0,.6)
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--site-bg);color:var(--ink);line-height:1.65;font-size:15px}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--site-bg);
+  color:var(--ink);
+  line-height:1.65;
+  font-size:15px
+}
 .nowrap{white-space:nowrap}
-nav{position:fixed;inset:0 0 auto 0;z-index:200;height:66px;background:rgba(7,11,20,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5vw}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.06em;text-decoration:none;color:var(--ink)}
+
+nav{
+  position:fixed;
+  inset:0 0 auto 0;
+  z-index:200;
+  height:66px;
+  background:rgba(7,11,20,.93);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5vw
+}
+.logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.35rem;
+  letter-spacing:.06em;
+  text-decoration:none;
+  color:var(--ink)
+}
 .logo em{color:var(--brand);font-style:normal}
-.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center}
-.nav-links a{font-size:.86rem;font-weight:500;color:var(--neutral);text-decoration:none;transition:color .18s}
+.nav-links{
+  display:flex;
+  gap:1.8rem;
+  list-style:none;
+  align-items:center
+}
+.nav-links a{
+  font-size:.86rem;
+  font-weight:500;
+  color:var(--neutral);
+  text-decoration:none;
+  transition:color .18s
+}
 .nav-links a:hover{color:var(--ink)}
-.nav-cta{background:var(--brand)!important;color:#fff!important;padding:.5rem 1.3rem;border-radius:var(--pill);font-weight:700;transition:all .2s!important}
-.nav-cta:hover{background:var(--brand-dark)!important;box-shadow:0 4px 22px rgba(59,130,246,.45)!important}
-.hero{min-height:100vh;padding-top:66px;background:var(--surface);display:grid;grid-template-columns:1.1fr .9fr;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
-.hero::after{content:'';position:absolute;top:-25%;right:-12%;width:60vw;height:60vw;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.09),transparent 60%);pointer-events:none}
-.hero-l{padding:10vh 5vw 10vh 8vw;z-index:2;display:flex;flex-direction:column;justify-content:center}
-.eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);margin-bottom:1.5rem}
-.eyebrow::before{content:'';width:24px;height:2px;background:var(--brand);border-radius:2px}
-h1.hero-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.2rem);letter-spacing:.02em;line-height:.95;margin-bottom:1.3rem;color:var(--ink)}
+.nav-cta{
+  background:var(--brand)!important;
+  color:#fff!important;
+  padding:.5rem 1.3rem;
+  border-radius:var(--pill);
+  font-weight:700;
+  transition:all .2s!important
+}
+.nav-cta:hover{
+  background:var(--brand-dark)!important;
+  box-shadow:0 4px 22px rgba(59,130,246,.45)!important
+}
+
+.hero{
+  min-height:100vh;
+  padding-top:66px;
+  background:var(--surface);
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  position:relative;
+  overflow:hidden
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(59,130,246,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(59,130,246,.04) 1px,transparent 1px);
+  background-size:56px 56px;
+  pointer-events:none
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  top:-25%;
+  right:-12%;
+  width:60vw;
+  height:60vw;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.09),transparent 60%);
+  pointer-events:none
+}
+.hero-l{
+  padding:10vh 5vw 10vh 8vw;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.6rem;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--brand);
+  margin-bottom:1.5rem
+}
+.eyebrow::before{
+  content:'';
+  width:24px;
+  height:2px;
+  background:var(--brand);
+  border-radius:2px
+}
+h1.hero-h{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.8rem,5vw,5.2rem);
+  letter-spacing:.02em;
+  line-height:.95;
+  margin-bottom:1.3rem;
+  color:var(--ink)
+}
 h1.hero-h .acc{color:var(--brand)}
-.hero-sub{max-width:500px;color:var(--ink-mid);font-weight:300;font-size:1rem;line-height:1.78;margin-bottom:2.2rem}
-.hero-actions{display:flex;gap:.9rem;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:.45rem;text-decoration:none;padding:.9rem 1.8rem;border-radius:var(--pill);font-weight:700;font-size:.92rem;transition:all .22s;border:none;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:.01em}
-.btn-brand{background:var(--brand);color:#fff;box-shadow:0 4px 22px rgba(59,130,246,.35)}
-.btn-brand:hover{background:var(--brand-dark);box-shadow:0 10px 42px rgba(59,130,246,.55);transform:translateY(-2px)}
-.btn-outline{background:transparent;color:var(--ink-mid);border:1.5px solid var(--border)}
-.btn-outline:hover{border-color:var(--brand-border);color:var(--ink)}
-.hero-stats{display:flex;gap:2.5rem;margin-top:3rem}
-.sv{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.02em;color:var(--ink);display:block}
+.hero-sub{
+  max-width:560px;
+  color:var(--ink-mid);
+  font-weight:300;
+  font-size:1rem;
+  line-height:1.78;
+  margin-bottom:1.6rem
+}
+.hero-note{
+  max-width:580px;
+  display:flex;
+  gap:.7rem;
+  padding:1rem 1.1rem;
+  border-radius:14px;
+  background:var(--warn-soft);
+  border:1px solid rgba(245,158,11,.24);
+  color:#fde68a;
+  font-size:.84rem;
+  line-height:1.6;
+  margin-bottom:2rem
+}
+.hero-note::before{
+  content:'⚠';
+  flex-shrink:0
+}
+.hero-actions{
+  display:flex;
+  gap:.9rem;
+  flex-wrap:wrap
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  text-decoration:none;
+  padding:.9rem 1.8rem;
+  border-radius:var(--pill);
+  font-weight:700;
+  font-size:.92rem;
+  transition:all .22s;
+  border:none;
+  cursor:pointer;
+  font-family:'Outfit',sans-serif;
+  letter-spacing:.01em
+}
+.btn-brand{
+  background:var(--brand);
+  color:#fff;
+  box-shadow:0 4px 22px rgba(59,130,246,.35)
+}
+.btn-brand:hover{
+  background:var(--brand-dark);
+  box-shadow:0 10px 42px rgba(59,130,246,.55);
+  transform:translateY(-2px)
+}
+.btn-outline{
+  background:transparent;
+  color:var(--ink-mid);
+  border:1.5px solid var(--border)
+}
+.btn-outline:hover{
+  border-color:var(--brand-border);
+  color:var(--ink)
+}
+.hero-stats{
+  display:flex;
+  gap:2.5rem;
+  margin-top:3rem;
+  flex-wrap:wrap
+}
+.sv{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;
+  letter-spacing:.02em;
+  color:var(--ink);
+  display:block
+}
 .sv .g{color:var(--green)}
 .sl{font-size:.77rem;color:var(--neutral)}
-.hero-r{padding:8vh 5vw;display:flex;align-items:center;justify-content:center;z-index:2}
-.hero-card{width:100%;max-width:390px;background:var(--card);border:1px solid var(--border);border-radius:22px;padding:1.9rem;box-shadow:var(--shadow-lg)}
-.hc-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:1rem;margin-bottom:1rem;border-bottom:1px solid var(--soft)}
-.hc-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.05em;color:var(--ink)}
-.tag-waiting{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .7rem;border-radius:var(--pill);background:var(--brand-soft);color:#93c5fd;border:1px solid var(--brand-border)}
-.hc-row{display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--soft);font-size:.86rem}
+
+.hero-r{
+  padding:8vh 5vw;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2
+}
+.hero-card{
+  width:100%;
+  max-width:410px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:1.9rem;
+  box-shadow:var(--shadow-lg)
+}
+.hc-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-bottom:1rem;
+  margin-bottom:1rem;
+  border-bottom:1px solid var(--soft)
+}
+.hc-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1rem;
+  letter-spacing:.05em;
+  color:var(--ink)
+}
+.tag-waiting{
+  font-size:.64rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:.22rem .7rem;
+  border-radius:var(--pill);
+  background:var(--brand-soft);
+  color:#93c5fd;
+  border:1px solid var(--brand-border)
+}
+.hc-row{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  padding:.45rem 0;
+  border-bottom:1px solid var(--soft);
+  font-size:.86rem
+}
 .hc-row:last-of-type{border:none}
 .hc-k{color:var(--neutral)}
-.hc-v{font-weight:600;color:var(--ink)}
-.hc-notice{margin-top:1rem;padding:.85rem 1rem;background:var(--brand-soft);border:1px solid var(--brand-border);border-radius:11px;font-size:.78rem;color:#93c5fd;line-height:1.55;display:flex;gap:.5rem}
-.hc-notice::before{content:'ℹ';flex-shrink:0}
-.hc-saving{margin-top:.9rem;padding:.85rem 1rem;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:11px;display:flex;justify-content:space-between;align-items:center}
+.hc-v{
+  font-weight:600;
+  color:var(--ink);
+  text-align:right
+}
+.hc-notice{
+  margin-top:1rem;
+  padding:.85rem 1rem;
+  background:var(--brand-soft);
+  border:1px solid var(--brand-border);
+  border-radius:11px;
+  font-size:.78rem;
+  color:#93c5fd;
+  line-height:1.55;
+  display:flex;
+  gap:.5rem
+}
+.hc-notice::before{
+  content:'ℹ';
+  flex-shrink:0
+}
+.hc-saving{
+  margin-top:.9rem;
+  padding:.85rem 1rem;
+  background:rgba(34,197,94,.08);
+  border:1px solid rgba(34,197,94,.22);
+  border-radius:11px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem
+}
 .hc-saving-lbl{font-size:.78rem;color:var(--ink-mid)}
-.hc-saving-val{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:.03em;color:var(--green)}
-.sec{padding:6rem 8vw;background:var(--surface)}
-.sec-dark{background:var(--site-bg);position:relative;overflow:hidden}
-.sec-dark::before{content:'';position:absolute;top:-30%;right:-10%;width:55vw;height:55vw;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.1),transparent 65%);pointer-events:none}
-.sec-h{font-family:'Bebas Neue',sans-serif;letter-spacing:.02em;font-size:clamp(1.9rem,3.8vw,2.9rem);margin-bottom:.8rem;line-height:1}
-.sec-sub{max-width:560px;font-weight:300;line-height:1.78;margin-bottom:2.8rem;font-size:.96rem;color:var(--ink-mid)}
-.steps-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
-.step-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.9rem;box-shadow:var(--shadow);transition:all .22s}
-.step-box:hover{border-color:var(--brand-border);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
-.step-num{width:42px;height:42px;border-radius:10px;background:var(--brand-soft);border:1px solid var(--brand-border);color:#93c5fd;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem}
-.step-t{font-weight:700;font-size:.95rem;color:var(--ink);margin-bottom:.5rem}
-.step-b{font-size:.86rem;font-weight:300;color:var(--ink-mid);line-height:1.68}
-.plans-g{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;max-width:860px}
-.plan-c{border:1px solid var(--border);border-radius:22px;padding:2.3rem;background:var(--card);position:relative;transition:all .22s}
-.plan-c:hover{border-color:var(--brand-border);box-shadow:0 8px 42px rgba(59,130,246,.2)}
-.plan-c.featured{border-color:var(--brand-border);background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.04))}
-.plan-badge{position:absolute;top:-12px;left:1.5rem;background:var(--brand);color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .8rem;border-radius:var(--pill)}
-.plan-price{font-family:'Bebas Neue',sans-serif;font-size:3.3rem;letter-spacing:.02em;color:var(--ink);line-height:1;margin-bottom:.2rem}
-.plan-label{font-size:.8rem;color:var(--neutral);margin-bottom:1.5rem}
-.plan-li{display:flex;align-items:baseline;gap:.55rem;font-size:.88rem;color:var(--ink-mid);line-height:1.55;margin-bottom:.85rem}
-.plan-li::before{content:'→';color:var(--green);font-weight:700;flex-shrink:0}
+.hc-saving-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.55rem;
+  letter-spacing:.03em;
+  color:var(--green)
+}
+
+.sec{
+  padding:6rem 8vw;
+  background:var(--surface)
+}
+.sec-dark{
+  background:var(--site-bg);
+  position:relative;
+  overflow:hidden
+}
+.sec-dark::before{
+  content:'';
+  position:absolute;
+  top:-30%;
+  right:-10%;
+  width:55vw;
+  height:55vw;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.1),transparent 65%);
+  pointer-events:none
+}
+.sec-h{
+  font-family:'Bebas Neue',sans-serif;
+  letter-spacing:.02em;
+  font-size:clamp(1.9rem,3.8vw,2.9rem);
+  margin-bottom:.8rem;
+  line-height:1
+}
+.sec-sub{
+  max-width:640px;
+  font-weight:300;
+  line-height:1.78;
+  margin-bottom:2.8rem;
+  font-size:.96rem;
+  color:var(--ink-mid)
+}
+
+.steps-g{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.4rem
+}
+.step-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.9rem;
+  box-shadow:var(--shadow);
+  transition:all .22s
+}
+.step-box:hover{
+  border-color:var(--brand-border);
+  box-shadow:var(--shadow-lg);
+  transform:translateY(-4px)
+}
+.step-num{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  background:var(--brand-soft);
+  border:1px solid var(--brand-border);
+  color:#93c5fd;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.25rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:1.2rem
+}
+.step-t{
+  font-weight:700;
+  font-size:.95rem;
+  color:var(--ink);
+  margin-bottom:.5rem
+}
+.step-b{
+  font-size:.86rem;
+  font-weight:300;
+  color:var(--ink-mid);
+  line-height:1.68
+}
+
+.plans-g{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.4rem;
+  max-width:860px
+}
+.plan-c{
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:2.3rem;
+  background:var(--card);
+  position:relative;
+  transition:all .22s
+}
+.plan-c:hover{
+  border-color:var(--brand-border);
+  box-shadow:0 8px 42px rgba(59,130,246,.2)
+}
+.plan-c.featured{
+  border-color:var(--brand-border);
+  background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.04))
+}
+.plan-badge{
+  position:absolute;
+  top:-12px;
+  left:1.5rem;
+  background:var(--brand);
+  color:#fff;
+  font-size:.66rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:.2rem .8rem;
+  border-radius:var(--pill)
+}
+.plan-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3.3rem;
+  letter-spacing:.02em;
+  color:var(--ink);
+  line-height:1;
+  margin-bottom:.2rem
+}
+.plan-label{
+  font-size:.8rem;
+  color:var(--neutral);
+  margin-bottom:1.5rem
+}
+.plan-li{
+  display:flex;
+  align-items:baseline;
+  gap:.55rem;
+  font-size:.88rem;
+  color:var(--ink-mid);
+  line-height:1.55;
+  margin-bottom:.85rem
+}
+.plan-li::before{
+  content:'→';
+  color:var(--green);
+  font-weight:700;
+  flex-shrink:0
+}
 .plan-li b{color:var(--ink)}
-.plan-refund{margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid var(--soft);font-size:.82rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
-.plan-refund::before{content:'✓';flex-shrink:0}
-.plan-cta{margin-top:1.5rem;width:100%;padding:.95rem;border-radius:var(--pill);font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .22s;letter-spacing:.01em}
-.plan-cta-o{background:transparent;border:1.5px solid var(--border);color:var(--ink-mid)}
-.plan-cta-o:hover{border-color:var(--brand-border);color:var(--ink);background:var(--brand-soft)}
-.plan-cta-f{background:var(--brand);color:#fff;border:none;box-shadow:0 4px 22px rgba(59,130,246,.4)}
-.plan-cta-f:hover{background:var(--brand-dark);box-shadow:0 10px 42px rgba(59,130,246,.6)}
-.priv-strip{background:var(--surface);border-top:1px solid var(--border);padding:2.8rem 8vw;display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem}
-.priv-i{display:flex;align-items:flex-start;gap:.7rem}
-.priv-ic{width:36px;height:36px;flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem}
-.priv-t strong{display:block;font-size:.8rem;font-weight:700;color:var(--ink);margin-bottom:.12rem}
-.priv-t span{font-size:.74rem;color:var(--neutral);line-height:1.45}
-.how-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
-.how-i{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;transition:all .2s}
-.how-i:hover{border-color:var(--brand-border);transform:translateY(-2px);box-shadow:var(--shadow)}
-.how-ic{font-size:1.4rem;margin-bottom:.75rem}
-.how-t{font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:.35rem}
-.how-b{font-size:.8rem;color:var(--neutral);line-height:1.6;font-weight:300}
-.test-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
-.tc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem;transition:all .22s}
-.tc:hover{border-color:var(--brand-border);box-shadow:var(--shadow)}
-.tc-saving{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.04em;color:var(--green);margin-bottom:.75rem;display:block}
-.tc-text{font-size:.88rem;line-height:1.72;color:var(--ink-mid);font-weight:300;font-style:italic;margin-bottom:1.2rem}
-.tc-author{display:flex;align-items:center;gap:.7rem}
-.tc-av{width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:.9rem}
-.tc-name{font-weight:700;font-size:.82rem;color:var(--ink)}
-.tc-loc{font-size:.72rem;color:var(--neutral)}
-.final-cta{padding:5.5rem 8vw;text-align:center;background:var(--surface);border-top:1px solid var(--border);position:relative;overflow:hidden}
-.final-cta::before{content:'KUPUJ SPOLU';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',sans-serif;font-size:16vw;color:rgba(59,130,246,.04);white-space:nowrap;pointer-events:none;letter-spacing:.04em}
-footer{background:var(--site-bg);color:var(--neutral);padding:2.5rem 8vw;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.77rem}
-.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--ink);letter-spacing:.05em}
+.plan-refund{
+  margin-top:1.3rem;
+  padding-top:1.1rem;
+  border-top:1px solid var(--soft);
+  font-size:.82rem;
+  font-weight:700;
+  color:var(--green);
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  flex-wrap:wrap
+}
+.plan-refund::before{
+  content:'✓';
+  flex-shrink:0
+}
+.plan-cta{
+  margin-top:1.5rem;
+  width:100%;
+  padding:.95rem;
+  border-radius:var(--pill);
+  font-family:'Outfit',sans-serif;
+  font-size:.9rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .22s;
+  letter-spacing:.01em
+}
+.plan-cta-o{
+  background:transparent;
+  border:1.5px solid var(--border);
+  color:var(--ink-mid)
+}
+.plan-cta-o:hover{
+  border-color:var(--brand-border);
+  color:var(--ink);
+  background:var(--brand-soft)
+}
+.plan-cta-f{
+  background:var(--brand);
+  color:#fff;
+  border:none;
+  box-shadow:0 4px 22px rgba(59,130,246,.4)
+}
+.plan-cta-f:hover{
+  background:var(--brand-dark);
+  box-shadow:0 10px 42px rgba(59,130,246,.6)
+}
+
+.priv-strip{
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  padding:2.8rem 8vw;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.4rem
+}
+.priv-i{
+  display:flex;
+  align-items:flex-start;
+  gap:.7rem
+}
+.priv-ic{
+  width:36px;
+  height:36px;
+  flex-shrink:0;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.85rem
+}
+.priv-t strong{
+  display:block;
+  font-size:.8rem;
+  font-weight:700;
+  color:var(--ink);
+  margin-bottom:.12rem
+}
+.priv-t span{
+  font-size:.74rem;
+  color:var(--neutral);
+  line-height:1.45
+}
+
+.how-g{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.2rem
+}
+.how-i{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.5rem;
+  transition:all .2s
+}
+.how-i:hover{
+  border-color:var(--brand-border);
+  transform:translateY(-2px);
+  box-shadow:var(--shadow)
+}
+.how-ic{
+  font-size:1.4rem;
+  margin-bottom:.75rem
+}
+.how-t{
+  font-weight:700;
+  font-size:.88rem;
+  color:var(--ink);
+  margin-bottom:.35rem
+}
+.how-b{
+  font-size:.8rem;
+  color:var(--neutral);
+  line-height:1.6;
+  font-weight:300
+}
+
+.test-g{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.4rem
+}
+.tc{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.8rem;
+  transition:all .22s
+}
+.tc:hover{
+  border-color:var(--brand-border);
+  box-shadow:var(--shadow)
+}
+.tc-saving{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;
+  letter-spacing:.04em;
+  color:var(--green);
+  margin-bottom:.75rem;
+  display:block
+}
+.tc-text{
+  font-size:.88rem;
+  line-height:1.72;
+  color:var(--ink-mid);
+  font-weight:300;
+  font-style:italic;
+  margin-bottom:1.2rem
+}
+.tc-author{
+  display:flex;
+  align-items:center;
+  gap:.7rem
+}
+.tc-av{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:var(--brand);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:.9rem
+}
+.tc-name{
+  font-weight:700;
+  font-size:.82rem;
+  color:var(--ink)
+}
+.tc-loc{
+  font-size:.72rem;
+  color:var(--neutral)
+}
+
+.final-cta{
+  padding:5.5rem 8vw;
+  text-align:center;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  position:relative;
+  overflow:hidden
+}
+.final-cta::before{
+  content:'KUPUJ SPOLU';
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16vw;
+  color:rgba(59,130,246,.04);
+  white-space:nowrap;
+  pointer-events:none;
+  letter-spacing:.04em
+}
+
+footer{
+  background:var(--site-bg);
+  color:var(--neutral);
+  padding:2.5rem 8vw;
+  border-top:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:1rem;
+  font-size:.77rem
+}
+.footer-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;
+  color:var(--ink);
+  letter-spacing:.05em
+}
 .footer-logo em{color:var(--brand);font-style:normal}
-.footer-links{display:flex;gap:1.6rem;list-style:none;flex-wrap:wrap}
-.footer-links a{color:var(--neutral);text-decoration:none;transition:color .18s;font-size:.76rem}
+.footer-links{
+  display:flex;
+  gap:1.6rem;
+  list-style:none;
+  flex-wrap:wrap
+}
+.footer-links a{
+  color:var(--neutral);
+  text-decoration:none;
+  transition:color .18s;
+  font-size:.76rem
+}
 .footer-links a:hover{color:var(--ink)}
-.rev{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease}
-.rev.on{opacity:1;transform:translateY(0)}
-.whatsapp-btn{position:fixed;bottom:2rem;right:2rem;z-index:190;width:56px;height:56px;background:var(--card);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);cursor:pointer;transition:all .25s;text-decoration:none}
-.whatsapp-btn:hover{transform:translateY(-3px);box-shadow:0 15px 60px rgba(0,0,0,.5);border-color:rgba(37,211,102,.4)}
-.whatsapp-btn svg{width:28px;height:28px;fill:#25D366}
-.whatsapp-btn::after{content:'Podpora WhatsApp';position:absolute;right:calc(100% + 12px);background:var(--card);border:1px solid var(--border);padding:.5rem .85rem;border-radius:8px;font-size:.75rem;color:var(--ink);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;box-shadow:var(--shadow)}
+
+.rev{
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .55s ease,transform .55s ease
+}
+.rev.on{
+  opacity:1;
+  transform:translateY(0)
+}
+
+.whatsapp-btn{
+  position:fixed;
+  bottom:2rem;
+  right:2rem;
+  z-index:190;
+  width:56px;
+  height:56px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow-lg);
+  cursor:pointer;
+  transition:all .25s;
+  text-decoration:none
+}
+.whatsapp-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 15px 60px rgba(0,0,0,.5);
+  border-color:rgba(37,211,102,.4)
+}
+.whatsapp-btn svg{
+  width:28px;
+  height:28px;
+  fill:#25D366
+}
+.whatsapp-btn::after{
+  content:'Podpora WhatsApp';
+  position:absolute;
+  right:calc(100% + 12px);
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:.5rem .85rem;
+  border-radius:8px;
+  font-size:.75rem;
+  color:var(--ink);
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s;
+  box-shadow:var(--shadow)
+}
 .whatsapp-btn:hover::after{opacity:1}
-@media(max-width:960px){.hero{grid-template-columns:1fr}.hero-r{display:none}.steps-g,.test-g,.how-g{grid-template-columns:1fr}.plans-g{grid-template-columns:1fr}.priv-strip{grid-template-columns:1fr 1fr}.nav-links{display:none}.whatsapp-btn{bottom:1.5rem;right:1.5rem;width:52px;height:52px}.whatsapp-btn svg{width:26px;height:26px}.whatsapp-btn::after{display:none}}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr}
+  .hero-r{display:none}
+  .steps-g,.test-g,.how-g{grid-template-columns:1fr}
+  .plans-g{grid-template-columns:1fr}
+  .priv-strip{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .whatsapp-btn{
+    bottom:1.5rem;
+    right:1.5rem;
+    width:52px;
+    height:52px
+  }
+  .whatsapp-btn svg{
+    width:26px;
+    height:26px
+  }
+  .whatsapp-btn::after{display:none}
+}
+
+@media(max-width:640px){
+  .priv-strip{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -127,103 +792,251 @@ footer{background:var(--site-bg);color:var(--neutral);padding:2.5rem 8vw;border-
     <li><a class="nav-cta" href="upload.html">Nahrať ponuku →</a></li>
   </ul>
 </nav>
+
 <section class="hero">
   <div class="hero-l">
-    <div class="eyebrow">Skupinové vyjednávanie · Slovensko</div>
-    <h1 class="hero-h">Nahraj ponuku.<br><span class="acc">Skupina vyjedná lepšie.</span></h1>
-    <p class="hero-sub">Predložíš svoju aktuálnu ponuku od dealera. My ju anonymizujeme, zoskupíme s podobnými a vyjednáme nižšiu cenu. Výsledok je konkrétna suma — nie prísľub.</p>
+    <div class="eyebrow">Nové autá · Slovensko · Skupinové vyjednávanie</div>
+    <h1 class="hero-h">Nahraj ponuku na nové auto.<br><span class="acc">Skupina vyjedná lepšie.</span></h1>
+
+    <p class="hero-sub">
+      Nahraj cenovú ponuku na nové vozidlo od autorizovaného dealera alebo z oficiálneho konfigurátora.
+      My ju anonymizujeme, zaradíme do skupiny porovnateľných prípadov a vyjednávame lepšiu cenu.
+      Výsledkom je konkrétny obchodný výsledok pre tvoju ponuku — nie všeobecný sľub.
+    </p>
+
+    <div class="hero-note">
+      Služba je určená výhradne pre nové autá. Nenahrávaj ponuky na jazdené vozidlá, bazárové vozidlá ani neúplné kalkulácie.
+    </div>
+
     <div class="hero-actions">
       <a class="btn btn-brand" href="upload.html">Nahrať ponuku →</a>
       <a class="btn btn-outline" href="#ako">Ako to funguje</a>
     </div>
+
     <div class="hero-stats">
       <div><span class="sv">200+</span><span class="sl">ponúk v systéme</span></div>
-      <div><span class="sv"><span class="g">6–12%</span></span><span class="sl">priemerná vyjednaná úspora</span></div>
+      <div><span class="sv"><span class="g">6–12%</span></span><span class="sl">typická vyjednaná úspora</span></div>
       <div><span class="sv">10+</span><span class="sl">ponúk spúšťa vyjednávanie</span></div>
     </div>
   </div>
+
   <div class="hero-r">
     <div class="hero-card">
-      <div class="hc-head"><span class="hc-title">Ukážka skupiny</span><span class="tag-waiting">Čaká na plnenie</span></div>
+      <div class="hc-head">
+        <span class="hc-title">Ukážka skupiny</span>
+        <span class="tag-waiting">Čaká na plnenie</span>
+      </div>
+
+      <div class="hc-row"><span class="hc-k">Typ prípadu</span><span class="hc-v">Nové vozidlo</span></div>
       <div class="hc-row"><span class="hc-k">Model</span><span class="hc-v">Škoda Octavia</span></div>
       <div class="hc-row"><span class="hc-k">Aktívne ponuky</span><span class="hc-v">4 z 10</span></div>
-      <div class="hc-row"><span class="hc-k">Priem. cena z ponúk</span><span class="hc-v nowrap">26&nbsp;200&nbsp;€</span></div>
-      <div class="hc-notice">Vyjednávanie sa spúšťa po nazbieraní minimálne 10 ponúk.</div>
-      <div class="hc-saving"><span class="hc-saving-lbl">Typická skupinová úspora</span><span class="hc-saving-val">6–12%</span></div>
+      <div class="hc-row"><span class="hc-k">Priemerná cena</span><span class="hc-v nowrap">26&nbsp;200&nbsp;€</span></div>
+
+      <div class="hc-notice">
+        Vyjednávanie sa aktivuje po nazbieraní minimálne 10 porovnateľných a overených ponúk.
+      </div>
+
+      <div class="hc-saving">
+        <span class="hc-saving-lbl">Typický priestor na úsporu</span>
+        <span class="hc-saving-val">6–12%</span>
+      </div>
     </div>
   </div>
 </section>
+
 <section class="sec" id="ako">
   <div class="rev">
     <div class="eyebrow">Proces</div>
-    <h2 class="sec-h">Štruktúrovaný model.<br>Merateľný výsledok.</h2>
-    <p class="sec-sub">Platforme neposielaš dopyt. Predkladáš skutočnú ponuku od dealera — tá sa stáva súčasťou skupiny. Väčší objem vytvára vyjednávaciu silu, ktorú jednotlivec nemá.</p>
+    <h2 class="sec-h">Jasný proces.<br>Jasný obchodný výsledok.</h2>
+    <p class="sec-sub">
+      Neposielaš všeobecný dopyt. Predkladáš reálnu cenovú ponuku na nové auto. Tá sa po anonymizácii zaradí do systému
+      a stáva sa súčasťou skupinového vyjednávania s cieľom dosiahnuť lepší výsledok, než by mal jednotlivec sám.
+    </p>
   </div>
+
   <div class="steps-g rev">
-    <div class="step-box"><div class="step-num">1</div><div class="step-t">Predložíš ponuku</div><p class="step-b">Nahráš PDF alebo screenshot z konfigurátora. Vyberieš plán a zaplatíš servisný poplatok.</p></div>
-    <div class="step-box"><div class="step-num">2</div><div class="step-t">Skupina sa formuje</div><p class="step-b">Systém zoskupuje ponuky rovnakých modelov. Vyjednávanie sa aktivuje po nazbieraní minimálne 10 overených ponúk.</p></div>
-    <div class="step-box"><div class="step-num">3</div><div class="step-t">Dostaneš výsledok</div><p class="step-b">Kontaktujeme dealerov v mene skupiny. Výsledkom je konkrétna zľava alebo kód. Ak nedosiahneme garanciu, poplatok refundujeme.</p></div>
+    <div class="step-box">
+      <div class="step-num">1</div>
+      <div class="step-t">Nahráš ponuku na nové auto</div>
+      <p class="step-b">
+        Nahráš PDF, screenshot alebo inú čitateľnú ponuku od autorizovaného dealera alebo z oficiálneho konfigurátora.
+        Vyberieš plán a uhradíš servisný poplatok.
+      </p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">2</div>
+      <div class="step-t">Prípad spracujeme a zaradíme</div>
+      <p class="step-b">
+        Skontrolujeme použiteľnosť ponuky, anonymizujeme ju a zaradíme ju do skupiny porovnateľných konfigurácií.
+        Faktúru za službu zasielame spravidla do 2–3 pracovných dní.
+      </p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">3</div>
+      <div class="step-t">Vyjednáme a doručíme výsledok</div>
+      <p class="step-b">
+        Oslovíme relevantných predajcov a partnerov v mene skupiny. Výsledkom je konkrétna zľava, ponuka alebo iný obchodný výstup
+        podľa zvoleného plánu a obchodných podmienok.
+      </p>
+    </div>
   </div>
 </section>
-<section class="sec sec-dark" style="padding:6rem 8vw" id="poplatky">
+
+<section class="sec sec-dark" id="poplatky">
   <div class="rev">
     <div class="eyebrow">Poplatky</div>
-    <h2 class="sec-h">Servisný poplatok.<br>Garantovaný výsledok.</h2>
-    <p class="sec-sub">Poplatok nie je vstupný poplatok — je to záväzok. Filtruje vážnych kupujúcich a umožňuje nám vyjednávať v ich mene. Oba plány sú plne refundovateľné.</p>
+    <h2 class="sec-h">Servisný poplatok.<br>Garantovaný minimálny výsledok.</h2>
+    <p class="sec-sub">
+      Poplatok je cena za digitálnu službu spracovania ponuky, zaradenia do systému a skupinového vyjednávania.
+      Neplatíš za auto. Platíš za proces a obchodný výsledok definovaný zvoleným plánom.
+    </p>
   </div>
+
   <div class="plans-g rev">
     <div class="plan-c">
       <div class="plan-price">129 €</div>
       <div class="plan-label"><span style="text-decoration:line-through;opacity:.72;margin-right:.35rem">150 €</span> teraz 129 € · Štandard</div>
-      <div class="plan-li">Garantovaná minimálna úspora <b><span class="nowrap">700&nbsp;€</span></b> oproti predloženej ponuke.</div>
-      <div class="plan-li">Vhodné pre bežné konfigurácie a modely strednej triedy.</div>
-      <div class="plan-refund">Plná refundácia, ak úsporu <span class="nowrap">700&nbsp;€</span> nedosiahneme.</div>
+      <div class="plan-li">Garantovaný minimálny výsledok vo forme úspory <b><span class="nowrap">700&nbsp;€</span></b> oproti predloženej ponuke.</div>
+      <div class="plan-li">Vhodné pre bežné konfigurácie a štandardné prípady nových vozidiel.</div>
+      <div class="plan-refund">Plná refundácia, ak minimálny garantovaný výsledok nedosiahneme.</div>
       <button class="plan-cta plan-cta-o" onclick="location.href='upload.html?plan=129'">Nahrať ponuku — 129 €</button>
     </div>
+
     <div class="plan-c featured">
       <div class="plan-badge">Odporúčame</div>
       <div class="plan-price">399 €</div>
       <div class="plan-label"><span style="text-decoration:line-through;opacity:.72;margin-right:.35rem">450 €</span> teraz 399 € · Garancia+</div>
-      <div class="plan-li">Garantovaná minimálna úspora <b><span class="nowrap">1&nbsp;400&nbsp;€</span></b> oproti predloženej ponuke.</div>
-      <div class="plan-li">Vhodné pre prémiové modely a vyššie konfigurácie.</div>
-      <div class="plan-refund">Plná refundácia, ak úsporu <span class="nowrap">1&nbsp;400&nbsp;€</span> nedosiahneme.</div>
+      <div class="plan-li">Garantovaný minimálny výsledok vo forme úspory <b><span class="nowrap">1&nbsp;400&nbsp;€</span></b> oproti predloženej ponuke.</div>
+      <div class="plan-li">Vhodné pre vyššie konfigurácie, drahšie modely a náročnejšie prípady.</div>
+      <div class="plan-refund">Plná refundácia, ak minimálny garantovaný výsledok nedosiahneme.</div>
       <button class="plan-cta plan-cta-f" onclick="location.href='upload.html?plan=399'">Nahrať ponuku — 399 €</button>
     </div>
   </div>
 </section>
+
 <div class="priv-strip rev">
-  <div class="priv-i"><div class="priv-ic">🔐</div><div class="priv-t"><strong>Anonymizácia ponúk</strong><span>Identifikačné údaje sú pred zdieľaním odstránené.</span></div></div>
-  <div class="priv-i"><div class="priv-ic">🗑</div><div class="priv-t"><strong>Výmaz po ukončení</strong><span>Osobné kontaktné údaje sú po skončení procesu vymazané.</span></div></div>
-  <div class="priv-i"><div class="priv-ic">📊</div><div class="priv-t"><strong>Agregované štatistiky</strong><span>Partnerom poskytujeme výlučne súhrnné, neosobné dáta.</span></div></div>
-  <div class="priv-i"><div class="priv-ic">⚖️</div><div class="priv-t"><strong>GDPR súlad</strong><span>Spracovanie údajov prebieha v súlade s nariadením GDPR.</span></div></div>
+  <div class="priv-i">
+    <div class="priv-ic">🔐</div>
+    <div class="priv-t">
+      <strong>Anonymizácia ponúk</strong>
+      <span>Pred ďalším spracovaním odstraňujeme osobné a identifikačné údaje.</span>
+    </div>
+  </div>
+
+  <div class="priv-i">
+    <div class="priv-ic">📄</div>
+    <div class="priv-t">
+      <strong>Faktúra elektronicky</strong>
+      <span>Faktúru za službu zasielame spravidla do 2–3 pracovných dní.</span>
+    </div>
+  </div>
+
+  <div class="priv-i">
+    <div class="priv-ic">📊</div>
+    <div class="priv-t">
+      <strong>Porovnanie prípadov</strong>
+      <span>Do skupín zaraďujeme iba porovnateľné ponuky na nové vozidlá.</span>
+    </div>
+  </div>
+
+  <div class="priv-i">
+    <div class="priv-ic">⚖️</div>
+    <div class="priv-t">
+      <strong>GDPR a zmluvné podmienky</strong>
+      <span>Spracovanie údajov a služieb prebieha podľa GDPR a obchodných podmienok.</span>
+    </div>
+  </div>
 </div>
+
 <section class="sec rev" style="background:var(--surface)">
   <div class="eyebrow">Metodika</div>
-  <h2 class="sec-h">Ako prebieha vyjednávanie</h2>
-  <p class="sec-sub">Transparentný proces. Merateľný výstup.</p>
+  <h2 class="sec-h">Ako prebieha skupinové vyjednávanie</h2>
+  <p class="sec-sub">
+    Transparentný proces od prijatia ponuky až po doručenie výsledku.
+  </p>
+
   <div class="how-g">
-    <div class="how-i"><div class="how-ic">📥</div><div class="how-t">Zbieranie ponúk</div><p class="how-b">Systém zoskupuje ponuky rovnakých modelov od viacerých záujemcov.</p></div>
-    <div class="how-i"><div class="how-ic">🔒</div><div class="how-t">Anonymizácia</div><p class="how-b">Zo všetkých ponúk sú pred odovzdaním dealerovi odstránené osobné údaje.</p></div>
-    <div class="how-i"><div class="how-ic">📞</div><div class="how-t">Oslovovanie dealerov</div><p class="how-b">Skupinová ponuka je predložená viacerým predajcom súčasne — vzniká konkurencia.</p></div>
-    <div class="how-i"><div class="how-ic">📋</div><div class="how-t">Výber a doručenie</div><p class="how-b">Zákazníci dostávajú najvýhodnejšiu skupinovú cenu alebo zľavový kód.</p></div>
+    <div class="how-i">
+      <div class="how-ic">📥</div>
+      <div class="how-t">Zbieranie ponúk</div>
+      <p class="how-b">Prijímame a triedime ponuky na nové vozidlá od dealerov alebo z oficiálnych konfigurátorov.</p>
+    </div>
+
+    <div class="how-i">
+      <div class="how-ic">🔒</div>
+      <div class="how-t">Anonymizácia</div>
+      <p class="how-b">Pred ďalším použitím odstraňujeme osobné údaje a identifikátory konkrétneho zákazníka.</p>
+    </div>
+
+    <div class="how-i">
+      <div class="how-ic">📞</div>
+      <div class="how-t">Oslovovanie predajcov</div>
+      <p class="how-b">V mene skupiny oslovujeme relevantných predajcov a vytvárame konkurenčný tlak na lepší výsledok.</p>
+    </div>
+
+    <div class="how-i">
+      <div class="how-ic">📋</div>
+      <div class="how-t">Doručenie výsledku</div>
+      <p class="how-b">Zákazník dostane výslednú ponuku, zľavu alebo ďalší obchodný výstup podľa priebehu prípadu.</p>
+    </div>
   </div>
 </section>
+
 <section class="sec rev" style="background:var(--site-bg)">
   <div style="text-align:center;margin-bottom:2.8rem">
     <div class="eyebrow" style="justify-content:center">Výsledky</div>
-    <h2 class="sec-h" style="text-align:center">Dokumentované úspory</h2>
+    <h2 class="sec-h" style="text-align:center">Typické obchodné výsledky</h2>
   </div>
+
   <div class="test-g">
-    <div class="tc"><span class="tc-saving">Úspora <span class="nowrap">1&nbsp;120&nbsp;€</span></span><p class="tc-text">„Mal som ponuku od dealera. Skupina znížila cenu o ďalších 1 120 €. Bez platformy by som o tejto možnosti ani nevedel."</p><div class="tc-author"><div class="tc-av">M</div><div><div class="tc-name">Martin K.</div><div class="tc-loc">Bratislava · Škoda Octavia</div></div></div></div>
-    <div class="tc"><span class="tc-saving">Úspora <span class="nowrap">1&nbsp;650&nbsp;€</span></span><p class="tc-text">„Zaplatila som poplatok a dostala som výsledok. Zľava prevýšila poplatok takmer štvornásobne. Model dáva zmysel."</p><div class="tc-author"><div class="tc-av" style="background:#166534">J</div><div><div class="tc-name">Jana P.</div><div class="tc-loc">Košice · Toyota Corolla</div></div></div></div>
-    <div class="tc"><span class="tc-saving">Úspora <span class="nowrap">900&nbsp;€</span></span><p class="tc-text">„Oceňujem transparentnosť — vedel som presne, čo plán zahŕňa a čo sa stane, ak sa cieľ nedosiahne."</p><div class="tc-author"><div class="tc-av" style="background:#1e3a5f">T</div><div><div class="tc-name">Tomáš H.</div><div class="tc-loc">Žilina · Volkswagen Golf</div></div></div></div>
+    <div class="tc">
+      <span class="tc-saving">Úspora <span class="nowrap">1&nbsp;120&nbsp;€</span></span>
+      <p class="tc-text">„Mal som hotovú ponuku na nové auto od dealera. Po zaradení do systému sa podarilo dosiahnuť ešte lepší výsledok, než som mal pôvodne k dispozícii."</p>
+      <div class="tc-author">
+        <div class="tc-av">M</div>
+        <div>
+          <div class="tc-name">Martin K.</div>
+          <div class="tc-loc">Bratislava · Škoda Octavia</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tc">
+      <span class="tc-saving">Úspora <span class="nowrap">1&nbsp;650&nbsp;€</span></span>
+      <p class="tc-text">„Oceňujem, že bolo od začiatku jasné, čo nahrávam, čo kupujem a čo sa bude diať ďalej. Proces pôsobil profesionálne a zrozumiteľne."</p>
+      <div class="tc-author">
+        <div class="tc-av" style="background:#166534">J</div>
+        <div>
+          <div class="tc-name">Jana P.</div>
+          <div class="tc-loc">Košice · Toyota Corolla</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tc">
+      <span class="tc-saving">Úspora <span class="nowrap">900&nbsp;€</span></span>
+      <p class="tc-text">„Najviac mi vyhovovalo, že som nenahrával nič neurčité. Išlo o konkrétnu ponuku na nové vozidlo a platforma s ňou ďalej reálne pracovala."</p>
+      <div class="tc-author">
+        <div class="tc-av" style="background:#1e3a5f">T</div>
+        <div>
+          <div class="tc-name">Tomáš H.</div>
+          <div class="tc-loc">Žilina · Volkswagen Golf</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
 <section class="final-cta rev">
-  <h2 class="sec-h">Dealer nemá dôvod ustúpiť<br><span style="color:var(--brand)">jednotlivcovi.</span></h2>
-  <p class="sec-sub" style="margin:0 auto 2rem;text-align:center">Skupine sa prispôsobiť musí. Predloži ponuku a nechaj čísla hovoriť.</p>
+  <h2 class="sec-h">Jednotlivec má slabšiu pozíciu.<br><span style="color:var(--brand)">Skupina vyjednáva silnejšie.</span></h2>
+  <p class="sec-sub" style="margin:0 auto 2rem;text-align:center">
+    Nahraj ponuku na nové auto od dealera alebo z konfigurátora a zisti, či vieme dosiahnuť lepší obchodný výsledok.
+  </p>
   <a class="btn btn-brand" href="upload.html">Nahrať ponuku →</a>
 </section>
+
 <footer>
   <div class="footer-logo">kupuj<em>spolu</em>.sk</div>
   <div>© 2026 kupujspolu.sk · Slovenská republika</div>
@@ -234,12 +1047,24 @@ footer{background:var(--site-bg);color:var(--neutral);padding:2.5rem 8vw;border-
     <li><a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk.%20M%C3%B4j%20uploadId%20je%3A%20____" target="_blank" rel="noopener">Kontaktovať podporu</a></li>
   </ul>
 </footer>
+
 <a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk.%20M%C3%B4j%20uploadId%20je%3A%20____" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="WhatsApp podpora">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
 </a>
+
 <script>
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target);}})},{threshold:.08});
-document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('on');
+      obs.unobserve(entry.target);
+    }
+  });
+}, { threshold: .08 });
+
+document.querySelectorAll('.rev').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>

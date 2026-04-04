@@ -19,31 +19,39 @@
       --brand:#3B82F6;
       --brand-dark:#2563EB;
       --brand-soft:rgba(59,130,246,.12);
-      --ok:#22C55E;
       --warn:#F59E0B;
-      --danger:#EF4444;
-      --radius:20px;
+      --warn-soft:rgba(245,158,11,.12);
+      --radius:22px;
       --pill:999px;
       --shadow:0 18px 60px rgba(0,0,0,.42);
-      --max:1080px;
+      --max:1200px;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
       font-family:'Outfit',sans-serif;
-      background:linear-gradient(180deg,#050912 0%, #08101c 100%);
+      background:
+        radial-gradient(circle at top right, rgba(59,130,246,.12), transparent 30%),
+        linear-gradient(180deg,#050912 0%, #08101c 100%);
       color:var(--ink);
       line-height:1.72;
     }
+
     a{color:#93c5fd;text-decoration:none}
     a:hover{text-decoration:underline}
+
     .topbar{
-      position:sticky;top:0;z-index:50;
+      position:sticky;
+      top:0;
+      z-index:60;
       backdrop-filter:blur(16px);
       background:rgba(7,11,20,.88);
       border-bottom:1px solid var(--line);
     }
+
     .topbar-inner{
       max-width:var(--max);
       margin:0 auto;
@@ -53,13 +61,19 @@
       justify-content:space-between;
       gap:16px;
     }
+
     .logo{
       font-family:'Bebas Neue',sans-serif;
       letter-spacing:.05em;
       font-size:1.35rem;
       color:var(--ink);
     }
-    .logo em{font-style:normal;color:var(--brand)}
+
+    .logo em{
+      font-style:normal;
+      color:var(--brand);
+    }
+
     .back{
       display:inline-flex;
       align-items:center;
@@ -71,11 +85,13 @@
       color:var(--ink);
       font-weight:600;
     }
-    .hero{
+
+    .page{
       max-width:var(--max);
       margin:0 auto;
-      padding:44px 24px 16px;
+      padding:38px 24px 70px;
     }
+
     .eyebrow{
       display:inline-flex;
       align-items:center;
@@ -89,167 +105,262 @@
       font-weight:700;
       letter-spacing:.08em;
       text-transform:uppercase;
+      margin-bottom:18px;
     }
+
     .eyebrow::before{
       content:"";
-      width:10px;height:10px;border-radius:50%;
+      width:10px;
+      height:10px;
+      border-radius:50%;
       background:var(--brand);
       box-shadow:0 0 0 6px rgba(59,130,246,.14);
     }
+
     h1{
-      margin:18px 0 10px;
+      margin:0 0 14px;
       font-family:'Bebas Neue',sans-serif;
       font-size:clamp(2.5rem,5vw,4.4rem);
       line-height:.95;
       letter-spacing:.02em;
     }
-    .hero-sub{
-      max-width:860px;
+
+    .lead{
+      max-width:920px;
       color:var(--muted);
-      font-size:1rem;
       font-weight:300;
+      font-size:1rem;
+      margin-bottom:26px;
     }
+
+    .notice{
+      border-radius:18px;
+      padding:18px 20px;
+      border:1px solid var(--line);
+      margin-bottom:20px;
+    }
+
+    .notice.warn{
+      background:var(--warn-soft);
+      border-color:rgba(245,158,11,.22);
+      color:#fde68a;
+    }
+
     .layout{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:18px 24px 70px;
       display:grid;
-      grid-template-columns:300px 1fr;
-      gap:24px;
+      grid-template-columns:340px minmax(0,1fr);
+      gap:22px;
+      align-items:start;
     }
-    .aside{
-      position:sticky;top:88px;align-self:start;
+
+    .sidebar{
+      position:sticky;
+      top:88px;
+      display:grid;
+      gap:16px;
+    }
+
+    .card{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:18px;
+      padding:22px;
       box-shadow:var(--shadow);
+      min-width:0;
     }
-    .aside h3{
+
+    .card h2{
       margin:0 0 14px;
-      font-size:1rem;
-      color:var(--ink);
+      font-size:1.14rem;
+      line-height:1.2;
     }
-    .aside nav{
+
+    .toc{
       display:grid;
       gap:8px;
+      margin-top:10px;
     }
-    .aside nav a{
+
+    .toc a{
       display:block;
       padding:10px 12px;
-      border-radius:12px;
-      color:var(--muted);
-      border:1px solid transparent;
-      background:transparent;
-      font-size:.93rem;
-    }
-    .aside nav a:hover{
-      background:rgba(255,255,255,.03);
-      border-color:var(--line);
-      text-decoration:none;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#0d1526;
       color:var(--ink);
+      text-decoration:none;
+      font-size:.92rem;
     }
-    .aside .meta{
-      margin-top:16px;
-      padding-top:16px;
-      border-top:1px solid var(--line);
-      font-size:.84rem;
-      color:var(--muted-2);
+
+    .toc a:hover{
+      text-decoration:none;
+      border-color:rgba(59,130,246,.28);
+      background:rgba(59,130,246,.08);
     }
-    .content{
+
+    .main{
       display:grid;
       gap:18px;
+      min-width:0;
     }
-    .notice{
-      background:linear-gradient(180deg,rgba(34,197,94,.10),rgba(34,197,94,.05));
-      border:1px solid rgba(34,197,94,.22);
-      border-radius:18px;
-      padding:18px 18px;
-      color:#dcfce7;
-    }
-    .notice strong{color:#fff}
-    .warn{
-      background:linear-gradient(180deg,rgba(245,158,11,.12),rgba(245,158,11,.05));
-      border:1px solid rgba(245,158,11,.24);
-      border-radius:18px;
-      padding:18px;
-      color:#fde68a;
-    }
-    .card{
+
+    .section{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:24px;
       box-shadow:var(--shadow);
+      min-width:0;
     }
-    .card h2{
-      margin:0 0 14px;
-      font-size:1.35rem;
-      line-height:1.2;
+
+    .section h3{
+      margin:0 0 12px;
+      font-size:1.18rem;
+      line-height:1.25;
     }
-    .card h3{
-      margin:18px 0 10px;
-      font-size:1.02rem;
-      color:var(--ink);
-    }
-    .card p{
+
+    .section p{
       margin:0 0 12px;
       color:var(--muted);
+      font-size:.96rem;
     }
-    .card ul{
-      margin:0;
-      padding-left:20px;
+
+    .section p:last-child{
+      margin-bottom:0;
+    }
+
+    .section ul{
+      margin:0 0 12px 18px;
+      padding:0;
       color:var(--muted);
     }
-    .card li{margin:0 0 8px}
-    .table{
-      display:grid;
-      gap:10px;
-      margin-top:12px;
+
+    .section li{
+      margin-bottom:8px;
     }
-    .row{
-      display:grid;
-      grid-template-columns:220px 1fr;
-      gap:14px;
-      padding:12px 14px;
-      border-radius:14px;
-      background:var(--card-2);
-      border:1px solid var(--line);
-    }
-    .row strong{color:var(--ink)}
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 10px;
-      border-radius:var(--pill);
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
+
+    .section strong{
       color:var(--ink);
-      font-size:.84rem;
-      font-weight:700;
     }
+
+    .info-grid{
+      display:grid;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .info-row{
+      display:grid;
+      grid-template-columns:220px minmax(0,1fr);
+      gap:12px;
+      align-items:start;
+      border:1px solid var(--line);
+      background:#0d1526;
+      border-radius:16px;
+      padding:14px 16px;
+      min-width:0;
+    }
+
+    .info-label{
+      font-size:.9rem;
+      font-weight:700;
+      color:var(--ink);
+    }
+
+    .info-value{
+      color:var(--muted);
+      font-size:.95rem;
+      min-width:0;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+
+    .contact-grid{
+      display:grid;
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .contact-row{
+      display:block;
+      border:1px solid var(--line);
+      background:#0d1526;
+      border-radius:16px;
+      padding:16px 18px;
+      min-width:0;
+    }
+
+    .contact-label{
+      display:block;
+      font-size:.9rem;
+      font-weight:800;
+      color:var(--ink);
+      margin-bottom:8px;
+      line-height:1.35;
+    }
+
+    .contact-value{
+      display:block;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.55;
+      white-space:normal;
+      word-break:normal;
+      overflow-wrap:break-word;
+    }
+
+    .contact-value a{
+      color:#93c5fd;
+      white-space:normal;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+
     .footer{
       max-width:var(--max);
       margin:0 auto;
-      padding:0 24px 48px;
+      padding:0 24px 42px;
       color:var(--muted-2);
       font-size:.86rem;
     }
+
     .footer-links{
       display:flex;
       flex-wrap:wrap;
       gap:16px;
       margin-top:12px;
     }
-    @media (max-width: 920px){
-      .layout{grid-template-columns:1fr}
-      .aside{position:static}
-      .row{grid-template-columns:1fr}
-      .topbar-inner{padding:14px 16px}
-      .hero{padding:32px 16px 10px}
-      .layout{padding:14px 16px 56px}
-      .footer{padding:0 16px 42px}
+
+    @media (max-width: 1100px){
+      .layout{
+        grid-template-columns:300px minmax(0,1fr);
+      }
+    }
+
+    @media (max-width: 980px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+
+      .info-row{
+        grid-template-columns:1fr;
+      }
+
+      .topbar-inner{
+        padding:14px 16px;
+      }
+
+      .page{
+        padding:32px 16px 56px;
+      }
+
+      .footer{
+        padding:0 16px 42px;
+      }
     }
   </style>
 </head>
@@ -261,313 +372,387 @@
     </div>
   </div>
 
-  <section class="hero">
-    <div class="eyebrow">Právne dokumenty</div>
+  <main class="page">
+    <div class="eyebrow">Právne informácie</div>
     <h1>Obchodné podmienky</h1>
-    <p class="hero-sub">
-      Tieto obchodné podmienky upravujú poskytovanie digitálnej služby platformy kupujspolu.sk.
+    <p class="lead">
+      Tieto obchodné podmienky upravujú poskytovanie digitálnej služby prostredníctvom platformy kupujspolu.sk.
       Zákazník prostredníctvom platformy nekupuje vozidlo, rezerváciu vozidla ani financovanie.
-      Kupuje sprostredkovateľskú a facilitačnú službu skupinového vyjednávania lepšej ceny nového osobného vozidla.
+      Kupuje digitálnu službu spracovania ponuky, anonymizovaného porovnania a skupinového vyjednávania lepšieho obchodného výsledku pri kúpe nového osobného vozidla.
     </p>
-  </section>
 
-  <section class="layout">
-    <aside class="aside">
-      <h3>Obsah dokumentu</h3>
-      <nav>
-        <a href="#upozornenie">Dôležité upozornenie</a>
-        <a href="#definicie">1. Definície pojmov</a>
-        <a href="#charakter">2. Charakter a rozsah služby</a>
-        <a href="#opravnenost">3. Podmienky predloženia ponuky</a>
-        <a href="#proces">4. Proces vyjednávania</a>
-        <a href="#poplatok">5. Servisný poplatok a garancia</a>
-        <a href="#zmena">5A. Zmena konfigurácie a ceny</a>
-        <a href="#refund">6. Refundácia a reklamácie</a>
-        <a href="#odstupenie">7. Odstúpenie od zmluvy</a>
-        <a href="#povinnosti">8. Povinnosti zákazníka</a>
-        <a href="#zodpovednost">9. Obmedzenie zodpovednosti</a>
-        <a href="#gdpr">10. Ochrana osobných údajov</a>
-        <a href="#spory">11. Riešenie sporov</a>
-        <a href="#kontakt">12. Prevádzkovateľ a kontakt</a>
-      </nav>
-      <div class="meta">
-        Verzia 1.1<br>
-        Platné od 22. marca 2026
-      </div>
-    </aside>
+    <div class="notice warn">
+      Služba je určená výhradne pre ponuky na nové osobné vozidlá od autorizovaných dealerov alebo z oficiálnych konfigurátorov.
+      Platforma nie je predajca vozidiel a nevystupuje ako zmluvná strana kúpnej zmluvy medzi zákazníkom a dealerom.
+    </div>
 
-    <main class="content">
-      <div id="upozornenie" class="notice">
-        <strong>Dôležité upozornenie:</strong>
-        kupujspolu.sk nie je predajca vozidiel, nie je autorizovaný dealer, nie je sprostredkovateľ úverov ani lízingová spoločnosť.
-        Platforma poskytuje výlučne digitálnu sprostredkovateľskú, poradenskú a facilitačnú službu v oblasti skupinového vyjednávania cien nových osobných vozidiel.
-      </div>
-
-      <div class="warn">
-        <strong>Čo zákazník kupuje:</strong>
-        zákazník platením servisného poplatku kupuje službu zaradenia ponuky do procesu overenia, anonymizácie, skupinového porovnávania a vyjednávania.
-        Zákazník nekupuje vozidlo od prevádzkovateľa a nevzniká mu nárok na dodanie vozidla zo strany prevádzkovateľa.
-      </div>
-
-      <section id="definicie" class="card">
-        <h2>1. Definície pojmov</h2>
-
-        <div class="table">
-          <div class="row">
-            <strong>Platforma</strong>
-            <div>Webová služba kupujspolu.sk prevádzkovaná spoločnosťou quantivo s.r.o.</div>
-          </div>
-          <div class="row">
-            <strong>Zákazník</strong>
-            <div>Fyzická osoba alebo právnická osoba, ktorá predložila cenovú ponuku a uhradila servisný poplatok.</div>
-          </div>
-          <div class="row">
-            <strong>Ponuka</strong>
-            <div>Cenová ponuka nového osobného vozidla od autorizovaného predajcu, predložená vo forme PDF, JPG alebo PNG cez rozhranie platformy.</div>
-          </div>
-          <div class="row">
-            <strong>Skupina</strong>
-            <div>Súbor anonymizovaných ponúk porovnateľných konfigurácií rovnakého modelu vozidla, na základe ktorého platforma vyjednáva s predajcami.</div>
-          </div>
-          <div class="row">
-            <strong>Servisný poplatok</strong>
-            <div>Jednorazová odplata za digitálnu sprostredkovateľskú a facilitačnú službu platformy.</div>
-          </div>
-          <div class="row">
-            <strong>Garantovaná úspora</strong>
-            <div>Minimálna deklarovaná zľava oproti cene predloženej ponuky pri rovnakej alebo porovnateľnej konfigurácii.</div>
-          </div>
-          <div class="row">
-            <strong>Výsledok</strong>
-            <div>Informácia o vyjednanej zľave, obchodnom výsledku alebo zľavovom kóde doručená zákazníkovi elektronicky.</div>
-          </div>
-          <div class="row">
-            <strong>Predajca / dealer</strong>
-            <div>Autorizovaný predajca nových osobných vozidiel oslovený platformou v rámci procesu skupinového vyjednávania.</div>
+    <section class="layout">
+      <aside class="sidebar">
+        <div class="card">
+          <h2>Obsah</h2>
+          <div class="toc">
+            <a href="#cl1">1. Prevádzkovateľ</a>
+            <a href="#cl2">2. Definície pojmov</a>
+            <a href="#cl3">3. Charakter a rozsah služby</a>
+            <a href="#cl4">4. Podmienky predloženia ponuky</a>
+            <a href="#cl5">5. Objednávka a uzavretie zmluvy</a>
+            <a href="#cl6">6. Servisný poplatok a garancia</a>
+            <a href="#cl7">7. Spracovanie ponuky a priebeh služby</a>
+            <a href="#cl8">8. Fakturácia</a>
+            <a href="#cl9">9. Refundácia a reklamácie</a>
+            <a href="#cl10">10. Odstúpenie od zmluvy</a>
+            <a href="#cl11">11. Povinnosti zákazníka</a>
+            <a href="#cl12">12. Obmedzenie zodpovednosti</a>
+            <a href="#cl13">13. Ochrana osobných údajov</a>
+            <a href="#cl14">14. Alternatívne riešenie sporov</a>
+            <a href="#cl15">15. Záverečné ustanovenia</a>
           </div>
         </div>
-      </section>
 
-      <section id="charakter" class="card">
-        <h2>2. Charakter a rozsah služby</h2>
-        <p>
-          Platforma agreguje ponuky zákazníkov, anonymizuje ich a vyjednáva v mene skupiny s predajcami.
-          Platforma nie je stranou kúpnej zmluvy medzi zákazníkom a predajcom.
-        </p>
-        <p>
-          Zákazník nie je povinný akceptovať vyjednaný výsledok. Ak však platforma preukázateľne poskytne výsledok,
-          ktorý spĺňa parametre garantovanej úspory podľa týchto podmienok, nárok na refundáciu servisného poplatku nevzniká.
-        </p>
-        <p>
-          Služba je poskytovaná elektronicky a jej plnenie sa začína bezodkladne po zaplatení servisného poplatku
-          a riadnom odoslaní ponuky cez platformu.
-        </p>
-      </section>
+        <div class="card">
+          <h2>Kontaktné údaje</h2>
+          <div class="contact-grid">
+            <div class="contact-row">
+              <span class="contact-label">Prevádzkovateľ</span>
+              <span class="contact-value">quantivo s.r.o.</span>
+            </div>
 
-      <section id="opravnenost" class="card">
-        <h2>3. Podmienky predloženia ponuky</h2>
-        <ul>
-          <li>Ponuka musí byť skutočnou a platnou cenovou ponukou od autorizovaného predajcu nového osobného vozidla.</li>
-          <li>Povolené formáty sú PDF, JPG a PNG; maximálna veľkosť súboru je 10 MB.</li>
-          <li>Zákazník je povinný uviesť pravdivé, presné a aktuálne kontaktné a fakturačné údaje.</li>
-          <li>Za jeden konkrétny prípad odoslania je prípustná jedna ponuka; duplicitné alebo manipulatívne odosielanie je zakázané.</li>
-          <li>Zákazník musí mať oprávnenie použiť a zdieľať anonymizované údaje z predloženej ponuky v rozsahu nevyhnutnom na proces vyjednávania.</li>
-          <li>Platforma si vyhradzuje právo odmietnuť alebo vylúčiť ponuku, ktorá je neúplná, nečitateľná, zjavne falošná alebo nespĺňa tieto podmienky; v takom prípade môže byť servisný poplatok refundovaný v plnej výške.</li>
-        </ul>
-      </section>
+            <div class="contact-row">
+              <span class="contact-label">IČO</span>
+              <span class="contact-value">57532711</span>
+            </div>
 
-      <section id="proces" class="card">
-        <h2>4. Proces skupinového vyjednávania</h2>
-        <ul>
-          <li>Zákazník nahrá súbor ponuky, vyplní údaje a uhradí servisný poplatok cez externého poskytovateľa platobných služieb.</li>
-          <li>Platforma overí úplnosť a použiteľnosť ponuky.</li>
-          <li>Identifikačné údaje sú pred ďalším použitím odstránené alebo anonymizované.</li>
-          <li>Ponuka je zaradená do skupiny porovnateľných konfigurácií.</li>
-          <li>Vyjednávanie sa aktivuje po vytvorení dostatočného súboru relevantných ponúk pre daný model alebo konfiguráciu.</li>
-          <li>Výsledok je zákazníkovi doručený elektronicky, najmä e-mailom.</li>
-        </ul>
-        <p>
-          Platforma nezaručuje konkrétny termín doručenia výsledku. Čas závisí najmä od počtu vhodných ponúk v skupine,
-          spolupráce predajcov a aktuálnych obchodných podmienok na trhu.
-        </p>
-      </section>
+            <div class="contact-row">
+              <span class="contact-label">Email</span>
+              <span class="contact-value">
+                <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>
+              </span>
+            </div>
 
-      <section id="poplatok" class="card">
-        <h2>5. Servisný poplatok a garantovaná úspora</h2>
-
-        <h3>Plán Štandard (129 €)</h3>
-        <p>
-          Platforma sa zaväzuje dosiahnuť minimálnu úsporu 700 € oproti cene predloženej ponuky pri rovnakej alebo porovnateľnej konfigurácii vozidla.
-        </p>
-
-        <h3>Plán Garancia+ (399 €)</h3>
-        <p>
-          Platforma sa zaväzuje dosiahnuť minimálnu úsporu 1 400 € oproti cene predloženej ponuky pri rovnakej alebo porovnateľnej konfigurácii vozidla.
-        </p>
-
-        <h3>Čo sa považuje za porovnateľnú konfiguráciu</h3>
-        <p>
-          Najmä rovnaký modelový rad, rovnaká výbavová línia, rovnaký motorový stupeň a rovnaký typ prevodovky.
-          Rozdiel v laku, drobnom príslušenstve alebo dodacej lehote nemusí byť rozhodujúci.
-        </p>
-
-        <h3>Za splnenie garancie sa nepovažuje</h3>
-        <ul>
-          <li>ponuka na iný model, inú výbavovú líniu alebo iný typ pohonu,</li>
-          <li>zľava podmienená povinným doplnkovým plnením za neprimeraných podmienok,</li>
-          <li>výlučne zvýhodnené financovanie bez porovnateľnej hotovostnej úspory,</li>
-          <li>zľava viazaná na nevýhodný výkup vozidla zákazníka.</li>
-        </ul>
-
-        <h3>Spôsob platby a daňové doklady</h3>
-        <p>
-          Platba servisného poplatku prebieha online prostredníctvom externého poskytovateľa platobných služieb.
-          Daňový doklad alebo faktúra môže byť zákazníkovi doručená elektronicky na e-mailovú adresu uvedenú pri odoslaní ponuky.
-        </p>
-      </section>
-
-      <section id="zmena" class="card">
-        <h2>5A. Zmena konfigurácie a ceny vozidla</h2>
-        <p>
-          Platforma posudzuje splnenie garantovanej úspory výhradne vo vzťahu k pôvodne predloženej ponuke a k vozidlu
-          v rovnakej alebo porovnateľnej konfigurácii.
-        </p>
-        <p>
-          Ak po predložení ponuky dôjde k zmene konfigurácie vozidla, výbavy, motorizácie, prevodovky, dodacej lehoty,
-          cenníka, financovania alebo iných obchodných podmienok, platforma nenesie zodpovednosť za následný rozdiel ceny,
-          pokiaľ zákazníkovi poskytla výsledok spĺňajúci tieto podmienky vo vzťahu k pôvodnej alebo porovnateľnej konfigurácii.
-        </p>
-      </section>
-
-      <section id="refund" class="card">
-        <h2>6. Refundácia a reklamácie</h2>
-        <p>
-          Zákazník má právo na plnú refundáciu servisného poplatku, ak platforma neposkytne výsledok spĺňajúci parametre garantovanej úspory podľa článku 5.
-        </p>
-        <p>
-          Refundácia bude spracovaná spravidla do 14 pracovných dní od potvrdenia, že garantovaná úspora nebola dosiahnutá,
-          a to rovnakou alebo porovnateľnou platobnou metódou, ak to technické alebo právne podmienky umožňujú.
-        </p>
-
-        <h3>Refundácia sa neposkytne najmä vtedy, ak:</h3>
-        <ul>
-          <li>zákazník predložil falošnú, neplatnú alebo podvodnú ponuku,</li>
-          <li>zákazník predložil duplicitnú ponuku alebo manipuloval proces,</li>
-          <li>zákazník inicioval chargeback alebo platobný spor pred ukončením procesu,</li>
-          <li>zákazník odmietol výsledok, ktorý preukázateľne spĺňa parametre garantovanej úspory,</li>
-          <li>zákazník neposkytol potrebnú súčinnosť alebo znemožnil vyhodnotenie výsledku,</li>
-          <li>zákazník uviedol nepravdivé údaje, ktoré znemožnili doručenie výsledku alebo refundácie.</li>
-        </ul>
-
-        <h3>Reklamácie</h3>
-        <p>
-          Reklamáciu alebo žiadosť o refundáciu môže zákazník zaslať na e-mail
-          <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>.
-          Správa by mala obsahovať identifikáciu zákazníka, e-mail použitý pri objednávke, prípadne identifikátor odoslania a stručný opis problému.
-        </p>
-        <p>
-          Platforma potvrdí prijatie reklamácie bez zbytočného odkladu a vybaví ju v primeranej lehote,
-          spravidla najneskôr do 30 dní, ak osobitný právny predpis neustanovuje inak.
-        </p>
-      </section>
-
-      <section id="odstupenie" class="card">
-        <h2>7. Odstúpenie od zmluvy</h2>
-        <p>
-          Zákazník berie na vedomie, že ide o poskytovanie digitálnej služby, ktorá sa začína poskytovať bezodkladne po úhrade servisného poplatku a odoslaní ponuky.
-        </p>
-        <p>
-          Odoslaním objednávky a úhradou servisného poplatku zákazník výslovne súhlasí so začatím poskytovania služby pred uplynutím lehoty na odstúpenie od zmluvy,
-          a súčasne potvrdzuje, že bol riadne poučený o tom, že po úplnom poskytnutí služby môže v rozsahu povolenom príslušnými právnymi predpismi zaniknúť jeho právo na odstúpenie od zmluvy.
-        </p>
-        <p>
-          Tým nie je dotknuté právo zákazníka na refundáciu podľa týchto obchodných podmienok, ak sú splnené podmienky garantovanej refundácie.
-        </p>
-      </section>
-
-      <section id="povinnosti" class="card">
-        <h2>8. Povinnosti zákazníka</h2>
-        <ul>
-          <li>uvádzať pravdivé, presné a aktuálne údaje,</li>
-          <li>byť skutočným záujemcom o kúpu vozidla,</li>
-          <li>nevyužívať platformu na testovanie, špekulatívne refundácie alebo obchádzanie procesu,</li>
-          <li>nepredkladať viacnásobné ponuky na rovnaký prípad za účelom manipulácie,</li>
-          <li>nezasielať osobné údaje tretích strán nad nevyhnutný rozsah,</li>
-          <li>neobchádzať technické a bezpečnostné opatrenia platformy.</li>
-        </ul>
-      </section>
-
-      <section id="zodpovednost" class="card">
-        <h2>9. Obmedzenie zodpovednosti</h2>
-        <p>Platforma nenesie zodpovednosť najmä za:</p>
-        <ul>
-          <li>konečné obchodné rozhodnutie predajcu,</li>
-          <li>zmeny cien, konfigurácií alebo dostupnosti vozidiel po predložení ponuky,</li>
-          <li>zmeny obchodných podmienok výrobcov alebo predajcov,</li>
-          <li>omeškania spôsobené vyššou mocou alebo výpadkami externých služieb,</li>
-          <li>škodu spôsobenú nesprávnymi alebo neúplnými údajmi zo strany zákazníka.</li>
-        </ul>
-        <p>
-          Celková maximálna zodpovednosť platformy voči zákazníkovi za akúkoľvek škodu súvisiacu s touto zmluvou
-          je obmedzená na výšku zaplateného servisného poplatku, pokiaľ kogentné právne predpisy neustanovujú inak.
-        </p>
-      </section>
-
-      <section id="gdpr" class="card">
-        <h2>10. Ochrana osobných údajov</h2>
-        <p>
-          Spracovanie osobných údajov sa riadi samostatným dokumentom
-          <a href="/gdpr.html">Ochrana osobných údajov</a>,
-          ktorý tvorí neoddeliteľnú súčasť fungovania platformy.
-        </p>
-      </section>
-
-      <section id="spory" class="card">
-        <h2>11. Riešenie sporov a rozhodné právo</h2>
-        <p>
-          Tieto obchodné podmienky sa riadia právnym poriadkom Slovenskej republiky.
-          Platforma sa prednostne usiluje o mimosúdne vyriešenie sporov.
-        </p>
-        <p>
-          Spotrebiteľ sa môže obrátiť aj na príslušný subjekt alternatívneho riešenia sporov alebo na Slovenskú obchodnú inšpekciu,
-          ak sú splnené podmienky podľa príslušných právnych predpisov.
-        </p>
-      </section>
-
-      <section id="kontakt" class="card">
-        <h2>12. Identifikácia prevádzkovateľa a kontakt</h2>
-        <div class="table">
-          <div class="row">
-            <strong>Obchodné meno</strong>
-            <div>quantivo s.r.o.</div>
-          </div>
-          <div class="row">
-            <strong>IČO</strong>
-            <div>57532711</div>
-          </div>
-          <div class="row">
-            <strong>Sídlo</strong>
-            <div>Ulica B. Nemcovej 1022/17, 984 03 Lučenec, Slovenská republika</div>
-          </div>
-          <div class="row">
-            <strong>E-mail</strong>
-            <div><a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a></div>
-          </div>
-          <div class="row">
-            <strong>Telefón</strong>
-            <div><a href="tel:+421904111311">+421 904 111 311</a></div>
+            <div class="contact-row">
+              <span class="contact-label">Telefón</span>
+              <span class="contact-value">
+                <a href="tel:+421904111311">+421 904 111 311</a>
+              </span>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
-  </section>
+      </aside>
+
+      <div class="main">
+        <section class="section" id="cl1">
+          <h3>1. Prevádzkovateľ</h3>
+          <p>
+            Prevádzkovateľom webovej stránky kupujspolu.sk a poskytovateľom digitálnej služby je spoločnosť:
+          </p>
+
+          <div class="info-grid">
+            <div class="info-row">
+              <div class="info-label">Obchodné meno</div>
+              <div class="info-value">quantivo s.r.o.</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">IČO</div>
+              <div class="info-value">57532711</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Sídlo</div>
+              <div class="info-value">Ulica B. Nemcovej 1022/17, 984 03 Lučenec, Slovenská republika</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Email</div>
+              <div class="info-value"><a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a></div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Telefón</div>
+              <div class="info-value"><a href="tel:+421904111311">+421 904 111 311</a></div>
+            </div>
+          </div>
+
+          <p>
+            Tieto obchodné podmienky tvoria neoddeliteľnú súčasť každej objednávky digitálnej služby uskutočnenej prostredníctvom platformy.
+          </p>
+        </section>
+
+        <section class="section" id="cl2">
+          <h3>2. Definície pojmov</h3>
+
+          <div class="info-grid">
+            <div class="info-row">
+              <div class="info-label">Platforma</div>
+              <div class="info-value">Webová služba kupujspolu.sk prevádzkovaná spoločnosťou quantivo s.r.o.</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Zákazník</div>
+              <div class="info-value">Fyzická osoba alebo právnická osoba, ktorá predložila ponuku a uhradila servisný poplatok.</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Ponuka</div>
+              <div class="info-value">Cenová ponuka nového osobného vozidla od autorizovaného predajcu alebo výstup z oficiálneho konfigurátora, predložený vo forme PDF, JPG alebo PNG.</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Skupina</div>
+              <div class="info-value">Súbor anonymizovaných ponúk porovnateľných konfigurácií, na základe ktorého platforma vykonáva skupinové vyjednávanie.</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Servisný poplatok</div>
+              <div class="info-value">Jednorazová odplata za digitálnu službu spracovania ponuky, anonymizácie, zaradenia do systému a vyjednávania.</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Garantovaná úspora</div>
+              <div class="info-value">Minimálny deklarovaný výsledok oproti predloženej ponuke pri rovnakej alebo porovnateľnej konfigurácii podľa zvoleného plánu.</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Výsledok</div>
+              <div class="info-value">Informácia o vyjednanej zľave, obchodnom výsledku, ponuke alebo inom výstupe doručená zákazníkovi elektronicky.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="cl3">
+          <h3>3. Charakter a rozsah služby</h3>
+          <p>
+            Platforma kupujspolu.sk neposkytuje predaj vozidiel. Predmetom služby je digitálne spracovanie ponuky zákazníka,
+            jej anonymizácia, zaradenie do systému porovnateľných prípadov a realizácia skupinového vyjednávania s cieľom dosiahnuť lepší obchodný výsledok.
+          </p>
+          <p>
+            Zákazník nekupuje vozidlo od prevádzkovateľa a nevzniká mu nárok na dodanie vozidla zo strany prevádzkovateľa.
+            Platforma nevystupuje ako dealer, predajca, rezervátor vozidiel ani sprostredkovateľ úverov alebo lízingu.
+          </p>
+          <p>
+            Služba je určená výhradne pre <strong>nové osobné vozidlá</strong>.
+          </p>
+        </section>
+
+        <section class="section" id="cl4">
+          <h3>4. Podmienky predloženia ponuky</h3>
+          <ul>
+            <li>Ponuka musí byť skutočnou a čitateľnou cenovou ponukou na nové osobné vozidlo.</li>
+            <li>Ponuka musí pochádzať od autorizovaného predajcu alebo z oficiálneho konfigurátora značky.</li>
+            <li>Povolené formáty sú PDF, JPG a PNG. Maximálna veľkosť súboru je 10 MB.</li>
+            <li>Zákazník je povinný uviesť pravdivé, presné a aktuálne kontaktné a fakturačné údaje.</li>
+            <li>Za jeden konkrétny prípad je prípustná jedna relevantná ponuka; duplicitné alebo manipulatívne odosielanie je zakázané.</li>
+            <li>Zákazník musí mať oprávnenie použiť a zdieľať anonymizované údaje z predloženej ponuky v rozsahu potrebnom na poskytovanie služby.</li>
+          </ul>
+          <p>
+            Platforma si vyhradzuje právo odmietnuť alebo vylúčiť ponuku, ktorá je neúplná, nečitateľná, zjavne nesprávna, týka sa jazdeného vozidla
+            alebo inak nespĺňa tieto obchodné podmienky.
+          </p>
+        </section>
+
+        <section class="section" id="cl5">
+          <h3>5. Objednávka a uzavretie zmluvy</h3>
+          <p>
+            K uzavretiu zmluvy o poskytovaní digitálnej služby dochádza odoslaním objednávky prostredníctvom formulára na webovej stránke
+            a úspešnou úhradou servisného poplatku.
+          </p>
+          <p>
+            Po úspešnej úhrade je zákazníkovi odoslané potvrdenie o prijatí objednávky na email uvedený v objednávke.
+          </p>
+          <p>
+            Prevádzkovateľ si vyhradzuje právo neprijať alebo zrušiť objednávku, ak:
+          </p>
+          <ul>
+            <li>nahraný podklad nespĺňa podmienky podľa týchto obchodných podmienok,</li>
+            <li>ide o podklad týkajúci sa jazdeného vozidla,</li>
+            <li>údaje uvedené zákazníkom sú zjavne nepravdivé, neúplné alebo zavádzajúce,</li>
+            <li>platba bola neúspešná, stornovaná alebo sporná.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="cl6">
+          <h3>6. Servisný poplatok a garancia</h3>
+
+          <p><strong>Plán Štandard (129 €)</strong></p>
+          <p>
+            Platforma sa zaväzuje dosiahnuť minimálny výsledok vo forme úspory 700 € oproti cene predloženej ponuky pri rovnakej alebo porovnateľnej konfigurácii vozidla.
+          </p>
+
+          <p><strong>Plán Garancia+ (399 €)</strong></p>
+          <p>
+            Platforma sa zaväzuje dosiahnuť minimálny výsledok vo forme úspory 1 400 € oproti cene predloženej ponuky pri rovnakej alebo porovnateľnej konfigurácii vozidla.
+          </p>
+
+          <p><strong>Za porovnateľnú konfiguráciu sa považuje najmä:</strong></p>
+          <ul>
+            <li>rovnaký modelový rad,</li>
+            <li>rovnaká alebo porovnateľná výbavová línia,</li>
+            <li>rovnaký alebo porovnateľný motor a prevodovka,</li>
+            <li>porovnateľný obchodný základ ponuky.</li>
+          </ul>
+
+          <p><strong>Za splnenie garancie sa nepovažuje najmä:</strong></p>
+          <ul>
+            <li>ponuka na iný model, inú triedu alebo zásadne odlišnú konfiguráciu,</li>
+            <li>zvýhodnenie založené výlučne na nevýhodnom financovaní alebo inom neprimeranom podmienení,</li>
+            <li>zľava viazaná na nevýhodný výkup vozidla zákazníka.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="cl7">
+          <h3>7. Spracovanie ponuky a priebeh služby</h3>
+          <ul>
+            <li>Zákazník nahrá súbor ponuky, vyplní údaje a uhradí servisný poplatok.</li>
+            <li>Platforma overí úplnosť a použiteľnosť ponuky.</li>
+            <li>Identifikačné údaje sú pred ďalším použitím odstránené alebo anonymizované.</li>
+            <li>Ponuka je zaradená do skupiny porovnateľných konfigurácií.</li>
+            <li>Platforma vykoná vyjednávacie kroky voči relevantným predajcom alebo partnerom.</li>
+            <li>Výsledok je zákazníkovi doručený elektronicky, spravidla emailom.</li>
+          </ul>
+          <p>
+            Platforma negarantuje pevný termín doručenia výsledku, ak nie je výslovne uvedené inak.
+            Čas spracovania závisí najmä od počtu porovnateľných ponúk, reakcií predajcov a aktuálnych trhových podmienok.
+          </p>
+        </section>
+
+        <section class="section" id="cl8">
+          <h3>8. Fakturácia</h3>
+          <p>
+            Faktúra za objednanú digitálnu službu je zákazníkovi zasielaná elektronicky na email uvedený v objednávke.
+          </p>
+          <p>
+            Prevádzkovateľ vystavuje faktúru spravidla <strong>do 2–3 pracovných dní</strong> od úspešnej úhrady objednávky.
+          </p>
+          <p>
+            Zákazník je povinný skontrolovať správnosť fakturačných údajov pred odoslaním objednávky.
+          </p>
+        </section>
+
+        <section class="section" id="cl9">
+          <h3>9. Refundácia a reklamácie</h3>
+          <p>
+            Zákazník má právo na refundáciu servisného poplatku, ak platforma neposkytne výsledok spĺňajúci parametre garantovanej úspory podľa zvoleného plánu.
+          </p>
+          <p>
+            Refundácia bude spracovaná spravidla do 14 pracovných dní od potvrdenia, že podmienky refundácie boli splnené.
+          </p>
+
+          <p><strong>Refundácia sa neposkytne najmä vtedy, ak:</strong></p>
+          <ul>
+            <li>zákazník predložil nesprávnu, nepravdivú alebo nepoužiteľnú ponuku,</li>
+            <li>zákazník manipuloval proces alebo odoslal duplicitné ponuky,</li>
+            <li>zákazník odmietol výsledok, ktorý preukázateľne spĺňa podmienky garancie,</li>
+            <li>zákazník neposkytol potrebnú súčinnosť alebo znemožnil vyhodnotenie prípadu,</li>
+            <li>platba bola predmetom chargebacku alebo iného sporu skôr, než bol proces ukončený.</li>
+          </ul>
+
+          <p>
+            Reklamáciu alebo žiadosť o refundáciu môže zákazník zaslať na email
+            <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>.
+            Správa by mala obsahovať identifikáciu zákazníka, email použitý pri objednávke, prípadne upload ID a stručný opis problému.
+          </p>
+        </section>
+
+        <section class="section" id="cl10">
+          <h3>10. Odstúpenie od zmluvy</h3>
+          <p>
+            Ak je zákazník spotrebiteľom, má pri zmluve uzavretej na diaľku spravidla právo odstúpiť od zmluvy do 14 dní od jej uzavretia bez uvedenia dôvodu.
+          </p>
+          <p>
+            Zákazník však v objednávkovom procese výslovne súhlasí so začatím poskytovania digitálnej služby bezodkladne po úhrade
+            a berie na vedomie, že po úplnom poskytnutí služby môže v rozsahu dovolenom právnymi predpismi dôjsť k zániku práva na odstúpenie od zmluvy.
+          </p>
+          <p>
+            Ak zákazník odstúpi od zmluvy v čase, keď sa služba už začala poskytovať, ale ešte nebola úplne poskytnutá,
+            prevádzkovateľ je oprávnený požadovať primeranú úhradu za už poskytnutú časť služby, ak to umožňujú príslušné právne predpisy.
+          </p>
+        </section>
+
+        <section class="section" id="cl11">
+          <h3>11. Povinnosti zákazníka</h3>
+          <ul>
+            <li>uvádzať pravdivé, presné a aktuálne údaje,</li>
+            <li>predkladať iba relevantné ponuky na nové vozidlá,</li>
+            <li>nevyužívať platformu na testovanie, špekulatívne refundácie alebo manipuláciu,</li>
+            <li>neobchádzať technické a bezpečnostné opatrenia platformy,</li>
+            <li>poskytnúť primeranú súčinnosť, ak je potrebná na riadne dokončenie prípadu.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="cl12">
+          <h3>12. Obmedzenie zodpovednosti</h3>
+          <p>
+            Platforma nezodpovedá najmä za:
+          </p>
+          <ul>
+            <li>konečné obchodné rozhodnutie predajcu,</li>
+            <li>zmeny cien, konfigurácií alebo dostupnosti vozidiel po predložení ponuky,</li>
+            <li>zmeny obchodných podmienok výrobcov, dealerov alebo partnerov,</li>
+            <li>omeškania spôsobené vyššou mocou alebo výpadkami externých služieb,</li>
+            <li>škodu spôsobenú nesprávnymi alebo neúplnými údajmi zo strany zákazníka.</li>
+          </ul>
+          <p>
+            Maximálna zodpovednosť prevádzkovateľa voči zákazníkovi za škodu súvisiacu s touto zmluvou je obmedzená na výšku zaplateného servisného poplatku,
+            pokiaľ kogentné právne predpisy neustanovujú inak.
+          </p>
+        </section>
+
+        <section class="section" id="cl13">
+          <h3>13. Ochrana osobných údajov</h3>
+          <p>
+            Spracovanie osobných údajov sa riadi samostatným dokumentom
+            <a href="/gdpr.html">Ochrana osobných údajov</a>,
+            ktorý tvorí neoddeliteľnú súčasť fungovania platformy.
+          </p>
+        </section>
+
+        <section class="section" id="cl14">
+          <h3>14. Alternatívne riešenie sporov</h3>
+          <p>
+            Spotrebiteľ má právo obrátiť sa na prevádzkovateľa so žiadosťou o nápravu, ak nie je spokojný so spôsobom vybavenia reklamácie alebo ak sa domnieva,
+            že prevádzkovateľ porušil jeho práva.
+          </p>
+          <p>
+            Ak prevádzkovateľ na žiadosť odpovie zamietavo alebo na ňu neodpovie do 30 dní od jej odoslania, spotrebiteľ môže podať návrh na začatie
+            alternatívneho riešenia sporu príslušnému subjektu alternatívneho riešenia sporov.
+          </p>
+          <p>
+            Subjektom alternatívneho riešenia sporov je okrem iných aj Slovenská obchodná inšpekcia:
+          </p>
+
+          <div class="info-grid">
+            <div class="info-row">
+              <div class="info-label">Názov</div>
+              <div class="info-value">Slovenská obchodná inšpekcia, Ústredný inšpektorát, Odbor pre medzinárodné vzťahy a alternatívne riešenie spotrebiteľských sporov</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Adresa</div>
+              <div class="info-value">Bajkalská 21/A, P. O. BOX 29, 827 99 Bratislava 27</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Email</div>
+              <div class="info-value">ars@soi.sk / adr@soi.sk</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Telefón</div>
+              <div class="info-value">+421 (0)2 58 27 21 23</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="cl15">
+          <h3>15. Záverečné ustanovenia</h3>
+          <p>
+            Tieto obchodné podmienky nadobúdajú účinnosť dňom ich zverejnenia na webovej stránke kupujspolu.sk.
+          </p>
+          <p>
+            Prevádzkovateľ si vyhradzuje právo tieto obchodné podmienky meniť alebo dopĺňať. Na konkrétnu objednávku sa vždy vzťahuje verzia podmienok
+            účinná v čase odoslania objednávky.
+          </p>
+          <p>
+            Právne vzťahy neupravené týmito obchodnými podmienkami sa riadia právnym poriadkom Slovenskej republiky a príslušnými kogentnými právnymi predpismi.
+          </p>
+        </section>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
     <div>© 2026 kupujspolu.sk</div>
     <div class="footer-links">
+      <a href="/index.html">Hlavná stránka</a>
       <a href="/gdpr.html">Ochrana osobných údajov</a>
       <a href="/kontakt.html">Kontakt</a>
-      <a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk." target="_blank" rel="noopener">WhatsApp podpora</a>
     </div>
   </footer>
 </body>

@@ -10,38 +10,49 @@
       --bg:#070B14;
       --surface:#0E1625;
       --card:#121B2E;
-      --card-2:#18243A;
       --ink:#F1F5F9;
       --muted:#CBD5E1;
       --muted-2:#94A3B8;
       --line:rgba(148,163,184,.14);
       --soft:rgba(148,163,184,.08);
       --brand:#3B82F6;
+      --brand-dark:#2563EB;
       --brand-soft:rgba(59,130,246,.12);
-      --ok:#22C55E;
       --warn:#F59E0B;
-      --radius:20px;
+      --warn-soft:rgba(245,158,11,.12);
+      --ok:#22C55E;
+      --ok-soft:rgba(34,197,94,.12);
+      --radius:22px;
       --pill:999px;
       --shadow:0 18px 60px rgba(0,0,0,.42);
-      --max:1080px;
+      --max:1200px;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
       font-family:'Outfit',sans-serif;
-      background:linear-gradient(180deg,#050912 0%, #08101c 100%);
+      background:
+        radial-gradient(circle at top right, rgba(59,130,246,.12), transparent 30%),
+        linear-gradient(180deg,#050912 0%, #08101c 100%);
       color:var(--ink);
       line-height:1.72;
     }
+
     a{color:#93c5fd;text-decoration:none}
     a:hover{text-decoration:underline}
+
     .topbar{
-      position:sticky;top:0;z-index:50;
+      position:sticky;
+      top:0;
+      z-index:60;
       backdrop-filter:blur(16px);
       background:rgba(7,11,20,.88);
       border-bottom:1px solid var(--line);
     }
+
     .topbar-inner{
       max-width:var(--max);
       margin:0 auto;
@@ -51,13 +62,19 @@
       justify-content:space-between;
       gap:16px;
     }
+
     .logo{
       font-family:'Bebas Neue',sans-serif;
       letter-spacing:.05em;
       font-size:1.35rem;
       color:var(--ink);
     }
-    .logo em{font-style:normal;color:var(--brand)}
+
+    .logo em{
+      font-style:normal;
+      color:var(--brand);
+    }
+
     .back{
       display:inline-flex;
       align-items:center;
@@ -69,11 +86,13 @@
       color:var(--ink);
       font-weight:600;
     }
-    .hero{
+
+    .page{
       max-width:var(--max);
       margin:0 auto;
-      padding:44px 24px 16px;
+      padding:38px 24px 70px;
     }
+
     .eyebrow{
       display:inline-flex;
       align-items:center;
@@ -87,154 +106,262 @@
       font-weight:700;
       letter-spacing:.08em;
       text-transform:uppercase;
+      margin-bottom:18px;
     }
+
     .eyebrow::before{
       content:"";
-      width:10px;height:10px;border-radius:50%;
+      width:10px;
+      height:10px;
+      border-radius:50%;
       background:var(--brand);
       box-shadow:0 0 0 6px rgba(59,130,246,.14);
     }
+
     h1{
-      margin:18px 0 10px;
+      margin:0 0 14px;
       font-family:'Bebas Neue',sans-serif;
       font-size:clamp(2.5rem,5vw,4.4rem);
       line-height:.95;
       letter-spacing:.02em;
     }
-    .hero-sub{
-      max-width:860px;
+
+    .lead{
+      max-width:920px;
       color:var(--muted);
-      font-size:1rem;
       font-weight:300;
+      font-size:1rem;
+      margin-bottom:26px;
     }
+
+    .notice{
+      border-radius:18px;
+      padding:18px 20px;
+      border:1px solid var(--line);
+      margin-bottom:20px;
+    }
+
+    .notice.warn{
+      background:var(--warn-soft);
+      border-color:rgba(245,158,11,.22);
+      color:#fde68a;
+    }
+
     .layout{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:18px 24px 70px;
       display:grid;
-      grid-template-columns:300px 1fr;
-      gap:24px;
+      grid-template-columns:340px minmax(0,1fr);
+      gap:22px;
+      align-items:start;
     }
-    .aside{
-      position:sticky;top:88px;align-self:start;
+
+    .sidebar{
+      position:sticky;
+      top:88px;
+      display:grid;
+      gap:16px;
+    }
+
+    .card{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:18px;
+      padding:22px;
       box-shadow:var(--shadow);
+      min-width:0;
     }
-    .aside h3{
+
+    .card h2{
       margin:0 0 14px;
-      font-size:1rem;
-      color:var(--ink);
+      font-size:1.14rem;
+      line-height:1.2;
     }
-    .aside nav{
+
+    .toc{
       display:grid;
       gap:8px;
+      margin-top:10px;
     }
-    .aside nav a{
+
+    .toc a{
       display:block;
       padding:10px 12px;
-      border-radius:12px;
-      color:var(--muted);
-      border:1px solid transparent;
-      background:transparent;
-      font-size:.93rem;
-    }
-    .aside nav a:hover{
-      background:rgba(255,255,255,.03);
-      border-color:var(--line);
-      text-decoration:none;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#0d1526;
       color:var(--ink);
+      text-decoration:none;
+      font-size:.92rem;
     }
-    .aside .meta{
-      margin-top:16px;
-      padding-top:16px;
-      border-top:1px solid var(--line);
-      font-size:.84rem;
-      color:var(--muted-2);
+
+    .toc a:hover{
+      text-decoration:none;
+      border-color:rgba(59,130,246,.28);
+      background:rgba(59,130,246,.08);
     }
-    .content{
+
+    .main{
       display:grid;
       gap:18px;
+      min-width:0;
     }
-    .notice{
-      background:linear-gradient(180deg,rgba(34,197,94,.10),rgba(34,197,94,.05));
-      border:1px solid rgba(34,197,94,.22);
-      border-radius:18px;
-      padding:18px;
-      color:#dcfce7;
-    }
-    .warn{
-      background:linear-gradient(180deg,rgba(245,158,11,.12),rgba(245,158,11,.05));
-      border:1px solid rgba(245,158,11,.24);
-      border-radius:18px;
-      padding:18px;
-      color:#fde68a;
-    }
-    .card{
+
+    .section{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:24px;
       box-shadow:var(--shadow);
+      min-width:0;
     }
-    .card h2{
-      margin:0 0 14px;
-      font-size:1.35rem;
-      line-height:1.2;
+
+    .section h3{
+      margin:0 0 12px;
+      font-size:1.18rem;
+      line-height:1.25;
     }
-    .card h3{
-      margin:18px 0 10px;
-      font-size:1.02rem;
-      color:var(--ink);
-    }
-    .card p{
+
+    .section p{
       margin:0 0 12px;
       color:var(--muted);
+      font-size:.96rem;
     }
-    .card ul{
-      margin:0;
-      padding-left:20px;
+
+    .section p:last-child{
+      margin-bottom:0;
+    }
+
+    .section ul{
+      margin:0 0 12px 18px;
+      padding:0;
       color:var(--muted);
     }
-    .card li{margin:0 0 8px}
-    .table{
-      display:grid;
-      gap:10px;
-      margin-top:12px;
+
+    .section li{
+      margin-bottom:8px;
     }
-    .row{
+
+    .section strong{
+      color:var(--ink);
+    }
+
+    .info-grid{
       display:grid;
-      grid-template-columns:220px 1fr;
-      gap:14px;
-      padding:12px 14px;
-      border-radius:14px;
-      background:var(--card-2);
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .info-row{
+      display:grid;
+      grid-template-columns:220px minmax(0,1fr);
+      gap:12px;
+      align-items:start;
       border:1px solid var(--line);
+      background:#0d1526;
+      border-radius:16px;
+      padding:14px 16px;
+      min-width:0;
     }
-    .row strong{color:var(--ink)}
+
+    .info-label{
+      font-size:.9rem;
+      font-weight:700;
+      color:var(--ink);
+    }
+
+    .info-value{
+      color:var(--muted);
+      font-size:.95rem;
+      min-width:0;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+
+    .contact-grid{
+      display:grid;
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .contact-row{
+      display:block;
+      border:1px solid var(--line);
+      background:#0d1526;
+      border-radius:16px;
+      padding:16px 18px;
+      min-width:0;
+    }
+
+    .contact-label{
+      display:block;
+      font-size:.9rem;
+      font-weight:800;
+      color:var(--ink);
+      margin-bottom:8px;
+      line-height:1.35;
+    }
+
+    .contact-value{
+      display:block;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.55;
+      white-space:normal;
+      word-break:normal;
+      overflow-wrap:break-word;
+    }
+
+    .contact-value a{
+      color:#93c5fd;
+      white-space:normal;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+
     .footer{
       max-width:var(--max);
       margin:0 auto;
-      padding:0 24px 48px;
+      padding:0 24px 42px;
       color:var(--muted-2);
       font-size:.86rem;
     }
+
     .footer-links{
       display:flex;
       flex-wrap:wrap;
       gap:16px;
       margin-top:12px;
     }
-    @media (max-width: 920px){
-      .layout{grid-template-columns:1fr}
-      .aside{position:static}
-      .row{grid-template-columns:1fr}
-      .topbar-inner{padding:14px 16px}
-      .hero{padding:32px 16px 10px}
-      .layout{padding:14px 16px 56px}
-      .footer{padding:0 16px 42px}
+
+    @media (max-width: 1100px){
+      .layout{
+        grid-template-columns:300px minmax(0,1fr);
+      }
+    }
+
+    @media (max-width: 980px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+
+      .info-row{
+        grid-template-columns:1fr;
+      }
+
+      .topbar-inner{
+        padding:14px 16px;
+      }
+
+      .page{
+        padding:32px 16px 56px;
+      }
+
+      .footer{
+        padding:0 16px 42px;
+      }
     }
   </style>
 </head>
@@ -246,246 +373,352 @@
     </div>
   </div>
 
-  <section class="hero">
-    <div class="eyebrow">Právne dokumenty</div>
+  <main class="page">
+    <div class="eyebrow">Ochrana údajov</div>
     <h1>Ochrana osobných údajov</h1>
-    <p class="hero-sub">
-      Tento dokument vysvetľuje, aké osobné údaje spracúvame pri používaní platformy kupujspolu.sk,
-      na aký účel ich používame, ako dlho ich uchovávame a aké práva má dotknutá osoba v súlade s nariadením GDPR.
+    <p class="lead">
+      Tento dokument vysvetľuje, ako spoločnosť quantivo s.r.o. spracúva osobné údaje pri používaní webovej stránky kupujspolu.sk
+      a pri objednávke digitálnej služby spracovania ponuky, anonymizovaného porovnania a skupinového vyjednávania pri kúpe nového vozidla.
     </p>
-  </section>
 
-  <section class="layout">
-    <aside class="aside">
-      <h3>Obsah dokumentu</h3>
-      <nav>
-        <a href="#spravca">1. Kto spracúva údaje</a>
-        <a href="#rozsah">2. Rozsah spracúvaných údajov</a>
-        <a href="#ucely">3. Účely a právne základy</a>
-        <a href="#platby">4. Platby a externí poskytovatelia</a>
-        <a href="#prijemcovia">5. Príjemcovia údajov</a>
-        <a href="#uchovavanie">6. Doba uchovávania</a>
-        <a href="#prava">7. Práva dotknutej osoby</a>
-        <a href="#cookies">8. Cookies a technické údaje</a>
-        <a href="#bezpecnost">9. Bezpečnosť údajov</a>
-        <a href="#kontakt">10. Kontakt a uplatnenie práv</a>
-      </nav>
-      <div class="meta">
-        Verzia 1.1<br>
-        Platné od 22. marca 2026
-      </div>
-    </aside>
+    <div class="notice warn">
+      Pri používaní platformy spracúvame len tie osobné údaje, ktoré sú potrebné na prijatie objednávky, komunikáciu so zákazníkom,
+      vystavenie faktúry, spracovanie nahranej ponuky a splnenie zákonných povinností.
+    </div>
 
-    <main class="content">
-      <div class="notice">
-        Osobné údaje spracúvame len v rozsahu nevyhnutnom na poskytovanie služby platformy, plnenie zákonných povinností,
-        vybavovanie reklamácií a ochranu našich oprávnených záujmov.
-      </div>
-
-      <div class="warn">
-        Platforma kupujspolu.sk nie je predajca vozidiel. Údaje z nahraných ponúk používame na overenie, anonymizáciu,
-        porovnanie a vyjednávanie lepšej ceny v mene skupiny zákazníkov.
-      </div>
-
-      <section id="spravca" class="card">
-        <h2>1. Kto spracúva osobné údaje</h2>
-        <p>
-          Prevádzkovateľom a správcom osobných údajov je:
-        </p>
-        <div class="table">
-          <div class="row">
-            <strong>Obchodné meno</strong>
-            <div>quantivo s.r.o.</div>
-          </div>
-          <div class="row">
-            <strong>IČO</strong>
-            <div>57532711</div>
-          </div>
-          <div class="row">
-            <strong>Sídlo</strong>
-            <div>Ulica B. Nemcovej 1022/17, 984 03 Lučenec, Slovenská republika</div>
-          </div>
-          <div class="row">
-            <strong>E-mail</strong>
-            <div><a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a></div>
-          </div>
-          <div class="row">
-            <strong>Telefón</strong>
-            <div><a href="tel:+421904111311">+421 904 111 311</a></div>
+    <section class="layout">
+      <aside class="sidebar">
+        <div class="card">
+          <h2>Obsah</h2>
+          <div class="toc">
+            <a href="#cl1">1. Prevádzkovateľ</a>
+            <a href="#cl2">2. Aké údaje spracúvame</a>
+            <a href="#cl3">3. Účely a právne základy</a>
+            <a href="#cl4">4. Odkiaľ údaje získavame</a>
+            <a href="#cl5">5. Komu údaje poskytujeme</a>
+            <a href="#cl6">6. Prenos do tretích krajín</a>
+            <a href="#cl7">7. Doba uchovávania</a>
+            <a href="#cl8">8. Práva dotknutej osoby</a>
+            <a href="#cl9">9. Ako uplatniť práva</a>
+            <a href="#cl10">10. Cookies a technické dáta</a>
+            <a href="#cl11">11. Bezpečnosť údajov</a>
+            <a href="#cl12">12. Záverečné ustanovenia</a>
           </div>
         </div>
-      </section>
 
-      <section id="rozsah" class="card">
-        <h2>2. Rozsah spracúvaných údajov</h2>
+        <div class="card">
+          <h2>Kontaktné údaje</h2>
+          <div class="contact-grid">
+            <div class="contact-row">
+              <span class="contact-label">Prevádzkovateľ</span>
+              <span class="contact-value">quantivo s.r.o.</span>
+            </div>
 
-        <h3>Údaje poskytnuté zákazníkom</h3>
-        <ul>
-          <li>meno a priezvisko alebo názov firmy,</li>
-          <li>e-mailová adresa, telefónne číslo,</li>
-          <li>fakturačné údaje, vrátane adresy, IČO, DIČ alebo IČ DPH, ak boli uvedené,</li>
-          <li>údaje o vozidle a ponuke, najmä značka, model, cena a ďalšie parametre z ponuky,</li>
-          <li>súbor nahraný zákazníkom, najmä PDF, JPG alebo PNG s ponukou,</li>
-          <li>obsah komunikácie zaslanej cez kontaktné kanály.</li>
-        </ul>
+            <div class="contact-row">
+              <span class="contact-label">IČO</span>
+              <span class="contact-value">57532711</span>
+            </div>
 
-        <h3>Technické a prevádzkové údaje</h3>
-        <ul>
-          <li>technické logy servera,</li>
-          <li>IP adresa, čas odoslania formulára a základné údaje o požiadavke,</li>
-          <li>údaje potrebné na zabezpečenie fungovania a ochrany platformy.</li>
-        </ul>
-      </section>
+            <div class="contact-row">
+              <span class="contact-label">Email</span>
+              <span class="contact-value">
+                <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>
+              </span>
+            </div>
 
-      <section id="ucely" class="card">
-        <h2>3. Účely a právne základy spracúvania</h2>
-
-        <h3>a) Poskytnutie služby</h3>
-        <p>
-          Osobné údaje spracúvame za účelom prijatia ponuky, vytvorenia záznamu, overenia údajov, anonymizácie ponuky,
-          zaradenia do skupiny a doručenia výsledku vyjednávania.
-        </p>
-        <p>
-          <strong>Právny základ:</strong> plnenie zmluvy a vykonanie opatrení pred uzatvorením zmluvy.
-        </p>
-
-        <h3>b) Platobný proces</h3>
-        <p>
-          Údaje súvisiace s objednávkou a platbou spracúvame na účely prijatia úhrady servisného poplatku,
-          priradenia platby k objednávke a vedenia evidencie platieb.
-        </p>
-        <p>
-          <strong>Právny základ:</strong> plnenie zmluvy a plnenie zákonných povinností v oblasti účtovníctva a daní.
-        </p>
-
-        <h3>c) Reklamácie, refundácie a komunikácia</h3>
-        <p>
-          Údaje spracúvame aj za účelom vybavovania reklamácií, žiadostí o refundáciu, podpory zákazníkov a riešenia sporov.
-        </p>
-        <p>
-          <strong>Právny základ:</strong> plnenie zmluvy, zákonná povinnosť a oprávnený záujem na ochrane právnych nárokov.
-        </p>
-
-        <h3>d) Bezpečnosť a ochrana platformy</h3>
-        <p>
-          Niektoré údaje spracúvame za účelom prevencie zneužitia platformy, odhaľovania podvodov, ochrany IT infraštruktúry
-          a ochrany práv prevádzkovateľa.
-        </p>
-        <p>
-          <strong>Právny základ:</strong> oprávnený záujem prevádzkovateľa.
-        </p>
-      </section>
-
-      <section id="platby" class="card">
-        <h2>4. Platby a externí poskytovatelia</h2>
-        <p>
-          Platby servisného poplatku sú spracúvané prostredníctvom externého poskytovateľa platobných služieb.
-          Prevádzkovateľ platformy neuchováva údaje o platobných kartách zákazníkov.
-        </p>
-        <p>
-          V rámci platobného procesu môžu byť vybranému poskytovateľovi sprístupnené údaje potrebné na identifikáciu platby,
-          najmä identifikátor objednávky, suma, meno alebo názov zákazníka, e-mail a ďalšie nevyhnutné údaje podľa integrácie.
-        </p>
-        <p>
-          Na spracovanie platieb sa môže využívať aj poskytovateľ technického hostingu a súvisiace cloudové služby.
-        </p>
-      </section>
-
-      <section id="prijemcovia" class="card">
-        <h2>5. Príjemcovia osobných údajov</h2>
-        <p>Osobné údaje môžu byť sprístupnené najmä týmto kategóriám príjemcov:</p>
-        <ul>
-          <li>poskytovatelia hostingu, cloudových a IT služieb,</li>
-          <li>externí poskytovatelia platobných služieb,</li>
-          <li>účtovní, daňoví a právni poradcovia, ak je to potrebné,</li>
-          <li>orgány verejnej moci, ak to vyžaduje právny predpis,</li>
-          <li>predajcovia vozidiel iba v anonymizovanom alebo nevyhnutnom rozsahu potrebnom na vyjednávanie.</li>
-        </ul>
-        <p>
-          Platforma nepredáva osobné údaje tretím stranám.
-        </p>
-      </section>
-
-      <section id="uchovavanie" class="card">
-        <h2>6. Doba uchovávania</h2>
-        <ul>
-          <li>údaje o objednávke a zmluvnom vzťahu uchovávame po dobu trvania služby a následne po dobu nevyhnutnú na ochranu právnych nárokov,</li>
-          <li>účtovné a daňové doklady uchovávame po dobu vyžadovanú právnymi predpismi,</li>
-          <li>technické logy uchovávame len primerane a v rozsahu potrebnom na bezpečnosť systému,</li>
-          <li>nahrané súbory a ponuky uchovávame len po dobu potrebnú na spracovanie prípadu, vyhodnotenie výsledku, reklamácie a ochranu právnych nárokov.</li>
-        </ul>
-        <p>
-          Po uplynutí nevyhnutnej doby budú údaje vymazané, anonymizované alebo bezpečne zlikvidované.
-        </p>
-      </section>
-
-      <section id="prava" class="card">
-        <h2>7. Práva dotknutej osoby</h2>
-        <p>Dotknutá osoba má najmä právo:</p>
-        <ul>
-          <li>požadovať prístup k svojim osobným údajom,</li>
-          <li>požadovať opravu nesprávnych alebo neaktuálnych údajov,</li>
-          <li>požadovať vymazanie údajov, ak sú splnené podmienky podľa GDPR,</li>
-          <li>požadovať obmedzenie spracúvania,</li>
-          <li>namietať proti spracúvaniu, ak je právnym základom oprávnený záujem,</li>
-          <li>požadovať prenosnosť údajov v rozsahu stanovenom právnymi predpismi,</li>
-          <li>podať sťažnosť na Úrad na ochranu osobných údajov Slovenskej republiky.</li>
-        </ul>
-      </section>
-
-      <section id="cookies" class="card">
-        <h2>8. Cookies a technické údaje</h2>
-        <p>
-          Platforma môže používať technické a nevyhnutné cookies alebo obdobné technológie, ktoré sú potrebné na správne fungovanie stránky,
-          bezpečnosť a základnú prevádzku služby.
-        </p>
-        <p>
-          Ak budú v budúcnosti nasadené analytické, marketingové alebo voliteľné cookies, platforma ich bude používať iba v súlade
-          s príslušnými právnymi predpismi a po riadnom informovaní používateľa.
-        </p>
-      </section>
-
-      <section id="bezpecnost" class="card">
-        <h2>9. Bezpečnosť osobných údajov</h2>
-        <p>
-          Prevádzkovateľ prijíma primerané technické a organizačné opatrenia na ochranu osobných údajov pred neoprávneným prístupom,
-          stratou, zničením, zneužitím alebo neoprávneným zverejnením.
-        </p>
-        <p>
-          Tieto opatrenia zahŕňajú najmä kontrolu prístupu, obmedzenie prístupu k údajom na nevyhnutný rozsah,
-          používanie zabezpečeného hostingu a priebežnú kontrolu procesov.
-        </p>
-      </section>
-
-      <section id="kontakt" class="card">
-        <h2>10. Kontakt a uplatnenie práv</h2>
-        <p>
-          Ak si chcete uplatniť svoje práva alebo máte otázky k ochrane osobných údajov, kontaktujte nás na:
-        </p>
-        <div class="table">
-          <div class="row">
-            <strong>E-mail</strong>
-            <div><a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a></div>
-          </div>
-          <div class="row">
-            <strong>Telefón</strong>
-            <div><a href="tel:+421904111311">+421 904 111 311</a></div>
-          </div>
-          <div class="row">
-            <strong>Poštová adresa</strong>
-            <div>quantivo s.r.o., Ulica B. Nemcovej 1022/17, 984 03 Lučenec, Slovenská republika</div>
+            <div class="contact-row">
+              <span class="contact-label">Telefón</span>
+              <span class="contact-value">
+                <a href="tel:+421904111311">+421 904 111 311</a>
+              </span>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
-  </section>
+      </aside>
+
+      <div class="main">
+        <section class="section" id="cl1">
+          <h3>1. Prevádzkovateľ</h3>
+          <p>
+            Prevádzkovateľom osobných údajov je spoločnosť:
+          </p>
+
+          <div class="info-grid">
+            <div class="info-row">
+              <div class="info-label">Obchodné meno</div>
+              <div class="info-value">quantivo s.r.o.</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">IČO</div>
+              <div class="info-value">57532711</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Sídlo</div>
+              <div class="info-value">Ulica B. Nemcovej 1022/17, 984 03 Lučenec, Slovenská republika</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Email</div>
+              <div class="info-value"><a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a></div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Telefón</div>
+              <div class="info-value"><a href="tel:+421904111311">+421 904 111 311</a></div>
+            </div>
+          </div>
+
+          <p>
+            Ak nás chceš kontaktovať vo veci spracúvania osobných údajov, použi email
+            <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>.
+          </p>
+        </section>
+
+        <section class="section" id="cl2">
+          <h3>2. Aké osobné údaje spracúvame</h3>
+          <p>
+            V závislosti od toho, ako používaš platformu, môžeme spracúvať najmä tieto kategórie údajov:
+          </p>
+          <ul>
+            <li>identifikačné údaje, napríklad meno a priezvisko alebo názov firmy,</li>
+            <li>kontaktné údaje, najmä email a telefónne číslo,</li>
+            <li>fakturačné údaje, napríklad adresa, IČO, DIČ a IČ DPH,</li>
+            <li>údaje o vozidle a ponuke, napríklad značka, model, cena a obsah nahranej ponuky,</li>
+            <li>komunikačné údaje, ak s nami komunikuješ emailom alebo inak,</li>
+            <li>technické údaje o používaní webu, napríklad IP adresa, základné logy servera a technické metadáta požiadaviek.</li>
+          </ul>
+          <p>
+            Nahrané dokumenty môžu obsahovať aj ďalšie údaje, ktoré sú súčasťou predloženej ponuky. Takéto údaje používame iba v rozsahu potrebnom na poskytnutie služby
+            a pred ďalším spracovaním alebo porovnávaním ich anonymizujeme v primeranom rozsahu.
+          </p>
+        </section>
+
+        <section class="section" id="cl3">
+          <h3>3. Účely spracúvania a právne základy</h3>
+          <p>
+            Osobné údaje spracúvame iba na konkrétne a legitímne účely.
+          </p>
+
+          <div class="info-grid">
+            <div class="info-row">
+              <div class="info-label">Prijatie objednávky a poskytovanie služby</div>
+              <div class="info-value">
+                Aby sme mohli prijať tvoju objednávku, uložiť ponuku, zaradiť prípad do systému, komunikovať s tebou a doručiť výsledok.
+                Právny základ: plnenie zmluvy a vykonanie opatrení pred uzavretím zmluvy.
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Fakturácia a účtovníctvo</div>
+              <div class="info-value">
+                Aby sme mohli vystaviť faktúru, viesť účtovníctvo a plniť daňové a zákonné povinnosti.
+                Právny základ: splnenie zákonnej povinnosti.
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Komunikácia so zákazníkom</div>
+              <div class="info-value">
+                Aby sme mohli odpovedať na otázky, riešiť doplnenie údajov, reklamácie, refundácie a prevádzkové oznámenia.
+                Právny základ: plnenie zmluvy alebo oprávnený záujem, podľa povahy komunikácie.
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Bezpečnosť, ochrana systému a evidencia</div>
+              <div class="info-value">
+                Aby sme chránili web, server, platobné procesy a databázu pred zneužitím, chybami a neoprávnenými zásahmi.
+                Právny základ: oprávnený záujem prevádzkovateľa.
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Marketing</div>
+              <div class="info-value">
+                Ak by sme v budúcnosti zasielali marketingové správy, budeme to robiť len na základe príslušného právneho základu,
+                najmä súhlasu alebo v rozsahu dovolenom právnymi predpismi.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="cl4">
+          <h3>4. Odkiaľ údaje získavame</h3>
+          <p>
+            Osobné údaje získavame najmä:
+          </p>
+          <ul>
+            <li>priamo od teba pri vyplnení formulára a nahraní ponuky,</li>
+            <li>z komunikácie medzi tebou a prevádzkovateľom,</li>
+            <li>z platobných a technických systémov použitých pri spracovaní objednávky,</li>
+            <li>z technických logov webu a servera.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="cl5">
+          <h3>5. Komu osobné údaje poskytujeme</h3>
+          <p>
+            Osobné údaje neposkytujeme tretím stranám bez dôvodu. V nevyhnutnom rozsahu ich môžeme sprístupniť alebo zveriť najmä týmto kategóriám príjemcov:
+          </p>
+          <ul>
+            <li>technologickým a hostingovým partnerom,</li>
+            <li>poskytovateľovi databázového a úložného riešenia,</li>
+            <li>poskytovateľovi platobnej brány,</li>
+            <li>poskytovateľovi emailových služieb,</li>
+            <li>účtovným, daňovým alebo právnym poradcom, ak je to potrebné,</li>
+            <li>orgánom verejnej moci, ak to vyžaduje zákon.</li>
+          </ul>
+          <p>
+            Pri porovnávaní a vyjednávaní používame údaje tak, aby nedochádzalo k neoprávnenému zverejneniu identity zákazníka.
+            Cieľom je pracovať s ponukou v anonymizovanom alebo minimalizovanom rozsahu.
+          </p>
+        </section>
+
+        <section class="section" id="cl6">
+          <h3>6. Prenos do tretích krajín</h3>
+          <p>
+            Niektorí naši technologickí partneri môžu spracúvať údaje mimo Slovenskej republiky alebo mimo Európskeho hospodárskeho priestoru.
+          </p>
+          <p>
+            Ak k takému prenosu dôjde, zabezpečíme ho len v súlade s GDPR, napríklad na základe primeraného rozhodnutia, štandardných zmluvných doložiek
+            alebo iného vhodného mechanizmu ochrany údajov.
+          </p>
+        </section>
+
+        <section class="section" id="cl7">
+          <h3>7. Doba uchovávania osobných údajov</h3>
+          <p>
+            Osobné údaje uchovávame len po dobu nevyhnutnú na splnenie účelu, na ktorý boli získané, alebo po dobu vyžadovanú právnymi predpismi.
+          </p>
+
+          <div class="info-grid">
+            <div class="info-row">
+              <div class="info-label">Objednávka a prípad</div>
+              <div class="info-value">
+                Počas trvania spracovania prípadu a primerane po jeho ukončení na účely evidencie, podpory, reklamácií a ochrany právnych nárokov.
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Fakturačné a účtovné údaje</div>
+              <div class="info-value">
+                Po dobu vyžadovanú účtovnými, daňovými a súvisiacimi právnymi predpismi.
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Komunikačné údaje</div>
+              <div class="info-value">
+                Po dobu potrebnú na vybavenie komunikácie, reklamácie, refundácie alebo inej požiadavky.
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Technické logy</div>
+              <div class="info-value">
+                Primerane krátko podľa bezpečnostných a prevádzkových potrieb systému.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="cl8">
+          <h3>8. Práva dotknutej osoby</h3>
+          <p>
+            Podľa GDPR máš viacero práv vo vzťahu k svojim osobným údajom. Patrí medzi ne najmä:
+          </p>
+          <ul>
+            <li>právo na informácie o spracúvaní,</li>
+            <li>právo na prístup k osobným údajom,</li>
+            <li>právo na opravu nepresných alebo neúplných údajov,</li>
+            <li>právo na vymazanie údajov, ak sú splnené zákonné podmienky,</li>
+            <li>právo na obmedzenie spracúvania,</li>
+            <li>právo na prenosnosť údajov, ak sú splnené zákonné podmienky,</li>
+            <li>právo namietať proti spracúvaniu v prípadoch, keď sa spracúvanie opiera o oprávnený záujem,</li>
+            <li>právo podať sťažnosť dozornému orgánu.</li>
+          </ul>
+          <p>
+            Rozsah konkrétneho práva vždy závisí od právneho základu a účelu spracúvania.
+          </p>
+        </section>
+
+        <section class="section" id="cl9">
+          <h3>9. Ako môžeš uplatniť svoje práva</h3>
+          <p>
+            Svoje práva si môžeš uplatniť emailom na adrese
+            <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>.
+          </p>
+          <p>
+            Aby sme vedeli tvoju požiadavku bezpečne vybaviť, môžeme si primerane overiť tvoju totožnosť.
+          </p>
+          <p>
+            Ak sa domnievaš, že tvoje údaje spracúvame v rozpore s právnymi predpismi, môžeš podať sťažnosť dozornému orgánu:
+          </p>
+
+          <div class="info-grid">
+            <div class="info-row">
+              <div class="info-label">Dozorný orgán</div>
+              <div class="info-value">Úrad na ochranu osobných údajov Slovenskej republiky</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Adresa</div>
+              <div class="info-value">Námestie 1. mája 18, 811 06 Bratislava</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Web</div>
+              <div class="info-value"><a href="https://dataprotection.gov.sk/" target="_blank" rel="noopener">dataprotection.gov.sk</a></div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Email</div>
+              <div class="info-value">statny.dozor@pdp.gov.sk</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">Telefón</div>
+              <div class="info-value">+421 2 32 31 32 14 / +421 2 32 31 32 49</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="cl10">
+          <h3>10. Cookies a technické dáta</h3>
+          <p>
+            Web môže používať nevyhnutné technické cookies a podobné technológie potrebné na správne fungovanie stránky, bezpečnosť, načítanie obsahu
+            a spracovanie formulárov.
+          </p>
+          <p>
+            Ak budú na stránke používané aj analytické alebo marketingové cookies, budú riešené samostatným mechanizmom a príslušnými informáciami.
+          </p>
+        </section>
+
+        <section class="section" id="cl11">
+          <h3>11. Bezpečnosť osobných údajov</h3>
+          <p>
+            Prijímame primerané technické a organizačné opatrenia na ochranu osobných údajov pred stratou, zneužitím, neoprávneným prístupom,
+            zmenou alebo zverejnením.
+          </p>
+          <p>
+            Tieto opatrenia zahŕňajú najmä kontrolu prístupu, používanie overených technických služieb, obmedzenie prístupových práv,
+            evidenciu vybraných operácií a primerané bezpečnostné postupy pri práci s dokumentmi a databázou.
+          </p>
+        </section>
+
+        <section class="section" id="cl12">
+          <h3>12. Záverečné ustanovenia</h3>
+          <p>
+            Tento dokument môže byť priebežne aktualizovaný, ak sa zmení rozsah spracúvania, právne požiadavky alebo technické riešenie platformy.
+          </p>
+          <p>
+            Na webovej stránke je vždy zverejnená aktuálna verzia dokumentu o ochrane osobných údajov.
+          </p>
+        </section>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
     <div>© 2026 kupujspolu.sk</div>
     <div class="footer-links">
+      <a href="/index.html">Hlavná stránka</a>
       <a href="/vop.html">Obchodné podmienky</a>
       <a href="/kontakt.html">Kontakt</a>
-      <a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk." target="_blank" rel="noopener">WhatsApp podpora</a>
     </div>
   </footer>
 </body>

@@ -575,13 +575,44 @@
   <section class="wrap">
     <div class="card">
       <h2>Údaje o ponuke</h2>
-      <p class="muted">Vyplň základné údaje, nahraj ponuku od dealera a vyber servisný plán.</p>
+      <p class="muted">Vyplň základné údaje, nahraj ponuku od dealera alebo z konfigurátora a vyber servisný plán.</p>
+
+      <div class="notice warn" style="margin-bottom:16px;">
+        Nahrávaj iba cenové ponuky na nové autá od autorizovaného dealera alebo z oficiálneho konfigurátora.
+        Nenahrávaj ponuky na jazdené vozidlá, bazárové vozidlá ani neúplné kalkulácie.
+      </div>
 
       <form id="offerForm" novalidate>
         <div class="form-grid">
           <div class="field">
-            <label for="znacka">Značka vozidla *</label>
-            <input id="znacka" name="znacka" type="text" required placeholder="napr. Škoda">
+            <label for="znackaSelect">Značka vozidla *</label>
+            <select id="znackaSelect" required>
+              <option value="">— Vyber značku —</option>
+              <option value="Škoda">Škoda</option>
+              <option value="Volkswagen">Volkswagen</option>
+              <option value="Hyundai">Hyundai</option>
+              <option value="Kia">Kia</option>
+              <option value="Toyota">Toyota</option>
+              <option value="Peugeot">Peugeot</option>
+              <option value="Citroën">Citroën</option>
+              <option value="Dacia">Dacia</option>
+              <option value="Renault">Renault</option>
+              <option value="Ford">Ford</option>
+              <option value="BMW">BMW</option>
+              <option value="Mercedes-Benz">Mercedes-Benz</option>
+              <option value="Audi">Audi</option>
+              <option value="ine">Iná značka</option>
+            </select>
+            <small>Vyber značku vozidla z ponuky na nové auto.</small>
+
+            <input
+              id="znacka"
+              name="znacka"
+              type="text"
+              placeholder="Zadaj značku"
+              class="hidden"
+              required
+            >
           </div>
 
           <div class="field">
@@ -598,7 +629,7 @@
           <div class="field">
             <label for="offerFile">Nahrať ponuku *</label>
             <input id="offerFile" name="offerFile" type="file" accept=".pdf,.jpg,.jpeg,.png" required>
-            <small>Povolené formáty: PDF, JPG, PNG. Max. veľkosť 10 MB.</small>
+            <small>Povolené formáty: PDF, JPG, PNG. Max. veľkosť 10 MB. Nahrávaj iba ponuku na nové vozidlo.</small>
           </div>
 
           <div class="field full">
@@ -827,6 +858,9 @@
     const selectedPlanPrice = document.getElementById('selectedPlanPrice');
     const selectedPlanText = document.getElementById('selectedPlanText');
 
+    const znackaSelect = document.getElementById('znackaSelect');
+    const znackaInput = document.getElementById('znacka');
+
     function setMessage(type, text) {
       messageBox.className = 'notice ' + type;
       messageBox.textContent = text;
@@ -879,6 +913,20 @@
       updatePlanSummary();
     }
 
+    function updateZnackaField() {
+      if (znackaSelect.value === 'ine') {
+        znackaInput.classList.remove('hidden');
+        znackaInput.required = true;
+        znackaInput.value = '';
+      } else {
+        znackaInput.classList.add('hidden');
+        znackaInput.required = false;
+        znackaInput.value = znackaSelect.value;
+      }
+    }
+
+    znackaSelect.addEventListener('change', updateZnackaField);
+
     buyerPrivate.addEventListener('change', updateBuyerTypeUI);
     buyerCompany.addEventListener('change', updateBuyerTypeUI);
     document.querySelectorAll('input[name="fee"]').forEach(el => {
@@ -896,6 +944,16 @@
 
       if (!document.getElementById('agreeStartService').checked) {
         setMessage('warn', 'Pred pokračovaním musíš potvrdiť súhlas so začatím poskytovania digitálnej služby.');
+        return;
+      }
+
+      if (!znackaSelect.value) {
+        setMessage('warn', 'Vyber prosím značku vozidla.');
+        return;
+      }
+
+      if (znackaSelect.value === 'ine' && !znackaInput.value.trim()) {
+        setMessage('warn', 'Pri možnosti Iná značka musíš zadať názov značky.');
         return;
       }
 
@@ -960,6 +1018,7 @@
 
     updateBuyerTypeUI();
     applyPlanFromQuery();
+    updateZnackaField();
   </script>
 </body>
 </html>

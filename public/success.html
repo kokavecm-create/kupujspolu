@@ -21,32 +21,42 @@
       --brand-soft:rgba(59,130,246,.12);
       --ok:#22C55E;
       --ok-soft:rgba(34,197,94,.12);
-      --warn:#F59E0B;
-      --warn-soft:rgba(245,158,11,.12);
-      --danger:#EF4444;
-      --danger-soft:rgba(239,68,68,.12);
+      --ok-border:rgba(34,197,94,.26);
+      --shadow:0 18px 60px rgba(0,0,0,.42);
       --radius:22px;
       --pill:999px;
-      --shadow:0 18px 60px rgba(0,0,0,.42);
-      --max:980px;
+      --max:1180px;
     }
 
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
     body{
       margin:0;
       font-family:'Outfit',sans-serif;
-      background:linear-gradient(180deg,#050912 0%, #08101c 100%);
+      background:
+        radial-gradient(circle at top right, rgba(59,130,246,.12), transparent 32%),
+        linear-gradient(180deg,#050912 0%, #08101c 100%);
       color:var(--ink);
       line-height:1.65;
     }
 
-    a{color:#93c5fd;text-decoration:none}
-    a:hover{text-decoration:underline}
+    a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    a:hover{
+      text-decoration:underline;
+    }
 
     .topbar{
-      border-bottom:1px solid var(--line);
-      background:rgba(7,11,20,.88);
+      position:sticky;
+      top:0;
+      z-index:60;
       backdrop-filter:blur(16px);
+      background:rgba(7,11,20,.88);
+      border-bottom:1px solid var(--line);
     }
 
     .topbar-inner{
@@ -71,28 +81,41 @@
       color:var(--brand);
     }
 
-    .hero{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:42px 24px 24px;
+    .back{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:var(--pill);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:var(--ink);
+      font-weight:600;
     }
 
-    .eyebrow{
+    .page{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:42px 24px 70px;
+    }
+
+    .status-pill{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding:8px 12px;
+      padding:8px 14px;
       border-radius:var(--pill);
       background:var(--ok-soft);
+      border:1px solid var(--ok-border);
       color:#dcfce7;
-      border:1px solid rgba(34,197,94,.24);
-      font-size:.8rem;
-      font-weight:700;
+      font-size:.82rem;
+      font-weight:800;
       letter-spacing:.08em;
       text-transform:uppercase;
+      margin-bottom:18px;
     }
 
-    .eyebrow::before{
+    .status-pill::before{
       content:"";
       width:10px;
       height:10px;
@@ -102,26 +125,25 @@
     }
 
     h1{
-      margin:18px 0 10px;
+      margin:0 0 14px;
       font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(2.4rem,5vw,4.1rem);
+      font-size:clamp(2.5rem,5vw,4.6rem);
       line-height:.95;
       letter-spacing:.02em;
     }
 
-    .hero-sub{
-      max-width:760px;
+    .lead{
+      max-width:860px;
       color:var(--muted);
-      font-size:1rem;
       font-weight:300;
+      font-size:1rem;
+      margin-bottom:28px;
     }
 
-    .wrap{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:0 24px 70px;
+    .layout{
       display:grid;
-      gap:18px;
+      grid-template-columns:minmax(0,1fr) 1fr;
+      gap:22px;
     }
 
     .card{
@@ -133,117 +155,111 @@
     }
 
     .card h2{
-      margin:0 0 10px;
-      font-size:1.25rem;
+      margin:0 0 12px;
+      font-size:1.3rem;
       line-height:1.2;
     }
 
-    .card p{
-      margin:0 0 12px;
-      color:var(--muted);
+    .info-grid{
+      display:grid;
+      gap:12px;
     }
 
-    .grid{
+    .info-row{
       display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:18px;
-    }
-
-    .summary{
-      display:grid;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .row{
-      display:grid;
-      grid-template-columns:220px 1fr;
-      gap:14px;
-      padding:12px 14px;
-      border-radius:14px;
-      background:var(--card-2);
+      grid-template-columns:180px 1fr;
+      gap:12px;
+      align-items:center;
       border:1px solid var(--line);
+      background:#0d1526;
+      border-radius:16px;
+      padding:14px 16px;
     }
 
-    .row strong{color:var(--ink)}
+    .info-label{
+      font-size:.9rem;
+      font-weight:700;
+      color:var(--ink);
+    }
 
-    .badge{
+    .info-value{
+      color:var(--muted);
+      font-weight:500;
+      word-break:break-word;
+    }
+
+    .plan-badge{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       padding:6px 12px;
       border-radius:var(--pill);
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
+      background:var(--brand-soft);
+      border:1px solid rgba(59,130,246,.28);
+      color:#bfdbfe;
       font-size:.78rem;
       font-weight:800;
       letter-spacing:.05em;
       text-transform:uppercase;
-      white-space:nowrap;
     }
 
-    .badge.pending{
-      background:rgba(245,158,11,.14);
-      border-color:rgba(245,158,11,.24);
-      color:#fde68a;
-    }
-
-    .badge.paid{
-      background:rgba(34,197,94,.14);
-      border-color:rgba(34,197,94,.24);
-      color:#dcfce7;
-    }
-
-    .badge.default{
-      background:rgba(255,255,255,.04);
-      color:var(--ink);
-    }
-
-    .notice{
-      border-radius:16px;
-      padding:16px;
-      border:1px solid var(--line);
-    }
-
-    .notice.info{
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-    }
-
-    .notice.ok{
+    .paid-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 12px;
+      border-radius:var(--pill);
       background:var(--ok-soft);
-      border-color:rgba(34,197,94,.22);
+      border:1px solid var(--ok-border);
       color:#dcfce7;
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.05em;
+      text-transform:uppercase;
     }
 
     .steps{
       display:grid;
-      gap:12px;
-      margin-top:14px;
+      gap:14px;
+      margin-top:6px;
     }
 
     .step{
-      padding:14px 16px;
-      border-radius:16px;
       border:1px solid var(--line);
-      background:var(--card-2);
+      background:#0d1526;
+      border-radius:18px;
+      padding:16px 18px;
     }
 
     .step strong{
       display:block;
-      margin-bottom:4px;
       color:var(--ink);
+      font-size:.96rem;
+      margin-bottom:6px;
     }
 
-    .step span{
+    .step p{
+      margin:0;
       color:var(--muted);
-      font-size:.95rem;
+      font-size:.92rem;
+      line-height:1.65;
+    }
+
+    .note{
+      margin-top:18px;
+      padding:16px 18px;
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.65;
     }
 
     .actions{
       display:flex;
-      gap:12px;
       flex-wrap:wrap;
+      gap:12px;
       margin-top:18px;
     }
 
@@ -251,43 +267,45 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:13px 18px;
+      gap:8px;
+      padding:14px 18px;
       border-radius:999px;
-      text-decoration:none;
       font-weight:800;
+      text-decoration:none;
       transition:.18s ease;
+      border:none;
+      cursor:pointer;
+      font:inherit;
+    }
+
+    .btn-brand{
+      background:var(--brand);
+      color:#fff;
+      box-shadow:0 4px 22px rgba(59,130,246,.35);
+    }
+
+    .btn-brand:hover{
+      background:var(--brand-dark);
+      text-decoration:none;
+      transform:translateY(-1px);
+    }
+
+    .btn-outline{
+      background:transparent;
+      color:var(--ink);
       border:1px solid var(--line);
     }
 
-    .btn-primary{
-      background:var(--brand);
-      color:#fff;
-      border-color:transparent;
-    }
-
-    .btn-primary:hover{
-      background:var(--brand-dark);
+    .btn-outline:hover{
       text-decoration:none;
-    }
-
-    .btn-secondary{
-      background:rgba(255,255,255,.02);
-      color:var(--ink);
-    }
-
-    .btn-secondary:hover{
-      text-decoration:none;
-      border-color:rgba(59,130,246,.35);
-    }
-
-    .loading{
-      color:var(--muted);
+      border-color:rgba(59,130,246,.32);
+      background:rgba(59,130,246,.06);
     }
 
     .footer{
       max-width:var(--max);
       margin:0 auto;
-      padding:0 24px 48px;
+      padding:0 24px 42px;
       color:var(--muted-2);
       font-size:.86rem;
     }
@@ -299,29 +317,25 @@
       margin-top:12px;
     }
 
-    @media (max-width: 900px){
-      .grid{
+    @media (max-width: 980px){
+      .layout{
         grid-template-columns:1fr;
-      }
-
-      .row{
-        grid-template-columns:1fr;
-      }
-
-      .hero{
-        padding:32px 16px 16px;
-      }
-
-      .wrap{
-        padding:0 16px 56px;
       }
 
       .topbar-inner{
         padding:14px 16px;
       }
 
+      .page{
+        padding:32px 16px 56px;
+      }
+
       .footer{
         padding:0 16px 42px;
+      }
+
+      .info-row{
+        grid-template-columns:1fr;
       }
     }
   </style>
@@ -330,64 +344,104 @@
   <div class="topbar">
     <div class="topbar-inner">
       <a class="logo" href="/index.html">kupuj<em>spolu</em>.sk</a>
-      <a href="/index.html">Späť na hlavnú stránku</a>
+      <a class="back" href="/index.html">← Späť na hlavnú stránku</a>
     </div>
   </div>
 
-  <section class="hero">
-    <div class="eyebrow">Potvrdenie</div>
-    <h1>Platba potvrdená</h1>
-    <p class="hero-sub">
-      Ďakujeme. Tvoja ponuka bola prijatá do systému a nižšie nájdeš detail odoslaného prípadu.
+  <main class="page">
+    <div class="status-pill">Platba potvrdená</div>
+
+    <h1>Platba potvrdená.<br>Prípad je zaradený do spracovania.</h1>
+
+    <p class="lead">
+      Ďakujeme. Tvoja platba za digitálnu službu bola úspešne prijatá a tvoja ponuka na nové vozidlo bola zaradená do systému.
       Ďalšie spracovanie prebieha elektronicky podľa zvoleného plánu a obchodných podmienok.
     </p>
-  </section>
 
-  <section class="wrap">
-    <div class="grid">
+    <section class="layout">
       <div class="card">
-        <h2>Detaily ponuky</h2>
-        <div id="uploadInfo" class="summary">
-          <div class="loading">Načítavam detaily ponuky...</div>
+        <h2>Prehľad prípadu</h2>
+
+        <div class="info-grid">
+          <div class="info-row">
+            <div class="info-label">Upload ID</div>
+            <div class="info-value" id="uploadIdValue">—</div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-label">Vybraný plán</div>
+            <div class="info-value">
+              <span class="plan-badge" id="planValue">Štandard</span>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-label">Stav platby</div>
+            <div class="info-value">
+              <span class="paid-badge">PAID</span>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-label">Forma spracovania</div>
+            <div class="info-value">Elektronicky</div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-label">Typ prípadu</div>
+            <div class="info-value">Ponuka na nové vozidlo</div>
+          </div>
         </div>
       </div>
 
       <div class="card">
         <h2>Čo nasleduje ďalej</h2>
-        <p>
-          Tvoja ponuka je uložená a zaradená do ďalšieho spracovania. Platforma pokračuje podľa typu prípadu,
-          relevantnosti konfigurácie a aktuálneho stavu skupinového vyjednávania.
-        </p>
 
         <div class="steps">
           <div class="step">
             <strong>1. Overenie a spracovanie ponuky</strong>
-            <span>Skontrolujeme použiteľnosť nahratej ponuky a technickú úplnosť prípadu.</span>
+            <p>
+              Skontrolujeme, či je nahraná ponuka použiteľná a či ide o ponuku na nové auto od autorizovaného dealera
+              alebo z oficiálneho konfigurátora.
+            </p>
           </div>
 
           <div class="step">
-            <strong>2. Zaradenie do skupiny</strong>
-            <span>Ponuka bude použitá v procese porovnania a skupinového vyjednávania porovnateľných konfigurácií.</span>
+            <strong>2. Zaradenie do systému</strong>
+            <p>
+              Tvoj prípad zaradíme medzi porovnateľné ponuky a pripravíme ho na anonymizované porovnanie
+              a skupinové vyjednávanie.
+            </p>
           </div>
 
           <div class="step">
-            <strong>3. Doručenie výsledku</strong>
-            <span>Výsledok vyjednávania alebo ďalšie informácie budú doručené elektronicky podľa priebehu procesu.</span>
+            <strong>3. Faktúra za službu</strong>
+            <p>
+              Faktúru za digitálnu službu zasielame spravidla do 2–3 pracovných dní na email uvedený v objednávke.
+            </p>
+          </div>
+
+          <div class="step">
+            <strong>4. Doručenie výsledku</strong>
+            <p>
+              Po spracovaní a priebehu vyjednávania ti doručíme výsledok elektronicky podľa zvoleného plánu
+              a obchodných podmienok.
+            </p>
           </div>
         </div>
 
-        <div class="notice info" style="margin-top:16px;">
-          Ak potrebuješ pomoc, pozri <a href="/kontakt.html">kontakt</a> alebo nám napíš na
-          <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>.
+        <div class="note">
+          Ak budeme potrebovať doplniť údaje alebo spresniť konfiguráciu, budeme ťa kontaktovať emailom.
+          Potvrdenie o prijatí objednávky bolo odoslané automaticky po úspešnej úhrade.
         </div>
 
         <div class="actions">
-          <a class="btn btn-primary" href="/upload.html">Nahrať ďalšiu ponuku</a>
-          <a class="btn btn-secondary" href="/index.html">Späť na hlavnú</a>
+          <a class="btn btn-brand" href="/upload.html">Nahrať ďalšiu ponuku</a>
+          <a class="btn btn-outline" href="/index.html">Späť na hlavnú stránku</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <footer class="footer">
     <div>© 2026 kupujspolu.sk</div>
@@ -399,88 +453,19 @@
   </footer>
 
   <script>
-    function escapeHtml(value) {
-      return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+    function getPlanLabel(fee) {
+      if (String(fee) === '399') {
+        return 'Garancia+ · 399 EUR';
+      }
+      return 'Štandard · 129 EUR';
     }
 
-    function formatPlan(fee) {
-      if (String(fee) === '399') return 'Garancia+ (399 EUR)';
-      if (String(fee) === '129') return 'Štandard (129 EUR)';
-      return fee ? `${escapeHtml(fee)} EUR` : 'Neuvedené';
-    }
+    const params = new URLSearchParams(window.location.search);
+    const uploadId = params.get('uploadId') || '—';
+    const fee = params.get('fee') || '129';
 
-    function formatStatus(status) {
-      const normalized = String(status || '').trim();
-      if (!normalized) {
-        return '<span class="badge default">neuvedené</span>';
-      }
-
-      if (normalized === 'pending_payment') {
-        return '<span class="badge pending">pending_payment</span>';
-      }
-
-      if (normalized === 'paid') {
-        return '<span class="badge paid">paid</span>';
-      }
-
-      return `<span class="badge default">${escapeHtml(normalized)}</span>`;
-    }
-
-    async function loadUploadInfo() {
-      const box = document.getElementById('uploadInfo');
-      if (!box) return;
-
-      const params = new URLSearchParams(window.location.search);
-      const uploadId = params.get('uploadId');
-
-      if (!uploadId) {
-        box.innerHTML = `
-          <div class="notice" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:#fecaca;">
-            Upload ID sa nenašiel v adrese stránky.
-          </div>
-        `;
-        return;
-      }
-
-      try {
-        const res = await fetch(`/api/upload/${encodeURIComponent(uploadId)}`);
-        const data = await res.json();
-
-        if (!res.ok) {
-          box.innerHTML = `
-            <div class="notice" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:#fecaca;">
-              Nepodarilo sa načítať detaily ponuky.
-            </div>
-          `;
-          return;
-        }
-
-        box.innerHTML = `
-          <div class="row"><strong>Upload ID</strong><div>${escapeHtml(data.uploadId || '')}</div></div>
-          <div class="row"><strong>Značka</strong><div>${escapeHtml(data.znacka || '')}</div></div>
-          <div class="row"><strong>Model</strong><div>${escapeHtml(data.model || '')}</div></div>
-          <div class="row"><strong>Cena</strong><div>${escapeHtml(data.cena || '')} EUR</div></div>
-          <div class="row"><strong>Typ kupujúceho</strong><div>${escapeHtml(data.buyerType || '')}</div></div>
-          <div class="row"><strong>E-mail</strong><div>${escapeHtml(data.email || '')}</div></div>
-          <div class="row"><strong>Plán</strong><div>${formatPlan(data.fee || new URLSearchParams(window.location.search).get('fee'))}</div></div>
-          <div class="row"><strong>Stav</strong><div>${formatStatus(data.status || '')}</div></div>
-        `;
-      } catch (err) {
-        console.error(err);
-        box.innerHTML = `
-          <div class="notice" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:#fecaca;">
-            Chyba pri načítaní detailov.
-          </div>
-        `;
-      }
-    }
-
-    loadUploadInfo();
+    document.getElementById('uploadIdValue').textContent = uploadId;
+    document.getElementById('planValue').textContent = getPlanLabel(fee);
   </script>
 </body>
 </html>
