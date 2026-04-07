@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>kupujspolu.sk — Skupinové vyjednávanie pri kúpe nového auta</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>kupujspolu.sk — Skupinové vyjednávanie zľavy pri kúpe nového auta</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --site-bg:#070B14;
@@ -144,23 +144,23 @@ nav{
 }
 h1.hero-h{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2.8rem,5vw,5.2rem);
+  font-size:clamp(2.9rem,5vw,5.4rem);
   letter-spacing:.02em;
-  line-height:.95;
-  margin-bottom:1.3rem;
+  line-height:.94;
+  margin-bottom:1.2rem;
   color:var(--ink)
 }
 h1.hero-h .acc{color:var(--brand)}
 .hero-sub{
-  max-width:560px;
+  max-width:620px;
   color:var(--ink-mid);
   font-weight:300;
   font-size:1rem;
-  line-height:1.78;
-  margin-bottom:1.6rem
+  line-height:1.8;
+  margin-bottom:1.2rem
 }
 .hero-note{
-  max-width:580px;
+  max-width:620px;
   display:flex;
   gap:.7rem;
   padding:1rem 1.1rem;
@@ -170,11 +170,22 @@ h1.hero-h .acc{color:var(--brand)}
   color:#fde68a;
   font-size:.84rem;
   line-height:1.6;
-  margin-bottom:2rem
+  margin-bottom:1.2rem
 }
 .hero-note::before{
   content:'⚠';
   flex-shrink:0
+}
+.hero-mini{
+  max-width:620px;
+  margin-bottom:2rem;
+  padding:1rem 1.1rem;
+  border-radius:14px;
+  background:var(--brand-soft);
+  border:1px solid var(--brand-border);
+  color:#dbeafe;
+  font-size:.86rem;
+  line-height:1.7
 }
 .hero-actions{
   display:flex;
@@ -240,7 +251,7 @@ h1.hero-h .acc{color:var(--brand)}
 }
 .hero-card{
   width:100%;
-  max-width:410px;
+  max-width:430px;
   background:var(--card);
   border:1px solid var(--border);
   border-radius:22px;
@@ -251,6 +262,7 @@ h1.hero-h .acc{color:var(--brand)}
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:1rem;
   padding-bottom:1rem;
   margin-bottom:1rem;
   border-bottom:1px solid var(--soft)
@@ -276,7 +288,7 @@ h1.hero-h .acc{color:var(--brand)}
   display:flex;
   justify-content:space-between;
   gap:1rem;
-  padding:.45rem 0;
+  padding:.55rem 0;
   border-bottom:1px solid var(--soft);
   font-size:.86rem
 }
@@ -289,7 +301,7 @@ h1.hero-h .acc{color:var(--brand)}
 }
 .hc-notice{
   margin-top:1rem;
-  padding:.85rem 1rem;
+  padding:.95rem 1rem;
   background:var(--brand-soft);
   border:1px solid var(--brand-border);
   border-radius:11px;
@@ -305,7 +317,7 @@ h1.hero-h .acc{color:var(--brand)}
 }
 .hc-saving{
   margin-top:.9rem;
-  padding:.85rem 1rem;
+  padding:.9rem 1rem;
   background:rgba(34,197,94,.08);
   border:1px solid rgba(34,197,94,.22);
   border-radius:11px;
@@ -345,12 +357,12 @@ h1.hero-h .acc{color:var(--brand)}
 .sec-h{
   font-family:'Bebas Neue',sans-serif;
   letter-spacing:.02em;
-  font-size:clamp(1.9rem,3.8vw,2.9rem);
+  font-size:clamp(1.95rem,3.8vw,3rem);
   margin-bottom:.8rem;
   line-height:1
 }
 .sec-sub{
-  max-width:640px;
+  max-width:720px;
   font-weight:300;
   line-height:1.78;
   margin-bottom:2.8rem;
@@ -358,9 +370,35 @@ h1.hero-h .acc{color:var(--brand)}
   color:var(--ink-mid)
 }
 
+.info-band{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:1.2rem;
+  margin-top:2rem
+}
+.info-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.4rem;
+  box-shadow:var(--shadow)
+}
+.info-card strong{
+  display:block;
+  color:var(--ink);
+  font-size:.92rem;
+  margin-bottom:.45rem
+}
+.info-card span{
+  display:block;
+  color:var(--ink-mid);
+  font-size:.86rem;
+  line-height:1.65
+}
+
 .steps-g{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:1.4rem
 }
 .step-box{
@@ -401,6 +439,90 @@ h1.hero-h .acc{color:var(--brand)}
   font-weight:300;
   color:var(--ink-mid);
   line-height:1.68
+}
+
+.logic-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:1.4rem;
+  align-items:stretch
+}
+.logic-card,
+.compare-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:2rem;
+  box-shadow:var(--shadow)
+}
+.logic-points{
+  display:grid;
+  gap:1rem;
+  margin-top:1rem
+}
+.logic-point{
+  display:flex;
+  gap:.9rem;
+  align-items:flex-start;
+  padding:1rem;
+  border-radius:16px;
+  background:#0d1526;
+  border:1px solid var(--soft)
+}
+.logic-ic{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:var(--brand-soft);
+  border:1px solid var(--brand-border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0
+}
+.logic-text strong{
+  display:block;
+  font-size:.9rem;
+  margin-bottom:.25rem
+}
+.logic-text span{
+  color:var(--ink-mid);
+  font-size:.86rem;
+  line-height:1.65
+}
+.compare-grid{
+  display:grid;
+  gap:1rem;
+  margin-top:1rem
+}
+.compare-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem
+}
+.compare-box{
+  border-radius:16px;
+  padding:1rem;
+  border:1px solid var(--soft);
+  background:#0d1526
+}
+.compare-box strong{
+  display:block;
+  font-size:.88rem;
+  margin-bottom:.35rem
+}
+.compare-box span{
+  display:block;
+  color:var(--ink-mid);
+  font-size:.84rem;
+  line-height:1.6
+}
+.compare-box.bad{
+  border-color:rgba(239,68,68,.2)
+}
+.compare-box.good{
+  border-color:rgba(34,197,94,.22);
+  background:rgba(34,197,94,.06)
 }
 
 .plans-g{
@@ -745,7 +867,7 @@ footer{
 @media(max-width:960px){
   .hero{grid-template-columns:1fr}
   .hero-r{display:none}
-  .steps-g,.scenario-g,.how-g{grid-template-columns:1fr}
+  .steps-g,.scenario-g,.how-g,.info-band,.logic-grid{grid-template-columns:1fr}
   .plans-g{grid-template-columns:1fr}
   .priv-strip{grid-template-columns:1fr 1fr}
   .nav-links{display:none}
@@ -761,7 +883,6 @@ footer{
   }
   .whatsapp-btn::after{display:none}
 }
-
 @media(max-width:640px){
   .priv-strip{grid-template-columns:1fr}
 }
@@ -772,6 +893,7 @@ footer{
   <a class="logo" href="index.html">kupuj<em>spolu</em>.sk</a>
   <ul class="nav-links">
     <li><a href="#ako">Ako to funguje</a></li>
+    <li><a href="#preco">Prečo spolu</a></li>
     <li><a href="#poplatky">Poplatky</a></li>
     <li><a class="nav-cta" href="upload.html">Nahrať ponuku →</a></li>
   </ul>
@@ -780,13 +902,18 @@ footer{
 <section class="hero">
   <div class="hero-l">
     <div class="eyebrow">Nové autá · Slovensko · Skupinové vyjednávanie</div>
-    <h1 class="hero-h">Nahraj ponuku na nové auto.<br><span class="acc">Skupina vyjedná lepšie.</span></h1>
+    <h1 class="hero-h">Získaj lepšiu cenu na nové auto.<br><span class="acc">Nie sám. Spolu.</span></h1>
 
     <p class="hero-sub">
       Nahraj cenovú ponuku na nové vozidlo od autorizovaného dealera alebo z oficiálneho konfigurátora.
-      My ju anonymizujeme, zaradíme do skupiny porovnateľných prípadov a vyjednávame lepšiu cenu.
-      Výsledkom je konkrétny obchodný výsledok pre tvoju ponuku — nie všeobecný sľub.
+      Tvoju ponuku spojíme s ďalšími zákazníkmi, ktorí riešia <strong>rovnakú značku</strong> alebo porovnateľný model
+      — napríklad Škoda, Hyundai, Kia, Toyota či Volkswagen — a následne vyjednávame lepší obchodný výsledok ako skupina.
     </p>
+
+    <div class="hero-mini">
+      <strong>Kľúčový princíp:</strong> nevyjednávame za jedného zákazníka. Vyjednávame za skupinu dopytov na rovnakú značku alebo porovnateľnú konfiguráciu.
+      Viac relevantných dopytov = silnejšia vyjednávacia pozícia voči dealerom.
+    </div>
 
     <div class="hero-note">
       Služba je určená výhradne pre nové autá. Nenahrávaj ponuky na jazdené vozidlá, bazárové vozidlá ani neúplné kalkulácie.
@@ -799,24 +926,26 @@ footer{
 
     <div class="hero-stats">
       <div><span class="sv"><span class="g">6–12%</span></span><span class="sl">typický priestor na vyjednávanie</span></div>
-      <div><span class="sv">od 10</span><span class="sl">porovnateľných ponúk sa proces zoskupuje</span></div>
+      <div><span class="sv">od 10</span><span class="sl">porovnateľných dopytov sa skupina stáva silnejšou</span></div>
     </div>
   </div>
 
   <div class="hero-r">
     <div class="hero-card">
       <div class="hc-head">
-        <span class="hc-title">Príklad skupiny</span>
+        <span class="hc-title">Príklad skupiny dopytov</span>
         <span class="tag-waiting">Ilustračný príklad</span>
       </div>
 
-      <div class="hc-row"><span class="hc-k">Typ prípadu</span><span class="hc-v">Nové vozidlo</span></div>
-      <div class="hc-row"><span class="hc-k">Model</span><span class="hc-v">Škoda Octavia</span></div>
-      <div class="hc-row"><span class="hc-k">Príklad stavu skupiny</span><span class="hc-v">4 z 10</span></div>
+      <div class="hc-row"><span class="hc-k">Značka</span><span class="hc-v">Škoda</span></div>
+      <div class="hc-row"><span class="hc-k">Modelový príklad</span><span class="hc-v">Octavia / Karoq</span></div>
+      <div class="hc-row"><span class="hc-k">Stav skupiny</span><span class="hc-v">7 z 10 dopytov</span></div>
       <div class="hc-row"><span class="hc-k">Príklad ceny z ponuky</span><span class="hc-v nowrap">26&nbsp;200&nbsp;€</span></div>
+      <div class="hc-row"><span class="hc-k">Spôsob vyjednávania</span><span class="hc-v">Skupinovo</span></div>
 
       <div class="hc-notice">
-        Tento box je ilustračný príklad. Vyjednávanie sa typicky aktivuje po nazbieraní dostatočného počtu porovnateľných a overených ponúk.
+        Keď sa nazbiera dostatok porovnateľných dopytov na rovnakú značku alebo konfiguráciu,
+        vytvárame silnejší tlak na lepšiu cenu u relevantných dealerov.
       </div>
 
       <div class="hc-saving">
@@ -827,53 +956,175 @@ footer{
   </div>
 </section>
 
-<section class="sec" id="ako">
+<section class="sec" id="preco">
   <div class="rev">
-    <div class="eyebrow">Proces</div>
-    <h2 class="sec-h">Jasný proces.<br>Jasný obchodný výsledok.</h2>
+    <div class="eyebrow">Prečo to funguje</div>
+    <h2 class="sec-h">Dealer inak vníma jednotlivca.<br>Inak vníma skupinu.</h2>
     <p class="sec-sub">
-      Neposielaš všeobecný dopyt. Predkladáš reálnu cenovú ponuku na nové auto. Tá sa po anonymizácii zaradí do systému
-      a stáva sa súčasťou skupinového vyjednávania s cieľom dosiahnuť lepší výsledok, než by mal jednotlivec sám.
+      Ak dealer rokuje s jedným človekom, jeho motivácia ísť s cenou nižšie býva obmedzená.
+      Keď však vidí viac reálnych dopytov na rovnakú značku alebo porovnateľné konfigurácie,
+      vyjednávacia situácia sa mení.
+    </p>
+  </div>
+
+  <div class="logic-grid rev">
+    <div class="logic-card">
+      <h3 style="font-size:1.2rem;margin-bottom:.4rem;">Ako vzniká úspora</h3>
+      <p class="sec-sub" style="margin-bottom:0;max-width:none;">
+        Úspora nevzniká náhodou. Vzniká tým, že spájame dopyty, anonymizujeme ich a oslovujeme relevantných predajcov
+        so silnejšou vyjednávacou pozíciou než má jednotlivec.
+      </p>
+
+      <div class="logic-points">
+        <div class="logic-point">
+          <div class="logic-ic">1</div>
+          <div class="logic-text">
+            <strong>Prijmeme reálnu ponuku</strong>
+            <span>Nahráš konkrétnu cenovú ponuku na nové auto od dealera alebo z konfigurátora.</span>
+          </div>
+        </div>
+
+        <div class="logic-point">
+          <div class="logic-ic">2</div>
+          <div class="logic-text">
+            <strong>Spojíme podobné dopyty</strong>
+            <span>Prípady triedime podľa značky, modelu a porovnateľnej konfigurácie.</span>
+          </div>
+        </div>
+
+        <div class="logic-point">
+          <div class="logic-ic">3</div>
+          <div class="logic-text">
+            <strong>Vyjednávame ako skupina</strong>
+            <span>Dealer nevidí jedného kupujúceho, ale obchodný potenciál viacerých relevantných zákazníkov.</span>
+          </div>
+        </div>
+
+        <div class="logic-point">
+          <div class="logic-ic">4</div>
+          <div class="logic-text">
+            <strong>Doručíme výsledok</strong>
+            <span>Výsledkom môže byť lepšia cena alebo iný obchodný výsledok podľa zvoleného plánu a VOP.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-card">
+      <h3 style="font-size:1.2rem;margin-bottom:.4rem;">Jednotlivec vs. skupina</h3>
+      <p class="sec-sub" style="margin-bottom:0;max-width:none;">
+        Presne toto potrebuje zákazník pochopiť za pár sekúnd.
+      </p>
+
+      <div class="compare-grid">
+        <div class="compare-row">
+          <div class="compare-box bad">
+            <strong>Kupuješ sám</strong>
+            <span>Slabšia vyjednávacia pozícia. Dealer rokuje s jedným prípadom.</span>
+          </div>
+          <div class="compare-box good">
+            <strong>Vyjednávame spolu</strong>
+            <span>Silnejšia pozícia. Dealer vidí viac dopytov na rovnakú značku alebo podobnú konfiguráciu.</span>
+          </div>
+        </div>
+
+        <div class="compare-row">
+          <div class="compare-box bad">
+            <strong>1 zákazník</strong>
+            <span>Nižší tlak na cenu a menší obchodný význam pre predajcu.</span>
+          </div>
+          <div class="compare-box good">
+            <strong>Viac zákazníkov</strong>
+            <span>Vyšší obchodný význam a väčší priestor na lepšiu ponuku.</span>
+          </div>
+        </div>
+
+        <div class="compare-row">
+          <div class="compare-box bad">
+            <strong>Individuálny dopyt</strong>
+            <span>Často dostaneš len bežnú cenu alebo štandardný rámec zľavy.</span>
+          </div>
+          <div class="compare-box good">
+            <strong>Skupinový dopyt</strong>
+            <span>Cieľom je dosiahnuť lepší obchodný výsledok, než aký má jednotlivec sám.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-dark" id="ako">
+  <div class="rev">
+    <div class="eyebrow">Ako to funguje</div>
+    <h2 class="sec-h">4 jasné kroky.<br>Od tvojej ponuky až po vyjednanie.</h2>
+    <p class="sec-sub">
+      Toto nie je všeobecný formulár na dopyt. Nahrávaš reálnu ponuku, ktorú spájame s ďalšími relevantnými dopytmi
+      a používame ju ako základ skupinového vyjednávania.
     </p>
   </div>
 
   <div class="steps-g rev">
     <div class="step-box">
       <div class="step-num">1</div>
-      <div class="step-t">Nahráš ponuku na nové auto</div>
+      <div class="step-t">Nahraješ ponuku</div>
       <p class="step-b">
-        Nahráš PDF, screenshot alebo inú čitateľnú ponuku od autorizovaného dealera alebo z oficiálneho konfigurátora.
-        Vyberieš plán a uhradíš servisný poplatok.
+        Nahraješ PDF, screenshot alebo inú čitateľnú ponuku na nové auto od autorizovaného dealera
+        alebo z oficiálneho konfigurátora.
       </p>
     </div>
 
     <div class="step-box">
       <div class="step-num">2</div>
-      <div class="step-t">Prípad spracujeme a zaradíme</div>
+      <div class="step-t">Zaradíme ťa podľa značky</div>
       <p class="step-b">
-        Skontrolujeme použiteľnosť ponuky, anonymizujeme ju a zaradíme ju do skupiny porovnateľných konfigurácií.
-        Faktúru za službu zasielame spravidla do 2–3 pracovných dní.
+        Tvoj prípad zaradíme medzi dopyty na rovnakú značku alebo porovnateľnú konfiguráciu
+        — napríklad Škoda, Hyundai, Kia, Toyota a podobne.
       </p>
     </div>
 
     <div class="step-box">
       <div class="step-num">3</div>
-      <div class="step-t">Vyjednáme a doručíme výsledok</div>
+      <div class="step-t">Vytvoríme skupinu dopytov</div>
       <p class="step-b">
-        Oslovíme relevantných predajcov a partnerov v mene skupiny. Výsledkom je konkrétna zľava, ponuka alebo iný obchodný výstup
-        podľa zvoleného plánu a obchodných podmienok.
+        Keď sa nazbiera dostatok relevantných prípadov, skupina má silnejšiu vyjednávaciu pozíciu
+        než jeden zákazník sám.
       </p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">4</div>
+      <div class="step-t">Vyjednáme a pošleme výsledok</div>
+      <p class="step-b">
+        Oslovíme relevantných predajcov a doručíme ti výsledok elektronicky podľa zvoleného plánu
+        a obchodných podmienok.
+      </p>
+    </div>
+  </div>
+
+  <div class="info-band rev">
+    <div class="info-card">
+      <strong>Rovnaká značka = vyššia relevancia</strong>
+      <span>Najsilnejší efekt vzniká pri dopytoch na rovnakú značku a porovnateľné konfigurácie.</span>
+    </div>
+    <div class="info-card">
+      <strong>Anonymizované spracovanie</strong>
+      <span>Pred ďalším použitím odstraňujeme osobné a identifikačné údaje zákazníka.</span>
+    </div>
+    <div class="info-card">
+      <strong>Neplatíš za auto</strong>
+      <span>Kupuješ digitálnu službu spracovania ponuky a skupinového vyjednávania, nie vozidlo od platformy.</span>
     </div>
   </div>
 </section>
 
-<section class="sec sec-dark" id="poplatky">
+<section class="sec" id="poplatky">
   <div class="rev">
     <div class="eyebrow">Poplatky</div>
-    <h2 class="sec-h">Servisný poplatok.<br>Garantovaný minimálny výsledok.</h2>
+    <h2 class="sec-h">Platíš za proces a vyjednanie.<br>Nie za samotné auto.</h2>
     <p class="sec-sub">
-      Poplatok je cena za digitálnu službu spracovania ponuky, zaradenia do systému a skupinového vyjednávania.
-      Neplatíš za auto. Platíš za proces a obchodný výsledok definovaný zvoleným plánom.
+      Servisný poplatok je cena za digitálnu službu prijatia ponuky, anonymizácie, zaradenia do relevantnej skupiny
+      a skupinového vyjednávania lepšieho obchodného výsledku.
     </p>
   </div>
 
@@ -883,6 +1134,7 @@ footer{
       <div class="plan-label"><span style="text-decoration:line-through;opacity:.72;margin-right:.35rem">150 €</span> teraz 129 € · Štandard</div>
       <div class="plan-li">Garantovaný minimálny výsledok vo forme úspory <b><span class="nowrap">700&nbsp;€</span></b> oproti predloženej ponuke.</div>
       <div class="plan-li">Vhodné pre bežné konfigurácie a štandardné prípady nových vozidiel.</div>
+      <div class="plan-li">Skupinové vyjednávanie na základe relevantných a porovnateľných dopytov.</div>
       <div class="plan-refund">Plná refundácia, ak minimálny garantovaný výsledok nedosiahneme.</div>
       <button class="plan-cta plan-cta-o" onclick="location.href='upload.html?plan=129'">Nahrať ponuku — 129 €</button>
     </div>
@@ -893,6 +1145,7 @@ footer{
       <div class="plan-label"><span style="text-decoration:line-through;opacity:.72;margin-right:.35rem">450 €</span> teraz 399 € · Garancia+</div>
       <div class="plan-li">Garantovaný minimálny výsledok vo forme úspory <b><span class="nowrap">1&nbsp;400&nbsp;€</span></b> oproti predloženej ponuke.</div>
       <div class="plan-li">Vhodné pre vyššie konfigurácie, drahšie modely a náročnejšie prípady.</div>
+      <div class="plan-li">Silnejší obchodný potenciál pri drahších a lepšie vybavených vozidlách.</div>
       <div class="plan-refund">Plná refundácia, ak minimálny garantovaný výsledok nedosiahneme.</div>
       <button class="plan-cta plan-cta-f" onclick="location.href='upload.html?plan=399'">Nahrať ponuku — 399 €</button>
     </div>
@@ -919,15 +1172,15 @@ footer{
   <div class="priv-i">
     <div class="priv-ic">📊</div>
     <div class="priv-t">
-      <strong>Porovnanie prípadov</strong>
-      <span>Do skupín zaraďujeme iba porovnateľné ponuky na nové vozidlá.</span>
+      <strong>Porovnateľné prípady</strong>
+      <span>Do skupín zaraďujeme iba relevantné ponuky na nové vozidlá.</span>
     </div>
   </div>
 
   <div class="priv-i">
     <div class="priv-ic">⚖️</div>
     <div class="priv-t">
-      <strong>GDPR a zmluvné podmienky</strong>
+      <strong>GDPR a obchodné podmienky</strong>
       <span>Spracovanie údajov a služieb prebieha podľa GDPR a obchodných podmienok.</span>
     </div>
   </div>
@@ -935,16 +1188,16 @@ footer{
 
 <section class="sec rev" style="background:var(--surface)">
   <div class="eyebrow">Metodika</div>
-  <h2 class="sec-h">Ako prebieha skupinové vyjednávanie</h2>
+  <h2 class="sec-h">Ako prebieha skupinové vyjednávanie v praxi</h2>
   <p class="sec-sub">
-    Transparentný proces od prijatia ponuky až po doručenie výsledku.
+    Cieľom je získať lepší výsledok než pri individuálnom jednaní s dealerom.
   </p>
 
   <div class="how-g">
     <div class="how-i">
       <div class="how-ic">📥</div>
-      <div class="how-t">Zbieranie ponúk</div>
-      <p class="how-b">Prijímame a triedime ponuky na nové vozidlá od dealerov alebo z oficiálnych konfigurátorov.</p>
+      <div class="how-t">Zbieranie dopytov</div>
+      <p class="how-b">Prijímame ponuky na nové vozidlá a triedime ich podľa značky, modelu a porovnateľnosti.</p>
     </div>
 
     <div class="how-i">
@@ -956,13 +1209,13 @@ footer{
     <div class="how-i">
       <div class="how-ic">📞</div>
       <div class="how-t">Oslovovanie predajcov</div>
-      <p class="how-b">V mene skupiny oslovujeme relevantných predajcov a vytvárame konkurenčný tlak na lepší výsledok.</p>
+      <p class="how-b">V mene skupiny oslovujeme relevantných predajcov a vytvárame tlak na lepší obchodný výsledok.</p>
     </div>
 
     <div class="how-i">
       <div class="how-ic">📋</div>
       <div class="how-t">Doručenie výsledku</div>
-      <p class="how-b">Zákazník dostane výslednú ponuku, zľavu alebo ďalší obchodný výstup podľa priebehu prípadu.</p>
+      <p class="how-b">Zákazník dostane výslednú ponuku, zľavu alebo iný obchodný výstup podľa priebehu prípadu.</p>
     </div>
   </div>
 </section>
@@ -979,9 +1232,9 @@ footer{
   <div class="scenario-g">
     <div class="scenario-c">
       <span class="scenario-saving">Príklad úspory <span class="nowrap">700–1&nbsp;200&nbsp;€</span></span>
-      <div class="scenario-title">Bežná konfigurácia nového vozidla</div>
+      <div class="scenario-title">Bežná konfigurácia rovnakej značky</div>
       <p class="scenario-text">
-        Pri štandardnej konfigurácii môže skupinové vyjednávanie priniesť zaujímavejší výsledok oproti pôvodnej ponuke od dealera.
+        Ak sa v skupine stretnú porovnateľné dopyty na rovnakú značku, skupinové vyjednávanie môže priniesť lepší výsledok než individuálne rokovanie.
       </p>
       <div class="scenario-note">
         Ilustračný modelový príklad. Skutočný výsledok závisí od konkrétnej ponuky, konfigurácie, trhu a reakcie predajcov.
@@ -992,7 +1245,7 @@ footer{
       <span class="scenario-saving">Príklad úspory <span class="nowrap">1&nbsp;000–1&nbsp;800&nbsp;€</span></span>
       <div class="scenario-title">Vyššia konfigurácia alebo drahší model</div>
       <p class="scenario-text">
-        Pri drahších alebo lepšie vybavených vozidlách môže byť priestor na vyjednávanie vyšší, najmä ak sa v skupine zídu porovnateľné prípady.
+        Pri drahších alebo lepšie vybavených vozidlách môže byť priestor na vyjednávanie vyšší, najmä ak sa v skupine zídu relevantné prípady.
       </p>
       <div class="scenario-note">
         Ilustračný modelový príklad. Nejde o garantovaný individuálny výsledok mimo podmienok zvoleného plánu.
@@ -1015,7 +1268,8 @@ footer{
 <section class="final-cta rev">
   <h2 class="sec-h">Jednotlivec má slabšiu pozíciu.<br><span style="color:var(--brand)">Skupina vyjednáva silnejšie.</span></h2>
   <p class="sec-sub" style="margin:0 auto 2rem;text-align:center">
-    Nahraj ponuku na nové auto od dealera alebo z konfigurátora a zisti, či vieme dosiahnuť lepší obchodný výsledok.
+    Nahraj ponuku na nové auto od dealera alebo z konfigurátora. Zaradíme ju k dopytom na rovnakú značku
+    a zistíme, či vieme vyjednať lepší obchodný výsledok.
   </p>
   <a class="btn btn-brand" href="upload.html">Nahrať ponuku →</a>
 </section>
@@ -1038,16 +1292,18 @@ footer{
 </a>
 
 <script>
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('on');
-      obs.unobserve(entry.target);
-    }
-  });
-}, { threshold: .08 });
+const revEls = document.querySelectorAll('.rev');
 
-document.querySelectorAll('.rev').forEach(el => obs.observe(el));
+function revealOnScroll() {
+  const trigger = window.innerHeight * 0.9;
+  revEls.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < trigger) el.classList.add('on');
+  });
+}
+
+revealOnScroll();
+window.addEventListener('scroll', revealOnScroll, { passive:true });
 </script>
 </body>
 </html>

@@ -133,10 +133,22 @@
     }
 
     .lead{
-      max-width:860px;
+      max-width:920px;
       color:var(--muted);
       font-weight:300;
       font-size:1rem;
+      margin-bottom:28px;
+    }
+
+    .lead-box{
+      max-width:920px;
+      background:rgba(59,130,246,.08);
+      border:1px solid rgba(59,130,246,.22);
+      border-radius:18px;
+      padding:16px 18px;
+      color:#dbeafe;
+      font-size:.94rem;
+      line-height:1.7;
       margin-bottom:28px;
     }
 
@@ -358,6 +370,12 @@
       Ďalšie spracovanie prebieha elektronicky podľa zvoleného plánu a obchodných podmienok.
     </p>
 
+    <div class="lead-box">
+      <strong>Čo to znamená v praxi:</strong> tvoja ponuka bude zaradená medzi zákazníkov,
+      ktorí riešia rovnakú značku alebo porovnateľnú konfiguráciu vozidla. Po nazbieraní relevantných dopytov
+      prebieha skupinové vyjednávanie s predajcami s cieľom dosiahnuť lepší obchodný výsledok.
+    </div>
+
     <section class="layout">
       <div class="card">
         <h2>Prehľad prípadu</h2>
@@ -407,10 +425,10 @@
           </div>
 
           <div class="step">
-            <strong>2. Zaradenie do systému</strong>
+            <strong>2. Zaradenie podľa značky a porovnateľnosti</strong>
             <p>
-              Tvoj prípad zaradíme medzi porovnateľné ponuky a pripravíme ho na anonymizované porovnanie
-              a skupinové vyjednávanie.
+              Tvoj prípad zaradíme medzi dopyty na rovnakú značku alebo porovnateľnú konfiguráciu
+              a pripravíme ho na anonymizované porovnanie a skupinové vyjednávanie.
             </p>
           </div>
 
@@ -422,10 +440,10 @@
           </div>
 
           <div class="step">
-            <strong>4. Doručenie výsledku</strong>
+            <strong>4. Skupinové vyjednávanie a doručenie výsledku</strong>
             <p>
-              Po spracovaní a priebehu vyjednávania ti doručíme výsledok elektronicky podľa zvoleného plánu
-              a obchodných podmienok.
+              Po vytvorení relevantnej skupiny dopytov prebieha vyjednávanie s predajcami.
+              Výsledok ti doručíme elektronicky podľa zvoleného plánu a obchodných podmienok.
             </p>
           </div>
         </div>
@@ -455,14 +473,18 @@
   <script>
     function getPlanLabel(fee) {
       if (String(fee) === '399') {
-        return 'Garancia+ · 399 EUR';
+        return 'Garancia+';
       }
-      return 'Štandard · 129 EUR';
+      return 'Štandard';
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const uploadId = params.get('uploadId') || '—';
-    const fee = params.get('fee') || '129';
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    const uploadId = getQueryParam('uploadId') || '—';
+    const fee = getQueryParam('fee') || '129';
 
     document.getElementById('uploadIdValue').textContent = uploadId;
     document.getElementById('planValue').textContent = getPlanLabel(fee);

@@ -127,10 +127,22 @@
     }
 
     .hero-sub{
-      max-width:900px;
+      max-width:920px;
       color:var(--muted);
       font-weight:300;
       font-size:1rem;
+    }
+
+    .hero-box{
+      margin-top:18px;
+      max-width:920px;
+      background:rgba(59,130,246,.08);
+      border:1px solid rgba(59,130,246,.22);
+      border-radius:18px;
+      padding:16px 18px;
+      color:#dbeafe;
+      font-size:.93rem;
+      line-height:1.7;
     }
 
     .wrap{
@@ -567,9 +579,15 @@
     <h1>Nahraj ponuku a vyber plán</h1>
     <p class="hero-sub">
       Kupuješ digitálnu službu spracovania ponuky a zaradenia do systému skupinového vyjednávania.
-      Na základe tvojej ponuky platforma vytvorí podklad pre anonymizované porovnanie, osloví predajcov a doručí ti výsledok vyjednávania.
+      Tvoja ponuka bude spojená s ďalšími zákazníkmi, ktorí riešia rovnakú značku alebo porovnateľnú konfiguráciu
+      vozidla. Na základe tejto skupiny dopytov vyjednávame lepší obchodný výsledok u dealerov.
       Vozidlo nekupuješ od kupujspolu.sk. Ceny nižšie sú uvedené v mene EUR.
     </p>
+
+    <div class="hero-box">
+      <strong>Ako to funguje:</strong> ak sa v systéme stretnú relevantné dopyty napríklad na Škoda, Hyundai, Kia,
+      Toyota alebo inú značku, skupina má pri vyjednávaní silnejšiu pozíciu než jeden zákazník sám.
+    </div>
   </section>
 
   <section class="wrap">
@@ -756,6 +774,7 @@
 
         <div class="notice info">
           Platbou servisného poplatku kupuješ digitálnu službu spracovania ponuky, zaradenia do systému a skupinového vyjednávania.
+          Tvoja ponuka bude spojená s ďalšími relevantnými dopytmi na rovnakú značku alebo porovnateľnú konfiguráciu.
           Vozidlo nekupuješ od prevádzkovateľa kupujspolu.sk.
         </div>
 
@@ -793,11 +812,13 @@
       <div class="card">
         <h2>Čo presne kupuješ</h2>
         <p class="muted">
-          Kupuješ službu, v rámci ktorej kupujspolu.sk prijme tvoju ponuku, anonymizuje ju, zaradí ju do skupiny porovnateľných ponúk
-          a vyjednáva lepší výsledok s predajcami. Výstupom služby je obchodný výsledok pre tvoju ponuku, nie predaj vozidla zo strany platformy.
+          Kupuješ službu, v rámci ktorej kupujspolu.sk prijme tvoju ponuku, anonymizuje ju, zaradí ju do skupiny
+          porovnateľných dopytov a vyjednáva lepší výsledok s predajcami. Výstupom služby je obchodný výsledok
+          pre tvoju ponuku, nie predaj vozidla zo strany platformy.
         </p>
         <div class="summary-box">
           <div class="summary-row"><span>Typ služby</span><strong>Digitálna služba</strong></div>
+          <div class="summary-row"><span>Forma vyjednávania</span><strong>Skupinovo</strong></div>
           <div class="summary-row"><span>Dodanie</span><strong>Elektronicky</strong></div>
           <div class="summary-row"><span>Refundácia</span><strong>Podľa VOP</strong></div>
           <div class="summary-row"><span>Mena</span><strong>EUR</strong></div>
@@ -811,6 +832,14 @@
         <div class="notice ok">
           Ak sa nedosiahne garantovaná minimálna úspora podľa zvoleného plánu, servisný poplatok sa refunduje podľa obchodných podmienok.
         </div>
+      </div>
+
+      <div class="card">
+        <h2>Ako vzniká lepšia cena</h2>
+        <p class="muted">
+          Nevyjednávame za jedného zákazníka. Vyjednávame za skupinu relevantných dopytov na rovnakú značku
+          alebo porovnateľnú konfiguráciu. Viac dopytov znamená silnejšiu vyjednávaciu pozíciu.
+        </p>
       </div>
 
       <div class="card">
@@ -892,9 +921,9 @@
 
     function updatePlanSummary() {
       const selected = document.querySelector('input[name="fee"]:checked');
-      if (!selected) return;
+      const value = selected ? selected.value : '129';
 
-      if (selected.value === '399') {
+      if (value === '399') {
         selectedPlanPrice.textContent = '399 EUR';
         selectedPlanText.textContent = 'Garantovaná úspora minimálne 1 400 EUR oproti predloženej ponuke.';
       } else {
@@ -903,122 +932,112 @@
       }
     }
 
-    function applyPlanFromQuery() {
-      const params = new URLSearchParams(window.location.search);
-      const plan = params.get('plan');
-      if (plan === '399' || plan === '129') {
-        const el = document.querySelector(`input[name="fee"][value="${plan}"]`);
-        if (el) el.checked = true;
-      }
-      updatePlanSummary();
-    }
-
-    function updateZnackaField() {
-      if (znackaSelect.value === 'ine') {
+    function updateZnackaUI() {
+      const value = znackaSelect.value;
+      if (value === 'ine') {
         znackaInput.classList.remove('hidden');
         znackaInput.required = true;
         znackaInput.value = '';
       } else {
         znackaInput.classList.add('hidden');
         znackaInput.required = false;
-        znackaInput.value = znackaSelect.value;
+        znackaInput.value = value || '';
       }
     }
 
-    znackaSelect.addEventListener('change', updateZnackaField);
-
     buyerPrivate.addEventListener('change', updateBuyerTypeUI);
     buyerCompany.addEventListener('change', updateBuyerTypeUI);
-    document.querySelectorAll('input[name="fee"]').forEach(el => {
-      el.addEventListener('change', updatePlanSummary);
+
+    document.querySelectorAll('input[name="fee"]').forEach((input) => {
+      input.addEventListener('change', updatePlanSummary);
     });
+
+    znackaSelect.addEventListener('change', updateZnackaUI);
+
+    updateBuyerTypeUI();
+    updatePlanSummary();
+    updateZnackaUI();
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearMessage();
 
-      if (!document.getElementById('agreeTerms').checked) {
-        setMessage('warn', 'Pred pokračovaním musíš potvrdiť obchodné podmienky a ochranu osobných údajov.');
+      const agreeTerms = document.getElementById('agreeTerms');
+      const agreeStartService = document.getElementById('agreeStartService');
+
+      if (!agreeTerms.checked || !agreeStartService.checked) {
+        setMessage('error', 'Pred pokračovaním musíš potvrdiť súhlasy.');
         return;
       }
 
-      if (!document.getElementById('agreeStartService').checked) {
-        setMessage('warn', 'Pred pokračovaním musíš potvrdiť súhlas so začatím poskytovania digitálnej služby.');
-        return;
-      }
+      const formData = new FormData();
+      const selectedFee = document.querySelector('input[name="fee"]:checked')?.value || '129';
 
-      if (!znackaSelect.value) {
-        setMessage('warn', 'Vyber prosím značku vozidla.');
-        return;
-      }
+      const finalZnacka = znackaSelect.value === 'ine'
+        ? znackaInput.value.trim()
+        : znackaSelect.value;
 
-      if (znackaSelect.value === 'ine' && !znackaInput.value.trim()) {
-        setMessage('warn', 'Pri možnosti Iná značka musíš zadať názov značky.');
-        return;
-      }
+      formData.append('znacka', finalZnacka);
+      formData.append('model', document.getElementById('model').value.trim());
+      formData.append('cena', document.getElementById('cena').value.trim());
+      formData.append('buyerType', document.querySelector('input[name="buyerType"]:checked').value);
+      formData.append('fullName', document.getElementById('fullName').value.trim());
+      formData.append('companyName', document.getElementById('companyName').value.trim());
+      formData.append('ico', document.getElementById('ico').value.trim());
+      formData.append('dic', document.getElementById('dic').value.trim());
+      formData.append('icdph', document.getElementById('icdph').value.trim());
+      formData.append('contactPerson', document.getElementById('contactPerson').value.trim());
+      formData.append('billingAddressStreet', document.getElementById('billingAddressStreet').value.trim());
+      formData.append('billingAddressCity', document.getElementById('billingAddressCity').value.trim());
+      formData.append('billingAddressZip', document.getElementById('billingAddressZip').value.trim());
+      formData.append('email', document.getElementById('email').value.trim());
+      formData.append('telefon', document.getElementById('telefon').value.trim());
+      formData.append('billingNote', document.getElementById('billingNote').value.trim());
+      formData.append('fee', selectedFee);
 
-      if (!form.reportValidity()) {
-        setMessage('warn', 'Skontroluj prosím povinné polia formulára.');
-        return;
+      const fileInput = document.getElementById('offerFile');
+      if (fileInput.files[0]) {
+        formData.append('offerFile', fileInput.files[0]);
       }
 
       submitBtn.disabled = true;
       submitBtn.textContent = 'Spracovávam...';
 
       try {
-        const fd = new FormData(form);
-        const fee = document.querySelector('input[name="fee"]:checked')?.value || '129';
-
-        const up = await fetch('/api/upload-offer', {
+        const uploadRes = await fetch('/api/upload-offer', {
           method: 'POST',
-          body: fd
+          body: formData
         });
 
-        const upType = up.headers.get('content-type') || '';
-        if (!upType.includes('application/json')) {
-          const text = await up.text();
-          throw new Error('Upload endpoint nevrátil JSON: ' + text.slice(0, 120));
+        const uploadData = await uploadRes.json().catch(() => ({}));
+
+        if (!uploadRes.ok) {
+          throw new Error(uploadData.error || 'Nepodarilo sa odoslať formulár.');
         }
 
-        const uj = await up.json();
-        if (!up.ok) {
-          throw new Error(uj.error || 'Upload zlyhal.');
-        }
-
-        const pr = await fetch('/api/create-checkout-session', {
+        const checkoutRes = await fetch('/api/create-checkout-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fee, uploadId: uj.uploadId })
+          body: JSON.stringify({
+            uploadId: uploadData.uploadId,
+            fee: selectedFee
+          })
         });
 
-        const prType = pr.headers.get('content-type') || '';
-        if (!prType.includes('application/json')) {
-          const text = await pr.text();
-          throw new Error('Platobný endpoint nevrátil JSON: ' + text.slice(0, 120));
+        const checkoutData = await checkoutRes.json().catch(() => ({}));
+
+        if (!checkoutRes.ok || !checkoutData.url) {
+          throw new Error(checkoutData.error || 'Nepodarilo sa vytvoriť platbu.');
         }
 
-        const pj = await pr.json();
-        if (!pr.ok) {
-          throw new Error(pj.error || 'Platba zlyhala.');
-        }
-
-        if (!pj.url) {
-          throw new Error('Server nevrátil URL pre ďalší krok.');
-        }
-
-        window.location.href = pj.url;
+        window.location.href = checkoutData.url;
       } catch (err) {
-        console.error(err);
-        setMessage('error', err.message || 'Nastala neočakávaná chyba.');
+        setMessage('error', err.message || 'Nastala chyba. Skús to prosím znova.');
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Pokračovať na platbu';
       }
     });
-
-    updateBuyerTypeUI();
-    applyPlanFromQuery();
-    updateZnackaField();
   </script>
 </body>
 </html>
