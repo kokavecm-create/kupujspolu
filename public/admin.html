@@ -18,6 +18,7 @@
       --green:#16a34a;
       --green-2:#15803d;
       --orange:#f59e0b;
+      --orange-2:#d97706;
       --red:#ef4444;
       --gray:#64748b;
       --radius:16px;
@@ -158,7 +159,7 @@
     table{
       width:100%;
       border-collapse:collapse;
-      min-width:1350px;
+      min-width:1450px;
       background:var(--card-2);
     }
 
@@ -200,6 +201,7 @@
     .status-pending_payment{ background:rgba(245,158,11,.18); color:#fde68a; }
     .status-checkout_created{ background:rgba(37,99,235,.18); color:#bfdbfe; }
     .status-payment_failed{ background:rgba(239,68,68,.18); color:#fecaca; }
+    .status-canceled{ background:rgba(148,163,184,.20); color:#e2e8f0; }
     .status-other{ background:rgba(100,116,139,.25); color:#e2e8f0; }
 
     .invoice-nevystavena{
@@ -311,6 +313,7 @@
             <option value="pending_payment">pending_payment</option>
             <option value="checkout_created">checkout_created</option>
             <option value="payment_failed">payment_failed</option>
+            <option value="canceled">canceled</option>
           </select>
         </div>
 
@@ -471,6 +474,7 @@
       if (status === 'pending_payment') return 'status-pending_payment';
       if (status === 'checkout_created') return 'status-checkout_created';
       if (status === 'payment_failed') return 'status-payment_failed';
+      if (status === 'canceled') return 'status-canceled';
       return 'status-other';
     }
 
@@ -484,7 +488,7 @@
       const d = new Date(value);
       if (Number.isNaN(d.getTime())) return '';
       const pad = (n) => String(n).padStart(2, '0');
-      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      return \`\${d.getFullYear()}-\${pad(d.getMonth() + 1)}-\${pad(d.getDate())}T\${pad(d.getHours())}:\${pad(d.getMinutes())}\`;
     }
 
     function datetimeLocalToIso(value) {
@@ -501,20 +505,20 @@
         const tr = document.createElement('tr');
         tr.className = 'data-row';
 
-        tr.innerHTML = `
-          <td>${escapeHtml(u.uploadId || '')}</td>
-          <td>${escapeHtml(formatDate(u.createdAt || ''))}</td>
-          <td>${escapeHtml(u.znacka || '')}</td>
-          <td>${escapeHtml(u.model || '')}</td>
-          <td>${escapeHtml(u.cena || '')} €</td>
-          <td>${escapeHtml(u.email || '')}</td>
-          <td>${escapeHtml(formatBuyerType(u.buyerType || ''))}</td>
-          <td>${escapeHtml(formatFee(u.fee || ''))}</td>
-          <td><span class="status ${getStatusClass(u.status)}">${escapeHtml(u.status || '')}</span></td>
-          <td><span class="status ${getInvoiceClass(u.invoiceStatus)}">${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></td>
-          <td>${escapeHtml(u.invoiceNumber || '')}</td>
-          <td>${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</td>
-        `;
+        tr.innerHTML = \`
+          <td>\${escapeHtml(u.uploadId || '')}</td>
+          <td>\${escapeHtml(formatDate(u.createdAt || ''))}</td>
+          <td>\${escapeHtml(u.znacka || '')}</td>
+          <td>\${escapeHtml(u.model || '')}</td>
+          <td>\${escapeHtml(u.cena || '')} €</td>
+          <td>\${escapeHtml(u.email || '')}</td>
+          <td>\${escapeHtml(formatBuyerType(u.buyerType || ''))}</td>
+          <td>\${escapeHtml(formatFee(u.fee || ''))}</td>
+          <td><span class="status \${getStatusClass(u.status)}">\${escapeHtml(u.status || '')}</span></td>
+          <td><span class="status \${getInvoiceClass(u.invoiceStatus)}">\${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></td>
+          <td>\${escapeHtml(u.invoiceNumber || '')}</td>
+          <td>\${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</td>
+        \`;
 
         tr.addEventListener('click', () => renderDetail(u));
         tbody.appendChild(tr);
@@ -537,40 +541,40 @@
         u.billingAddressZip || ''
       ].filter(Boolean).join(', ');
 
-      detailGrid.innerHTML = `
-        <div class="detail-item"><strong>Upload ID</strong><span>${escapeHtml(u.uploadId || '')}</span></div>
-        <div class="detail-item"><strong>Status objednávky</strong><span>${escapeHtml(u.status || '')}</span></div>
+      detailGrid.innerHTML = \`
+        <div class="detail-item"><strong>Upload ID</strong><span>\${escapeHtml(u.uploadId || '')}</span></div>
+        <div class="detail-item"><strong>Status objednávky</strong><span>\${escapeHtml(u.status || '')}</span></div>
 
-        <div class="detail-item"><strong>Dátum vytvorenia</strong><span>${escapeHtml(formatDate(u.createdAt || ''))}</span></div>
-        <div class="detail-item"><strong>Posledná zmena</strong><span>${escapeHtml(formatDate(u.updatedAt || ''))}</span></div>
+        <div class="detail-item"><strong>Dátum vytvorenia</strong><span>\${escapeHtml(formatDate(u.createdAt || ''))}</span></div>
+        <div class="detail-item"><strong>Posledná zmena</strong><span>\${escapeHtml(formatDate(u.updatedAt || ''))}</span></div>
 
-        <div class="detail-item"><strong>Značka</strong><span>${escapeHtml(u.znacka || '')}</span></div>
-        <div class="detail-item"><strong>Model</strong><span>${escapeHtml(u.model || '')}</span></div>
+        <div class="detail-item"><strong>Značka</strong><span>\${escapeHtml(u.znacka || '')}</span></div>
+        <div class="detail-item"><strong>Model</strong><span>\${escapeHtml(u.model || '')}</span></div>
 
-        <div class="detail-item"><strong>Cena</strong><span>${escapeHtml(u.cena || '')} €</span></div>
-        <div class="detail-item"><strong>Plán</strong><span>${escapeHtml(formatFee(u.fee || ''))}</span></div>
+        <div class="detail-item"><strong>Cena</strong><span>\${escapeHtml(u.cena || '')} €</span></div>
+        <div class="detail-item"><strong>Plán</strong><span>\${escapeHtml(formatFee(u.fee || ''))}</span></div>
 
-        <div class="detail-item"><strong>Typ zákazníka</strong><span>${escapeHtml(formatBuyerType(u.buyerType || ''))}</span></div>
-        <div class="detail-item"><strong>Meno / firma</strong><span>${escapeHtml(fullNameOrCompany)}</span></div>
+        <div class="detail-item"><strong>Typ zákazníka</strong><span>\${escapeHtml(formatBuyerType(u.buyerType || ''))}</span></div>
+        <div class="detail-item"><strong>Meno / firma</strong><span>\${escapeHtml(fullNameOrCompany)}</span></div>
 
-        <div class="detail-item"><strong>Kontaktná osoba</strong><span>${escapeHtml(u.contactPerson || '')}</span></div>
-        <div class="detail-item"><strong>Email</strong><span>${escapeHtml(u.email || '')}</span></div>
+        <div class="detail-item"><strong>Kontaktná osoba</strong><span>\${escapeHtml(u.contactPerson || '')}</span></div>
+        <div class="detail-item"><strong>Email</strong><span>\${escapeHtml(u.email || '')}</span></div>
 
-        <div class="detail-item"><strong>Telefón</strong><span>${escapeHtml(u.telefon || '')}</span></div>
-        <div class="detail-item"><strong>IČO</strong><span>${escapeHtml(u.ico || '')}</span></div>
+        <div class="detail-item"><strong>Telefón</strong><span>\${escapeHtml(u.telefon || '')}</span></div>
+        <div class="detail-item"><strong>IČO</strong><span>\${escapeHtml(u.ico || '')}</span></div>
 
-        <div class="detail-item"><strong>DIČ</strong><span>${escapeHtml(u.dic || '')}</span></div>
-        <div class="detail-item"><strong>IČ DPH</strong><span>${escapeHtml(u.icdph || '')}</span></div>
+        <div class="detail-item"><strong>DIČ</strong><span>\${escapeHtml(u.dic || '')}</span></div>
+        <div class="detail-item"><strong>IČ DPH</strong><span>\${escapeHtml(u.icdph || '')}</span></div>
 
-        <div class="detail-item"><strong>Stav faktúry</strong><span>${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></div>
-        <div class="detail-item"><strong>Číslo faktúry</strong><span>${escapeHtml(u.invoiceNumber || '')}</span></div>
+        <div class="detail-item"><strong>Stav faktúry</strong><span>\${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></div>
+        <div class="detail-item"><strong>Číslo faktúry</strong><span>\${escapeHtml(u.invoiceNumber || '')}</span></div>
 
-        <div class="detail-item"><strong>Dátum vystavenia</strong><span>${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</span></div>
-        <div class="detail-item"><strong>Súbor</strong><span>${escapeHtml(u.fileOriginalName || '')}</span></div>
+        <div class="detail-item"><strong>Dátum vystavenia</strong><span>\${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</span></div>
+        <div class="detail-item"><strong>Súbor</strong><span>\${escapeHtml(u.fileOriginalName || '')}</span></div>
 
-        <div class="detail-item full"><strong>Fakturačná adresa</strong><span>${escapeHtml(billingAddress)}</span></div>
-        <div class="detail-item full"><strong>Poznámka</strong><span>${escapeHtml(u.billingNote || '')}</span></div>
-      `;
+        <div class="detail-item full"><strong>Fakturačná adresa</strong><span>\${escapeHtml(billingAddress)}</span></div>
+        <div class="detail-item full"><strong>Poznámka</strong><span>\${escapeHtml(u.billingNote || '')}</span></div>
+      \`;
 
       selectedUploadIdEl.textContent = u.uploadId || '—';
       invoiceStatusEl.value = u.invoiceStatus || 'nevystavena';
@@ -747,47 +751,33 @@
         rows.map(r => r.map(csvEscape).join(';')).join('\n');
 
       const date = new Date();
-      const stamp = [
-        date.getFullYear(),
-        String(date.getMonth() + 1).padStart(2, '0'),
-        String(date.getDate()).padStart(2, '0'),
-        '_',
-        String(date.getHours()).padStart(2, '0'),
-        String(date.getMinutes()).padStart(2, '0')
-      ].join('');
-
-      downloadCsv(`kupujspolu_export_${stamp}.csv`, csv);
-      showOk('Export bol vytvorený. Súbor otvoríš v Exceli.');
+      const filename = \`kupujspolu_export_\${date.getFullYear()}-\${String(date.getMonth() + 1).padStart(2, '0')}-\${String(date.getDate()).padStart(2, '0')}.csv\`;
+      downloadCsv(filename, csv);
+      showOk('Export bol vytvorený.');
     }
 
-    async function saveInvoice(customStatus = null, useNowAsDate = false) {
-      if (!selectedUpload) {
-        showError('Najprv klikni na konkrétnu objednávku v tabuľke.');
-        return;
-      }
-
+    async function saveInvoice(customPatch = null) {
       const secret = secretInput.value.trim();
+
       if (!secret) {
         showError('Zadaj ADMIN SECRET.');
         return;
       }
 
-      let finalStatus = customStatus || invoiceStatusEl.value;
-      let finalIssuedAt = invoiceIssuedAtEl.value;
-
-      if (useNowAsDate) {
-        finalIssuedAt = toDatetimeLocalValue(new Date().toISOString());
-        invoiceIssuedAtEl.value = finalIssuedAt;
+      if (!selectedUpload || !selectedUpload.uploadId) {
+        showError('Najprv klikni na konkrétnu objednávku.');
+        return;
       }
 
-      if (finalStatus === 'nevystavena') {
-        finalIssuedAt = '';
-      }
+      const payload = customPatch || {
+        uploadId: selectedUpload.uploadId,
+        invoiceStatus: invoiceStatusEl.value,
+        invoiceNumber: invoiceNumberEl.value.trim(),
+        invoiceIssuedAt: datetimeLocalToIso(invoiceIssuedAtEl.value)
+      };
 
       saveInvoiceBtn.disabled = true;
       saveInvoiceBtn.textContent = 'Ukladám...';
-      showError('');
-      showOk('');
 
       try {
         const res = await fetch('/api/admin/invoice', {
@@ -796,26 +786,16 @@
             'Content-Type': 'application/json',
             'x-admin-secret': secret
           },
-          body: JSON.stringify({
-            uploadId: selectedUpload.uploadId,
-            invoiceStatus: finalStatus,
-            invoiceNumber: invoiceNumberEl.value.trim(),
-            invoiceIssuedAt: finalStatus === 'vystavena'
-              ? (datetimeLocalToIso(finalIssuedAt) || new Date().toISOString())
-              : null
-          })
+          body: JSON.stringify(payload)
         });
 
         const data = await res.json().catch(() => ({}));
 
-        if (!res.ok) {
-          throw new Error(data.error || 'Nepodarilo sa uložiť faktúru.');
+        if (!res.ok || !data.ok || !data.upload) {
+          throw new Error(data.error || 'Nepodarilo sa uložiť fakturáciu.');
         }
 
         const updated = data.upload;
-        if (!updated) {
-          throw new Error('Server nevrátil aktualizovaný záznam.');
-        }
 
         allUploads = allUploads.map((u) =>
           u.uploadId === updated.uploadId ? updated : u
@@ -823,11 +803,9 @@
 
         applyFilters();
         renderDetail(updated);
-        selectedUpload = updated;
-
-        showOk('Fakturačné údaje boli uložené.');
+        showOk('Fakturácia bola uložená.');
       } catch (err) {
-        showError(err.message || 'Chyba pri ukladaní faktúry.');
+        showError(err.message || 'Nepodarilo sa uložiť fakturáciu.');
       } finally {
         saveInvoiceBtn.disabled = false;
         saveInvoiceBtn.textContent = 'Uložiť faktúru';
@@ -839,15 +817,37 @@
     searchInput.addEventListener('input', applyFilters);
     statusFilter.addEventListener('change', applyFilters);
 
-    saveInvoiceBtn.addEventListener('click', () => saveInvoice());
-    markIssuedNowBtn.addEventListener('click', () => {
-      invoiceStatusEl.value = 'vystavena';
-      saveInvoice('vystavena', true);
+    saveInvoiceBtn.addEventListener('click', () => {
+      saveInvoice();
     });
+
+    markIssuedNowBtn.addEventListener('click', () => {
+      if (!selectedUpload || !selectedUpload.uploadId) {
+        showError('Najprv klikni na konkrétnu objednávku.');
+        return;
+      }
+
+      const nowIso = new Date().toISOString();
+      saveInvoice({
+        uploadId: selectedUpload.uploadId,
+        invoiceStatus: 'vystavena',
+        invoiceNumber: invoiceNumberEl.value.trim(),
+        invoiceIssuedAt: nowIso
+      });
+    });
+
     markNotIssuedBtn.addEventListener('click', () => {
-      invoiceStatusEl.value = 'nevystavena';
-      invoiceIssuedAtEl.value = '';
-      saveInvoice('nevystavena', false);
+      if (!selectedUpload || !selectedUpload.uploadId) {
+        showError('Najprv klikni na konkrétnu objednávku.');
+        return;
+      }
+
+      saveInvoice({
+        uploadId: selectedUpload.uploadId,
+        invoiceStatus: 'nevystavena',
+        invoiceNumber: '',
+        invoiceIssuedAt: null
+      });
     });
   </script>
 </body>

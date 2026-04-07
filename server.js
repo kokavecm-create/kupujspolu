@@ -682,6 +682,53 @@ app.post('/api/admin/invoice', requireAdmin, async (req, res) => {
   }
 });
 
+app.post('/api/checkout-cancel', async (req, res) => {
+  try {
+    const { uploadId, fee } = req.body || {};
+
+    if (!uploadId) {
+      return res.status(400).json({ ok: false, error: 'Chýba uploadId.' });
+    }
+
+    const { data: existingRow, error: fetchError } = await supabase
+      .from('uploads')
+      .select('*')
+      .eq('upload_id', uploadId)
+      .single();
+
+    if (fetchError || !existingRow) {
+      return res.status(404).json({ ok: false, error: 'Upload nebol nájdený.' });
+    }
+
+    if (existingRow.status === 'paid') {
+      return res.json({ ok: true, skipped: true, status: 'paid' });
+    }
+
+    if (existingRow.status === 'payment_failed') {
+      return res.json({ ok: true, skipped: true, status: 'payment_failed' });
+    }
+
+    const { error } = await supabase
+      .from('uploads')
+      .update({
+        status: 'canceled',
+        fee: fee || existingRow.fee || '',
+        updated_at: new Date().toISOString()
+      })
+      .eq('upload_id', uploadId);
+
+    if (error) {
+      console.error('POST /api/checkout-cancel error:', error);
+      return res.status(500).json({ ok: false, error: 'Nepodarilo sa uložiť cancel status.' });
+    }
+
+    return res.json({ ok: true, status: 'canceled' });
+  } catch (error) {
+    console.error('POST /api/checkout-cancel fatal error:', error);
+    return res.status(500).json({ ok: false, error: 'Chyba servera pri ukladaní cancel statusu.' });
+  }
+});
+
 app.get('/api/test-email', requireAdmin, async (req, res) => {
   try {
     if (!isResendConfigured()) {
