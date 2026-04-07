@@ -898,7 +898,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
         success_url: `${BASE_URL}/success.html?uploadId=${encodeURIComponent(uploadId)}&fee=${encodeURIComponent(normalizedFee)}&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${BASE_URL}/upload.html?plan=${encodeURIComponent(normalizedFee)}`,
+        cancel_url: `${BASE_URL}/cancel.html?uploadId=${encodeURIComponent(uploadId)}&fee=${encodeURIComponent(normalizedFee)}&plan=${encodeURIComponent(normalizedFee)}`,
         customer_email: existingUpload.email || undefined,
         metadata: {
           uploadId,
