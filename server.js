@@ -183,6 +183,7 @@ function buildAdminEmailHtml(row) {
           </h1>
           <p style="margin:0;color:#cbd5e1;font:400 15px Arial,sans-serif;line-height:1.7;">
             Platba bola úspešne potvrdená a prípad bol označený ako paid.
+            Ponuka bola zaradená do spracovania pre skupinové vyjednávanie.
           </p>
         </div>
 
@@ -260,7 +261,8 @@ function buildAdminEmailHtml(row) {
           <div style="margin-top:18px;padding:16px 18px;background:#0b162b;border:1px solid #23314f;border-radius:16px;">
             <div style="color:#ffffff;font:700 14px Arial,sans-serif;margin-bottom:6px;">Čo ďalej</div>
             <div style="color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.7;">
-              Skontroluj použiteľnosť ponuky, prípad zarad do spracovania a priprav vystavenie faktúry.
+              Skontroluj použiteľnosť ponuky a zaraď prípad podľa značky alebo porovnateľnej konfigurácie do spracovania.
+              Následne prebieha skupinové vyjednávanie s relevantnými predajcami.
               Faktúra zákazníkovi má odísť spravidla do 2–3 pracovných dní.
             </div>
           </div>
@@ -286,7 +288,8 @@ function buildCustomerEmailHtml(row) {
             Ďakujeme, ${escapeHtml(displayName)}
           </h1>
           <p style="margin:0;color:#cbd5e1;font:400 15px Arial,sans-serif;line-height:1.7;">
-            Tvoja objednávka digitálnej služby bola úspešne prijatá a tvoja ponuka na nové vozidlo bola zaradená do systému.
+            Tvoja objednávka digitálnej služby bola úspešne prijatá.
+            Tvoja ponuka na nové vozidlo bola zaradená do spracovania pre skupinové vyjednávanie.
           </p>
         </div>
 
@@ -302,13 +305,22 @@ function buildCustomerEmailHtml(row) {
             </div>
           </div>
 
+          <div style="margin:0 0 16px;padding:16px 18px;background:#10213f;border:1px solid #24457b;border-radius:16px;">
+            <div style="color:#ffffff;font:700 15px Arial,sans-serif;margin-bottom:8px;">Ako funguje tvoj prípad</div>
+            <div style="color:#dbeafe;font:400 14px Arial,sans-serif;line-height:1.8;">
+              Tvoja ponuka bude spojená s ďalšími relevantnými dopytmi na rovnakú značku alebo porovnateľnú konfiguráciu vozidla.
+              Cieľom je vytvoriť silnejšiu vyjednávaciu pozíciu voči dealerom, než má jeden zákazník sám.
+            </div>
+          </div>
+
           <div style="margin:0 0 16px;padding:16px 18px;background:#0b162b;border:1px solid #23314f;border-radius:16px;">
             <div style="color:#ffffff;font:700 15px Arial,sans-serif;margin-bottom:10px;">Čo sa bude diať ďalej</div>
             <ol style="margin:0;padding-left:18px;color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.8;">
               <li>Skontrolujeme, či je nahraná ponuka použiteľná a či ide o ponuku na nové auto od autorizovaného dealera alebo z oficiálneho konfigurátora.</li>
-              <li>Tvoj prípad zaradíme medzi porovnateľné ponuky a pripravíme ho na anonymizované porovnanie a skupinové vyjednávanie.</li>
+              <li>Tvoj prípad zaradíme medzi dopyty na rovnakú značku alebo porovnateľnú konfiguráciu a pripravíme ho na anonymizované porovnanie.</li>
+              <li>Po vytvorení relevantnej skupiny prebieha skupinové vyjednávanie s predajcami s cieľom dosiahnuť lepší obchodný výsledok.</li>
               <li>Faktúru za službu zasielame spravidla do 2–3 pracovných dní na email uvedený v objednávke.</li>
-              <li>Po spracovaní a priebehu vyjednávania ti doručíme výsledok elektronicky podľa zvoleného plánu a obchodných podmienok.</li>
+              <li>Výsledok ti doručíme elektronicky podľa zvoleného plánu a obchodných podmienok.</li>
             </ol>
           </div>
 
@@ -742,7 +754,8 @@ app.post('/api/upload-offer', upload.single('offerFile'), async (req, res) => {
       billingAddressZip,
       email,
       telefon,
-      billingNote
+      billingNote,
+      fee
     } = req.body;
 
     if (!znacka || !model || !cena || !buyerType || !email) {
@@ -798,7 +811,7 @@ app.post('/api/upload-offer', upload.single('offerFile'), async (req, res) => {
       billing_note: billingNote || null,
       file_original_name: req.file.originalname,
       file_storage_path: storagePath,
-      fee: '',
+      fee: fee || '',
       status: 'pending_payment',
       invoice_status: 'nevystavena',
       invoice_issued_at: null,
