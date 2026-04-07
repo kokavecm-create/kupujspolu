@@ -371,7 +371,7 @@ footer a:hover{color:var(--ink)}
     document.getElementById('planValue').textContent = formatPlan(fee);
 
     const retryBtn = document.getElementById('retryBtn');
-    retryBtn.href = fee ? \`upload.html?plan=\${encodeURIComponent(fee)}\` : 'upload.html';
+    retryBtn.href = fee ? `upload.html?plan=${encodeURIComponent(fee)}` : 'upload.html';
 
     if (!uploadId) {
       statusEl.textContent = 'Upload ID nebol nájdený, stav sa neukladal.';

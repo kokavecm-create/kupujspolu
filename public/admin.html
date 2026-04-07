@@ -488,7 +488,7 @@
       const d = new Date(value);
       if (Number.isNaN(d.getTime())) return '';
       const pad = (n) => String(n).padStart(2, '0');
-      return \`\${d.getFullYear()}-\${pad(d.getMonth() + 1)}-\${pad(d.getDate())}T\${pad(d.getHours())}:\${pad(d.getMinutes())}\`;
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
 
     function datetimeLocalToIso(value) {
@@ -505,20 +505,20 @@
         const tr = document.createElement('tr');
         tr.className = 'data-row';
 
-        tr.innerHTML = \`
-          <td>\${escapeHtml(u.uploadId || '')}</td>
-          <td>\${escapeHtml(formatDate(u.createdAt || ''))}</td>
-          <td>\${escapeHtml(u.znacka || '')}</td>
-          <td>\${escapeHtml(u.model || '')}</td>
-          <td>\${escapeHtml(u.cena || '')} €</td>
-          <td>\${escapeHtml(u.email || '')}</td>
-          <td>\${escapeHtml(formatBuyerType(u.buyerType || ''))}</td>
-          <td>\${escapeHtml(formatFee(u.fee || ''))}</td>
-          <td><span class="status \${getStatusClass(u.status)}">\${escapeHtml(u.status || '')}</span></td>
-          <td><span class="status \${getInvoiceClass(u.invoiceStatus)}">\${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></td>
-          <td>\${escapeHtml(u.invoiceNumber || '')}</td>
-          <td>\${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</td>
-        \`;
+        tr.innerHTML = `
+          <td>${escapeHtml(u.uploadId || '')}</td>
+          <td>${escapeHtml(formatDate(u.createdAt || ''))}</td>
+          <td>${escapeHtml(u.znacka || '')}</td>
+          <td>${escapeHtml(u.model || '')}</td>
+          <td>${escapeHtml(u.cena || '')} €</td>
+          <td>${escapeHtml(u.email || '')}</td>
+          <td>${escapeHtml(formatBuyerType(u.buyerType || ''))}</td>
+          <td>${escapeHtml(formatFee(u.fee || ''))}</td>
+          <td><span class="status ${getStatusClass(u.status)}">${escapeHtml(u.status || '')}</span></td>
+          <td><span class="status ${getInvoiceClass(u.invoiceStatus)}">${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></td>
+          <td>${escapeHtml(u.invoiceNumber || '')}</td>
+          <td>${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</td>
+        `;
 
         tr.addEventListener('click', () => renderDetail(u));
         tbody.appendChild(tr);
@@ -541,40 +541,40 @@
         u.billingAddressZip || ''
       ].filter(Boolean).join(', ');
 
-      detailGrid.innerHTML = \`
-        <div class="detail-item"><strong>Upload ID</strong><span>\${escapeHtml(u.uploadId || '')}</span></div>
-        <div class="detail-item"><strong>Status objednávky</strong><span>\${escapeHtml(u.status || '')}</span></div>
+      detailGrid.innerHTML = `
+        <div class="detail-item"><strong>Upload ID</strong><span>${escapeHtml(u.uploadId || '')}</span></div>
+        <div class="detail-item"><strong>Status objednávky</strong><span>${escapeHtml(u.status || '')}</span></div>
 
-        <div class="detail-item"><strong>Dátum vytvorenia</strong><span>\${escapeHtml(formatDate(u.createdAt || ''))}</span></div>
-        <div class="detail-item"><strong>Posledná zmena</strong><span>\${escapeHtml(formatDate(u.updatedAt || ''))}</span></div>
+        <div class="detail-item"><strong>Dátum vytvorenia</strong><span>${escapeHtml(formatDate(u.createdAt || ''))}</span></div>
+        <div class="detail-item"><strong>Posledná zmena</strong><span>${escapeHtml(formatDate(u.updatedAt || ''))}</span></div>
 
-        <div class="detail-item"><strong>Značka</strong><span>\${escapeHtml(u.znacka || '')}</span></div>
-        <div class="detail-item"><strong>Model</strong><span>\${escapeHtml(u.model || '')}</span></div>
+        <div class="detail-item"><strong>Značka</strong><span>${escapeHtml(u.znacka || '')}</span></div>
+        <div class="detail-item"><strong>Model</strong><span>${escapeHtml(u.model || '')}</span></div>
 
-        <div class="detail-item"><strong>Cena</strong><span>\${escapeHtml(u.cena || '')} €</span></div>
-        <div class="detail-item"><strong>Plán</strong><span>\${escapeHtml(formatFee(u.fee || ''))}</span></div>
+        <div class="detail-item"><strong>Cena</strong><span>${escapeHtml(u.cena || '')} €</span></div>
+        <div class="detail-item"><strong>Plán</strong><span>${escapeHtml(formatFee(u.fee || ''))}</span></div>
 
-        <div class="detail-item"><strong>Typ zákazníka</strong><span>\${escapeHtml(formatBuyerType(u.buyerType || ''))}</span></div>
-        <div class="detail-item"><strong>Meno / firma</strong><span>\${escapeHtml(fullNameOrCompany)}</span></div>
+        <div class="detail-item"><strong>Typ zákazníka</strong><span>${escapeHtml(formatBuyerType(u.buyerType || ''))}</span></div>
+        <div class="detail-item"><strong>Meno / firma</strong><span>${escapeHtml(fullNameOrCompany)}</span></div>
 
-        <div class="detail-item"><strong>Kontaktná osoba</strong><span>\${escapeHtml(u.contactPerson || '')}</span></div>
-        <div class="detail-item"><strong>Email</strong><span>\${escapeHtml(u.email || '')}</span></div>
+        <div class="detail-item"><strong>Kontaktná osoba</strong><span>${escapeHtml(u.contactPerson || '')}</span></div>
+        <div class="detail-item"><strong>Email</strong><span>${escapeHtml(u.email || '')}</span></div>
 
-        <div class="detail-item"><strong>Telefón</strong><span>\${escapeHtml(u.telefon || '')}</span></div>
-        <div class="detail-item"><strong>IČO</strong><span>\${escapeHtml(u.ico || '')}</span></div>
+        <div class="detail-item"><strong>Telefón</strong><span>${escapeHtml(u.telefon || '')}</span></div>
+        <div class="detail-item"><strong>IČO</strong><span>${escapeHtml(u.ico || '')}</span></div>
 
-        <div class="detail-item"><strong>DIČ</strong><span>\${escapeHtml(u.dic || '')}</span></div>
-        <div class="detail-item"><strong>IČ DPH</strong><span>\${escapeHtml(u.icdph || '')}</span></div>
+        <div class="detail-item"><strong>DIČ</strong><span>${escapeHtml(u.dic || '')}</span></div>
+        <div class="detail-item"><strong>IČ DPH</strong><span>${escapeHtml(u.icdph || '')}</span></div>
 
-        <div class="detail-item"><strong>Stav faktúry</strong><span>\${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></div>
-        <div class="detail-item"><strong>Číslo faktúry</strong><span>\${escapeHtml(u.invoiceNumber || '')}</span></div>
+        <div class="detail-item"><strong>Stav faktúry</strong><span>${escapeHtml(u.invoiceStatus || 'nevystavena')}</span></div>
+        <div class="detail-item"><strong>Číslo faktúry</strong><span>${escapeHtml(u.invoiceNumber || '')}</span></div>
 
-        <div class="detail-item"><strong>Dátum vystavenia</strong><span>\${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</span></div>
-        <div class="detail-item"><strong>Súbor</strong><span>\${escapeHtml(u.fileOriginalName || '')}</span></div>
+        <div class="detail-item"><strong>Dátum vystavenia</strong><span>${escapeHtml(formatDate(u.invoiceIssuedAt || ''))}</span></div>
+        <div class="detail-item"><strong>Súbor</strong><span>${escapeHtml(u.fileOriginalName || '')}</span></div>
 
-        <div class="detail-item full"><strong>Fakturačná adresa</strong><span>\${escapeHtml(billingAddress)}</span></div>
-        <div class="detail-item full"><strong>Poznámka</strong><span>\${escapeHtml(u.billingNote || '')}</span></div>
-      \`;
+        <div class="detail-item full"><strong>Fakturačná adresa</strong><span>${escapeHtml(billingAddress)}</span></div>
+        <div class="detail-item full"><strong>Poznámka</strong><span>${escapeHtml(u.billingNote || '')}</span></div>
+      `;
 
       selectedUploadIdEl.textContent = u.uploadId || '—';
       invoiceStatusEl.value = u.invoiceStatus || 'nevystavena';
@@ -751,7 +751,7 @@
         rows.map(r => r.map(csvEscape).join(';')).join('\n');
 
       const date = new Date();
-      const filename = \`kupujspolu_export_\${date.getFullYear()}-\${String(date.getMonth() + 1).padStart(2, '0')}-\${String(date.getDate()).padStart(2, '0')}.csv\`;
+      const filename = `kupujspolu_export_${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}.csv`;
       downloadCsv(filename, csv);
       showOk('Export bol vytvorený.');
     }
