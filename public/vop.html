@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
   <title>Obchodné podmienky — kupujspolu.sk</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -324,6 +326,7 @@
       font-size:.86rem;
     }
 
+    .vat-note{margin-top:12px;color:var(--muted-2);font-size:.82rem;line-height:1.6;}
     .footer-links{
       display:flex;
       flex-wrap:wrap;
@@ -423,6 +426,11 @@
             </div>
 
             <div class="contact-row">
+              <span class="contact-label">DPH</span>
+              <span class="contact-value">quantivo s.r.o. nie je platiteľom DPH</span>
+            </div>
+
+            <div class="contact-row">
               <span class="contact-label">Email</span>
               <span class="contact-value">
                 <a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a>
@@ -454,6 +462,10 @@
             <div class="info-row">
               <div class="info-label">IČO</div>
               <div class="info-value">57532711</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">DPH</div>
+              <div class="info-value">quantivo s.r.o. nie je platiteľom DPH</div>
             </div>
             <div class="info-row">
               <div class="info-label">Sídlo</div>
@@ -573,6 +585,10 @@
             Platforma sa zaväzuje dosiahnuť minimálny výsledok vo forme úspory 1 400 € oproti cene predloženej ponuky pri rovnakej alebo porovnateľnej konfigurácii vozidla.
           </p>
 
+          <p>
+            Prevádzkovateľ, spoločnosť quantivo s.r.o., nie je platiteľom DPH. Uvádzané ceny servisného poplatku sú konečné.
+          </p>
+
           <p><strong>Za porovnateľnú konfiguráciu sa považuje najmä:</strong></p>
           <ul>
             <li>rovnaký modelový rad,</li>
@@ -615,6 +631,9 @@
           </p>
           <p>
             Zákazník je povinný skontrolovať správnosť fakturačných údajov pred odoslaním objednávky.
+          </p>
+          <p>
+            Keďže prevádzkovateľ nie je platiteľom DPH, vystavená faktúra neobsahuje vyčíslenie DPH a uvádzané ceny sú konečné.
           </p>
         </section>
 
@@ -749,6 +768,7 @@
 
   <footer class="footer">
     <div>© 2026 kupujspolu.sk</div>
+    <div class="vat-note">quantivo s.r.o. nie je platiteľom DPH. Uvádzané ceny sú konečné.</div>
     <div class="footer-links">
       <a href="/index.html">Hlavná stránka</a>
       <a href="/gdpr.html">Ochrana osobných údajov</a>
