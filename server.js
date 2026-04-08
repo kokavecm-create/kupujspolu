@@ -198,6 +198,10 @@ function buildAdminEmailHtml(row) {
               <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(plan.shortLabel)}</td>
             </tr>
             <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Cena služby</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(formatCurrencyEur(Number(row.fee || 0)))}</td>
+            </tr>
+            <tr>
               <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Značka / model</td>
               <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(row.znacka)} / ${escapeHtml(row.model)}</td>
             </tr>
@@ -266,6 +270,10 @@ function buildAdminEmailHtml(row) {
               Faktúra zákazníkovi má odísť spravidla do 2–3 pracovných dní.
             </div>
           </div>
+
+          <div style="margin-top:16px;padding:14px 16px;background:#0b162b;border:1px solid #23314f;border-radius:16px;color:#cbd5e1;font:400 13px Arial,sans-serif;line-height:1.7;">
+            Prevádzkovateľ nie je platiteľom DPH. Uvádzané ceny sú konečné.
+          </div>
         </div>
       </div>
     </div>
@@ -301,6 +309,7 @@ function buildCustomerEmailHtml(row) {
               <div><strong style="color:#ffffff;">Značka / model:</strong> ${escapeHtml(row.znacka)} / ${escapeHtml(row.model)}</div>
               <div><strong style="color:#ffffff;">Cena z ponuky:</strong> ${escapeHtml(formatCurrencyEur(row.cena))}</div>
               <div><strong style="color:#ffffff;">Vybraný plán:</strong> ${escapeHtml(plan.shortLabel)}</div>
+              <div><strong style="color:#ffffff;">Cena služby:</strong> ${escapeHtml(formatCurrencyEur(Number(row.fee || 0)))}</div>
               <div><strong style="color:#ffffff;">Stav:</strong> PAID</div>
             </div>
           </div>
@@ -329,6 +338,10 @@ function buildCustomerEmailHtml(row) {
             <div style="color:#dbeafe;font:400 14px Arial,sans-serif;line-height:1.8;">
               ${escapeHtml(plan.guaranteeText)}
             </div>
+          </div>
+
+          <div style="margin:0 0 16px;padding:14px 16px;background:#0b162b;border:1px solid #23314f;border-radius:16px;color:#cbd5e1;font:400 13px Arial,sans-serif;line-height:1.7;">
+            Prevádzkovateľ nie je platiteľom DPH. Uvádzané ceny sú konečné.
           </div>
 
           <div style="color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.8;">
@@ -750,6 +763,9 @@ app.get('/api/test-email', requireAdmin, async (req, res) => {
             <h1 style="margin:0 0 12px;color:#fff;font-size:30px;">Test email z kupujspolu.sk</h1>
             <p style="margin:0 0 10px;color:#cbd5e1;line-height:1.7;">
               Ak čítaš tento email, Resend funguje správne.
+            </p>
+            <p style="margin:0 0 10px;color:#cbd5e1;line-height:1.7;">
+              Prevádzkovateľ nie je platiteľom DPH. Uvádzané ceny sú konečné.
             </p>
             <p style="margin:0;color:#94a3b8;line-height:1.7;">
               Čas odoslania: ${escapeHtml(new Date().toISOString())}
