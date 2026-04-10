@@ -467,6 +467,31 @@ async function updateUploadStatus(uploadId, patch) {
   }
 }
 
+async function findUploadIdByPaymentIntent(paymentIntentId) {
+  if (!stripe || !paymentIntentId) {
+    return null;
+  }
+
+  try {
+    const sessions = await stripe.checkout.sessions.list({
+      payment_intent: paymentIntentId,
+      limit: 1
+    });
+
+    const session = sessions?.data?.[0];
+    const uploadId = session?.metadata?.uploadId || null;
+
+    if (uploadId) {
+      return uploadId;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('findUploadIdByPaymentIntent error:', error);
+    return null;
+  }
+}
+
 /**
  * Stripe webhook musí ísť pred express.json(),
  * inak sa rozbije verifikácia podpisu.
@@ -561,6 +586,34 @@ app.post(
             console.error('Supabase update after async_payment_failed:', error);
             return res.status(500).send('Nepodarilo sa aktualizovať stav objednávky.');
           }
+        }
+      }
+
+      if (event.type === 'charge.refunded') {
+        const charge = event.data.object;
+        const paymentIntentId =
+          typeof charge.payment_intent === 'string'
+            ? charge.payment_intent
+            : charge.payment_intent?.id || null;
+
+        const uploadId = await findUploadIdByPaymentIntent(paymentIntentId);
+
+        if (!uploadId) {
+          console.error('Refund webhook: uploadId sa nepodarilo nájsť podľa payment_intent:', paymentIntentId);
+          return res.status(200).json({ received: true, skipped: true });
+        }
+
+        const { error } = await supabase
+          .from('uploads')
+          .update({
+            status: 'refunded',
+            updated_at: new Date().toISOString()
+          })
+          .eq('upload_id', uploadId);
+
+        if (error) {
+          console.error('Supabase update after charge.refunded:', error);
+          return res.status(500).send('Nepodarilo sa aktualizovať stav refundu.');
         }
       }
 
@@ -719,6 +772,10 @@ app.post('/api/checkout-cancel', async (req, res) => {
 
     if (existingRow.status === 'payment_failed') {
       return res.json({ ok: true, skipped: true, status: 'payment_failed' });
+    }
+
+    if (existingRow.status === 'refunded') {
+      return res.json({ ok: true, skipped: true, status: 'refunded' });
     }
 
     const { error } = await supabase
@@ -966,6 +1023,12 @@ app.post('/api/create-checkout-session', async (req, res) => {
         metadata: {
           uploadId,
           fee: normalizedFee
+        },
+        payment_intent_data: {
+          metadata: {
+            uploadId,
+            fee: normalizedFee
+          }
         },
         line_items: [
           {

@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <title>Admin panel | kupujspolu.sk</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="icon" href="/favicon.ico" />
   <style>
     :root{
       --bg:#0b1220;
@@ -204,6 +203,7 @@
     .status-checkout_created{ background:rgba(37,99,235,.18); color:#bfdbfe; }
     .status-payment_failed{ background:rgba(239,68,68,.18); color:#fecaca; }
     .status-canceled{ background:rgba(148,163,184,.20); color:#e2e8f0; }
+    .status-refunded{ background:rgba(168,85,247,.20); color:#e9d5ff; }
     .status-other{ background:rgba(100,116,139,.25); color:#e2e8f0; }
 
     .invoice-nevystavena{
@@ -316,6 +316,7 @@
             <option value="checkout_created">checkout_created</option>
             <option value="payment_failed">payment_failed</option>
             <option value="canceled">canceled</option>
+            <option value="refunded">refunded</option>
           </select>
         </div>
 
@@ -477,6 +478,7 @@
       if (status === 'checkout_created') return 'status-checkout_created';
       if (status === 'payment_failed') return 'status-payment_failed';
       if (status === 'canceled') return 'status-canceled';
+      if (status === 'refunded') return 'status-refunded';
       return 'status-other';
     }
 
@@ -819,9 +821,7 @@
     searchInput.addEventListener('input', applyFilters);
     statusFilter.addEventListener('change', applyFilters);
 
-    saveInvoiceBtn.addEventListener('click', () => {
-      saveInvoice();
-    });
+    saveInvoiceBtn.addEventListener('click', () => saveInvoice());
 
     markIssuedNowBtn.addEventListener('click', () => {
       if (!selectedUpload || !selectedUpload.uploadId) {
@@ -829,12 +829,11 @@
         return;
       }
 
-      const nowIso = new Date().toISOString();
       saveInvoice({
         uploadId: selectedUpload.uploadId,
         invoiceStatus: 'vystavena',
         invoiceNumber: invoiceNumberEl.value.trim(),
-        invoiceIssuedAt: nowIso
+        invoiceIssuedAt: new Date().toISOString()
       });
     });
 
