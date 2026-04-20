@@ -160,6 +160,10 @@ function requireAdmin(req, res, next) {
   return next();
 }
 
+function canSetPaidFromStatus(status) {
+  return status === 'pending_payment' || status === 'checkout_created';
+}
+
 function buildAdminEmailHtml(row) {
   const plan = planMetaFromFee(row.fee);
   const billingAddress = [
@@ -543,7 +547,7 @@ app.post(
             return res.status(404).send('Upload nebol nájdený.');
           }
 
-          if (existingRow.status !== 'paid') {
+          if (canSetPaidFromStatus(existingRow.status)) {
             const { error } = await supabase
               .from('uploads')
               .update({
