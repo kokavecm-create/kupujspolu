@@ -204,6 +204,7 @@
     .status-payment_failed{ background:rgba(239,68,68,.18); color:#fecaca; }
     .status-canceled{ background:rgba(148,163,184,.20); color:#e2e8f0; }
     .status-refunded{ background:rgba(168,85,247,.20); color:#e9d5ff; }
+    .status-refund_request{ background:rgba(245,158,11,.22); color:#fde68a; }
     .status-other{ background:rgba(100,116,139,.25); color:#e2e8f0; }
 
     .invoice-nevystavena{
@@ -317,6 +318,7 @@
             <option value="payment_failed">payment_failed</option>
             <option value="canceled">canceled</option>
             <option value="refunded">refunded</option>
+            <option value="refund_request">refund_request</option>
           </select>
         </div>
 
@@ -479,6 +481,7 @@
       if (status === 'payment_failed') return 'status-payment_failed';
       if (status === 'canceled') return 'status-canceled';
       if (status === 'refunded') return 'status-refunded';
+      if (status === 'refund_request') return 'status-refund_request';
       return 'status-other';
     }
 

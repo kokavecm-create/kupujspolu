@@ -594,7 +594,9 @@
             <li>kontaktné údaje, najmä email a telefónne číslo,</li>
             <li>fakturačné údaje, napríklad adresa, IČO, DIČ a IČ DPH,</li>
             <li>údaje o vozidle a ponuke, napríklad značka, model, cena a obsah nahranej ponuky,</li>
-            <li>komunikačné údaje, ak s nami komunikuješ emailom alebo inak,</li>
+            <li>údaje o objednávke, najmä Upload ID, zvolený plán, stav objednávky, stav fakturácie a informácie o platbe,</li>
+            <li>údaje uvedené vo formulári odstúpenia od zmluvy, najmä meno alebo názov firmy, email, Upload ID a doplňujúce informácie uvedené zákazníkom,</li>
+            <li>komunikačné údaje, ak s nami komunikuješ emailom, cez formulár alebo iným spôsobom,</li>
             <li>technické údaje o používaní webu, napríklad IP adresa, základné logy servera a technické metadáta požiadaviek.</li>
           </ul>
           <p>
@@ -619,6 +621,15 @@
             </div>
 
             <div class="info-row">
+              <div class="info-label">Platba, potvrdenia a správa objednávky</div>
+              <div class="info-value">
+                Aby sme vedeli spracovať platbu, priradiť ju k Upload ID, potvrdiť stav objednávky, evidovať zaplatený servisný poplatok
+                a odosielať transakčné emaily súvisiace s objednávkou.
+                Právny základ: plnenie zmluvy a oprávnený záujem na riadnej evidencii objednávok.
+              </div>
+            </div>
+
+            <div class="info-row">
               <div class="info-label">Fakturácia a účtovníctvo</div>
               <div class="info-value">
                 Aby sme mohli vystaviť faktúru, viesť účtovníctvo a plniť daňové a zákonné povinnosti.
@@ -627,17 +638,28 @@
             </div>
 
             <div class="info-row">
-              <div class="info-label">Komunikácia so zákazníkom</div>
+              <div class="info-label">Komunikácia, reklamácie a refundácie</div>
               <div class="info-value">
-                Aby sme mohli odpovedať na otázky, riešiť doplnenie údajov, reklamácie, refundácie a prevádzkové oznámenia.
-                Právny základ: plnenie zmluvy alebo oprávnený záujem, podľa povahy komunikácie.
+                Aby sme mohli odpovedať na otázky, riešiť doplnenie údajov, reklamácie, refundácie, odstúpenia od zmluvy,
+                refund_request požiadavky a prevádzkové oznámenia.
+                Právny základ: plnenie zmluvy, splnenie zákonnej povinnosti alebo oprávnený záujem podľa povahy komunikácie.
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Odstúpenie od zmluvy</div>
+              <div class="info-value">
+                Aby sme vedeli prijať a vybaviť žiadosť podanú cez formulár na stránke
+                <a href="/odstupenie.html">Odstúpenie od zmluvy</a>, priradiť ju k objednávke podľa Upload ID,
+                odoslať potvrdenie zákazníkovi a interne evidovať žiadosť v administrácii.
+                Právny základ: splnenie zákonnej povinnosti, plnenie zmluvy a oprávnený záujem na ochrane právnych nárokov.
               </div>
             </div>
 
             <div class="info-row">
               <div class="info-label">Bezpečnosť, ochrana systému a evidencia</div>
               <div class="info-value">
-                Aby sme chránili web, server, platobné procesy a databázu pred zneužitím, chybami a neoprávnenými zásahmi.
+                Aby sme chránili web, server, platobné procesy, databázu a administráciu pred zneužitím, chybami a neoprávnenými zásahmi.
                 Právny základ: oprávnený záujem prevádzkovateľa.
               </div>
             </div>
@@ -658,7 +680,7 @@
             Osobné údaje získavame najmä:
           </p>
           <ul>
-            <li>priamo od teba pri vyplnení formulára a nahraní ponuky,</li>
+            <li>priamo od teba pri vyplnení objednávkového formulára, nahraní ponuky alebo odoslaní formulára odstúpenia od zmluvy,</li>
             <li>z komunikácie medzi tebou a prevádzkovateľom,</li>
             <li>z platobných a technických systémov použitých pri spracovaní objednávky,</li>
             <li>z technických logov webu a servera.</li>
@@ -672,9 +694,9 @@
           </p>
           <ul>
             <li>technologickým a hostingovým partnerom,</li>
-            <li>poskytovateľovi databázového a úložného riešenia,</li>
-            <li>poskytovateľovi platobnej brány,</li>
-            <li>poskytovateľovi emailových služieb,</li>
+            <li>spoločnosti Supabase alebo jej infraštruktúrnym partnerom ako poskytovateľovi databázového a úložného riešenia,</li>
+            <li>spoločnosti Stripe alebo jej infraštruktúrnym partnerom ako poskytovateľovi platobnej brány a spracovania platieb,</li>
+            <li>spoločnosti Resend alebo jej infraštruktúrnym partnerom ako poskytovateľovi transakčných emailových služieb,</li>
             <li>účtovným, daňovým alebo právnym poradcom, ak je to potrebné,</li>
             <li>orgánom verejnej moci, ak to vyžaduje zákon.</li>
           </ul>
@@ -705,7 +727,7 @@
             <div class="info-row">
               <div class="info-label">Objednávka a prípad</div>
               <div class="info-value">
-                Počas trvania spracovania prípadu a primerane po jeho ukončení na účely evidencie, podpory, reklamácií a ochrany právnych nárokov.
+                Počas trvania spracovania prípadu a primerane po jeho ukončení na účely evidencie, podpory, reklamácií, refundácií, odstúpení od zmluvy a ochrany právnych nárokov.
               </div>
             </div>
 
@@ -719,7 +741,7 @@
             <div class="info-row">
               <div class="info-label">Komunikačné údaje</div>
               <div class="info-value">
-                Po dobu potrebnú na vybavenie komunikácie, reklamácie, refundácie alebo inej požiadavky.
+                Po dobu potrebnú na vybavenie komunikácie, reklamácie, refundácie, odstúpenia od zmluvy, refund_request požiadavky alebo inej požiadavky.
               </div>
             </div>
 
@@ -808,7 +830,7 @@
           </p>
           <p>
             Tieto opatrenia zahŕňajú najmä kontrolu prístupu, používanie overených technických služieb, obmedzenie prístupových práv,
-            evidenciu vybraných operácií a primerané bezpečnostné postupy pri práci s dokumentmi a databázou.
+            evidenciu vybraných operácií, používanie interného administrátorského prístupu a primerané bezpečnostné postupy pri práci s dokumentmi a databázou.
           </p>
         </section>
 
@@ -831,6 +853,7 @@
     <div class="footer-links">
       <a href="/index.html">Hlavná stránka</a>
       <a href="/vop.html">Obchodné podmienky</a>
+      <a href="/odstupenie.html">Odstúpenie od zmluvy</a>
       <a href="/kontakt.html">Kontakt</a>
     </div>
   </footer>

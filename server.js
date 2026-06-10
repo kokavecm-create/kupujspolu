@@ -26,6 +26,8 @@ const {
   ADMIN_SECRET = ''
 } = process.env;
 
+const WITHDRAWAL_EMAIL_TO = 'info@kupujspolu.sk';
+
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   throw new Error('Chýba SUPABASE_URL alebo SUPABASE_SERVICE_ROLE_KEY.');
 }
@@ -439,6 +441,171 @@ async function sendCustomerEmail(row) {
     throw new Error(`Resend customer email error: ${result.error.message || 'unknown error'}`);
   }
 }
+
+
+function buildWithdrawalAdminEmailHtml(payload) {
+  const submittedAt = new Date().toLocaleString('sk-SK', {
+    timeZone: 'Europe/Bratislava'
+  });
+
+  return `
+  <div style="margin:0;padding:0;background:#f4f7fb;">
+    <div style="max-width:760px;margin:0 auto;padding:24px 12px;">
+      <div style="background:#0b1220;border-radius:22px;overflow:hidden;border:1px solid #1f2a44;">
+        <div style="padding:28px 28px 18px;background:linear-gradient(135deg,#08101c 0%,#10213f 100%);">
+          <div style="display:inline-block;padding:8px 14px;border-radius:999px;background:#3b1f0b;color:#fde68a;border:1px solid #92400e;font:700 12px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;">
+            Refund request
+          </div>
+          <h1 style="margin:18px 0 8px;font:700 38px Arial,sans-serif;line-height:1.06;color:#ffffff;">
+            Žiadosť o odstúpenie od zmluvy
+          </h1>
+          <p style="margin:0;color:#cbd5e1;font:400 15px Arial,sans-serif;line-height:1.7;">
+            Zákazník odoslal online formulár žiadosti o odstúpenie od zmluvy na kupujspolu.sk.
+            Ak bol uvedený platný Upload ID, objednávka bola v admin paneli označená statusom refund_request.
+          </p>
+        </div>
+
+        <div style="padding:24px 28px;background:#0f172a;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Typ žiadosti</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">Odstúpenie od zmluvy / refund_request</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Upload ID</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(payload.uploadId || 'neuvedené')}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Objednávka v adminovi</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${payload.uploadMatched ? 'nájdená a označená ako refund_request' : 'nenájdená alebo Upload ID nebol uvedený'}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Meno / firma</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(payload.fullName)}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">E-mail zákazníka</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(payload.email)}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#091327;color:#ffffff;font:700 14px Arial,sans-serif;">Dátum odoslania</td>
+              <td style="padding:12px 14px;border:1px solid #23314f;background:#0b162b;color:#cbd5e1;font:400 14px Arial,sans-serif;">${escapeHtml(submittedAt)}</td>
+            </tr>
+          </table>
+
+          <div style="margin-top:18px;padding:16px 18px;background:#0b162b;border:1px solid #23314f;border-radius:16px;">
+            <div style="color:#ffffff;font:700 14px Arial,sans-serif;margin-bottom:8px;">Dôvod / doplňujúce informácie</div>
+            <div style="color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.8;white-space:pre-wrap;">${escapeHtml(payload.reason || 'neuvedené')}</div>
+          </div>
+
+          <div style="margin-top:16px;padding:14px 16px;background:#0b162b;border:1px solid #23314f;border-radius:16px;color:#cbd5e1;font:400 13px Arial,sans-serif;line-height:1.7;">
+            Refund sa nevykonal automaticky. Platbu je potrebné preveriť a prípadný refund vykonať manuálne cez Stripe Dashboard.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function buildWithdrawalCustomerEmailHtml(payload) {
+  return `
+  <div style="margin:0;padding:0;background:#f4f7fb;">
+    <div style="max-width:760px;margin:0 auto;padding:24px 12px;">
+      <div style="background:#0b1220;border-radius:22px;overflow:hidden;border:1px solid #1f2a44;">
+        <div style="padding:28px 28px 18px;background:linear-gradient(135deg,#08101c 0%,#10213f 100%);">
+          <div style="display:inline-block;padding:8px 14px;border-radius:999px;background:#12331f;color:#dcfce7;border:1px solid #1f6b3a;font:700 12px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;">
+            Žiadosť prijatá
+          </div>
+          <h1 style="margin:18px 0 8px;font:700 38px Arial,sans-serif;line-height:1.06;color:#ffffff;">
+            Žiadosť o odstúpenie od zmluvy bola prijatá
+          </h1>
+          <p style="margin:0;color:#cbd5e1;font:400 15px Arial,sans-serif;line-height:1.7;">
+            Dobrý deň, ${escapeHtml(payload.fullName)}, prijali sme vašu žiadosť o odstúpenie od zmluvy.
+          </p>
+        </div>
+
+        <div style="padding:24px 28px;background:#0f172a;">
+          <div style="margin:0 0 16px;padding:16px 18px;background:#0b162b;border:1px solid #23314f;border-radius:16px;">
+            <div style="color:#ffffff;font:700 15px Arial,sans-serif;margin-bottom:8px;">Prehľad žiadosti</div>
+            <div style="color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.8;">
+              <div><strong style="color:#ffffff;">Typ žiadosti:</strong> Odstúpenie od zmluvy</div>
+              <div><strong style="color:#ffffff;">E-mail:</strong> ${escapeHtml(payload.email)}</div>
+              <div><strong style="color:#ffffff;">Upload ID:</strong> ${escapeHtml(payload.uploadId || 'neuvedené')}</div>
+            </div>
+          </div>
+
+          <div style="margin:0 0 16px;padding:16px 18px;background:#10213f;border:1px solid #24457b;border-radius:16px;">
+            <div style="color:#ffffff;font:700 15px Arial,sans-serif;margin-bottom:8px;">Čo bude nasledovať</div>
+            <div style="color:#dbeafe;font:400 14px Arial,sans-serif;line-height:1.8;">
+              Žiadosť preveríme podľa obchodných podmienok, stavu poskytnutia digitálnej služby a príslušných právnych predpisov.
+              O výsledku vybavenia vás budeme informovať e-mailom.
+            </div>
+          </div>
+
+          <div style="color:#cbd5e1;font:400 14px Arial,sans-serif;line-height:1.8;">
+            V prípade doplňujúcich otázok nám môžete napísať na
+            <a href="mailto:info@kupujspolu.sk" style="color:#93c5fd;">info@kupujspolu.sk</a>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+async function markUploadAsRefundRequest(uploadId) {
+  const normalizedUploadId = String(uploadId || '').trim();
+
+  if (!normalizedUploadId) {
+    return false;
+  }
+
+  const { data, error } = await supabase
+    .from('uploads')
+    .update({
+      status: 'refund_request',
+      updated_at: new Date().toISOString()
+    })
+    .eq('upload_id', normalizedUploadId)
+    .select('upload_id')
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return Boolean(data && data.upload_id);
+}
+
+async function sendWithdrawalRequestEmails(payload) {
+  if (!resend || !EMAIL_FROM) {
+    throw new Error('Resend nie je nakonfigurovaný.');
+  }
+
+  const adminResult = await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [WITHDRAWAL_EMAIL_TO],
+    subject: `Refund request / odstúpenie od zmluvy — ${payload.uploadId || payload.email}`,
+    html: buildWithdrawalAdminEmailHtml(payload)
+  });
+
+  if (adminResult.error) {
+    throw new Error(`Resend withdrawal admin email error: ${adminResult.error.message || 'unknown error'}`);
+  }
+
+  const customerResult = await resend.emails.send({
+    from: EMAIL_FROM,
+    to: [payload.email],
+    subject: 'Potvrdenie prijatia žiadosti o odstúpenie od zmluvy — kupujspolu.sk',
+    html: buildWithdrawalCustomerEmailHtml(payload)
+  });
+
+  if (customerResult.error) {
+    throw new Error(`Resend withdrawal customer email error: ${customerResult.error.message || 'unknown error'}`);
+  }
+}
+
 
 async function sendPaymentEmailsForUpload(uploadId) {
   const { data: row, error } = await supabase
@@ -855,6 +1022,57 @@ app.get('/api/test-email', requireAdmin, async (req, res) => {
     });
   }
 });
+
+
+app.post('/api/withdrawal-request', async (req, res) => {
+  try {
+    const {
+      fullName,
+      email,
+      uploadId,
+      reason,
+      confirmTruth,
+      confirmPrivacy
+    } = req.body || {};
+
+    const normalizedPayload = {
+      fullName: String(fullName || '').trim(),
+      email: String(email || '').trim(),
+      uploadId: String(uploadId || '').trim(),
+      reason: String(reason || '').trim()
+    };
+
+    if (!normalizedPayload.fullName || !normalizedPayload.email) {
+      return res.status(400).json({ error: 'Chýba meno alebo e-mail.' });
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedPayload.email)) {
+      return res.status(400).json({ error: 'E-mail nemá platný formát.' });
+    }
+
+    if (!confirmTruth || !confirmPrivacy) {
+      return res.status(400).json({ error: 'Chýbajú povinné potvrdenia.' });
+    }
+
+    const uploadMatched = await markUploadAsRefundRequest(normalizedPayload.uploadId);
+
+    await sendWithdrawalRequestEmails({
+      ...normalizedPayload,
+      uploadMatched
+    });
+
+    return res.json({
+      ok: true,
+      uploadMatched
+    });
+  } catch (error) {
+    console.error('POST /api/withdrawal-request error:', error);
+    return res.status(500).json({
+      error: 'Žiadosť sa nepodarilo odoslať. Skúste to prosím znova alebo nás kontaktujte emailom.'
+    });
+  }
+});
+
 
 app.post('/api/upload-offer', upload.single('offerFile'), async (req, res) => {
   try {

@@ -886,17 +886,16 @@
         <label class="checkbox">
           <input type="checkbox" id="agreeTerms" required>
           <span>
-            Potvrdzujem, že som sa oboznámil s <a href="/vop.html" target="_blank" rel="noopener">Obchodnými podmienkami</a>,
-            <a href="/gdpr.html" target="_blank" rel="noopener">Ochrana osobných údajov</a> a rozumiem tomu,
-            že služba sa začína poskytovať bezodkladne po úhrade a odoslaní ponuky.
+            Potvrdzujem, že som sa oboznámil s <a href="/vop.html" target="_blank" rel="noopener">Obchodnými podmienkami</a>
+            a <a href="/gdpr.html" target="_blank" rel="noopener">Ochranou osobných údajov</a>.
           </span>
         </label>
 
         <label class="checkbox">
           <input type="checkbox" id="agreeStartService" required>
           <span>
-            Výslovne súhlasím so začatím poskytovania digitálnej služby pred uplynutím lehoty na odstúpenie od zmluvy
-            v rozsahu uvedenom v obchodných podmienkach.
+            Výslovne súhlasím so začatím poskytovania digitálnej služby bezodkladne po úhrade
+            a beriem na vedomie podmienky odstúpenia od zmluvy uvedené vo VOP.
           </span>
         </label>
 
@@ -925,8 +924,13 @@
           <div class="summary-row"><span>Typ služby</span><strong>Digitálna služba</strong></div>
           <div class="summary-row"><span>Forma vyjednávania</span><strong>Skupinovo</strong></div>
           <div class="summary-row"><span>Dodanie</span><strong>Elektronicky</strong></div>
-          <div class="summary-row"><span>Refundácia</span><strong>Podľa VOP</strong></div>
+          <div class="summary-row"><span>Právo na odstúpenie</span><strong>Podmienky vo VOP</strong></div>
           <div class="summary-row"><span>Mena</span><strong>EUR</strong></div>
+        </div>
+
+        <div class="notice info" style="margin-top:12px;">
+          Ide o digitálnu službu poskytovanú elektronicky. Podmienky odstúpenia od zmluvy
+          a prípadnej refundácie sú uvedené v Obchodných podmienkach.
         </div>
       </div>
 
@@ -936,6 +940,12 @@
         <p class="muted" id="selectedPlanText">Garantovaná úspora minimálne 700 EUR oproti predloženej ponuke.</p>
         <div class="notice ok">
           Ak sa nedosiahne garantovaná minimálna úspora podľa zvoleného plánu, servisný poplatok sa refunduje podľa obchodných podmienok.
+        </div>
+        <div class="notice info">
+          <strong>Jasné upozornenie pred platbou:</strong><br>
+          Služba sa začína poskytovať bezodkladne po úhrade. Pred platbou musí zákazník výslovne súhlasiť
+          so začatím poskytovania digitálnej služby pred uplynutím lehoty na odstúpenie a zároveň vziať na vedomie,
+          že po úplnom poskytnutí digitálnej služby môže stratiť právo na odstúpenie od zmluvy v rozsahu povolenom právnymi predpismi.
         </div>
         <div class="mini">quantivo s.r.o. nie je platiteľom DPH. Uvádzané ceny sú konečné.</div>
       </div>
@@ -1073,7 +1083,7 @@
       const agreeStartService = document.getElementById('agreeStartService');
 
       if (!agreeTerms.checked || !agreeStartService.checked) {
-        setMessage('error', 'Pred pokračovaním musíš potvrdiť súhlasy.');
+        setMessage('error', 'Pred pokračovaním musíš potvrdiť oba povinné súhlasy.');
         return;
       }
 
@@ -1127,7 +1137,9 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             uploadId: uploadData.uploadId,
-            fee: selectedFee
+            fee: selectedFee,
+            digitalContentStartConsent: agreeStartService.checked ? 'yes' : 'no',
+            withdrawalLossAcknowledgement: agreeWithdrawalLoss.checked ? 'yes' : 'no'
           })
         });
 

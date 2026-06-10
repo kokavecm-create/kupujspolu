@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G0ZK0S5265"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-G0ZK0S5265');
+</script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <title>Odstúpenie od zmluvy — kupujspolu.sk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#070B14;
+      --surface:#0E1625;
+      --card:#121B2E;
+      --card-2:#18243A;
+      --ink:#F1F5F9;
+      --muted:#CBD5E1;
+      --muted-2:#94A3B8;
+      --line:rgba(148,163,184,.14);
+      --brand:#3B82F6;
+      --brand-dark:#2563EB;
+      --brand-soft:rgba(59,130,246,.12);
+      --ok:#22C55E;
+      --ok-soft:rgba(34,197,94,.12);
+      --warn:#F59E0B;
+      --warn-soft:rgba(245,158,11,.12);
+      --danger:#EF4444;
+      --danger-soft:rgba(239,68,68,.12);
+      --radius:20px;
+      --pill:999px;
+      --shadow:0 18px 60px rgba(0,0,0,.42);
+      --max:1080px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:'Outfit',sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(59,130,246,.12), transparent 30%),
+        linear-gradient(180deg,#050912 0%, #08101c 100%);
+      color:var(--ink);
+      line-height:1.72;
+    }
+
+    a{color:#93c5fd;text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:60;
+      backdrop-filter:blur(16px);
+      background:rgba(7,11,20,.88);
+      border-bottom:1px solid var(--line);
+    }
+
+    .topbar-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:16px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .logo{
+      font-family:'Bebas Neue',sans-serif;
+      letter-spacing:.05em;
+      font-size:1.35rem;
+      color:var(--ink);
+    }
+
+    .logo em{font-style:normal;color:var(--brand)}
+
+    .back{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:var(--pill);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:var(--ink);
+      font-weight:600;
+    }
+
+    .hero{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:44px 24px 14px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:var(--pill);
+      background:var(--brand-soft);
+      color:#93c5fd;
+      border:1px solid rgba(59,130,246,.26);
+      font-size:.8rem;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .eyebrow::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--brand);
+      box-shadow:0 0 0 6px rgba(59,130,246,.14);
+    }
+
+    h1{
+      margin:18px 0 10px;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2.5rem,5vw,4.4rem);
+      line-height:.95;
+      letter-spacing:.02em;
+    }
+
+    .hero-sub{
+      max-width:880px;
+      color:var(--muted);
+      font-size:1rem;
+      font-weight:300;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:18px 24px 70px;
+      display:grid;
+      gap:20px;
+    }
+
+    .notice{
+      border-radius:18px;
+      padding:18px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:rgba(255,255,255,.03);
+    }
+
+    .notice.ok{
+      background:linear-gradient(180deg,rgba(34,197,94,.10),rgba(34,197,94,.05));
+      border-color:rgba(34,197,94,.22);
+      color:#dcfce7;
+    }
+
+    .notice.warn{
+      background:var(--warn-soft);
+      border-color:rgba(245,158,11,.22);
+      color:#fde68a;
+    }
+
+    .notice.error{
+      background:var(--danger-soft);
+      border-color:rgba(239,68,68,.22);
+      color:#fecaca;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:20px;
+      align-items:start;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow);
+    }
+
+    .card h2{
+      margin:0 0 12px;
+      font-size:1.35rem;
+      line-height:1.2;
+    }
+
+    .card p{
+      margin:0 0 12px;
+      color:var(--muted);
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:14px;
+    }
+
+    .field label{
+      font-size:.92rem;
+      font-weight:700;
+      color:var(--ink);
+    }
+
+    .field small{
+      color:var(--muted-2);
+      font-size:.8rem;
+      line-height:1.5;
+    }
+
+    input, textarea{
+      width:100%;
+      background:#0d1526;
+      border:1px solid var(--line);
+      color:var(--ink);
+      border-radius:14px;
+      padding:13px 14px;
+      font:inherit;
+      outline:none;
+      transition:.18s ease;
+    }
+
+    input:focus, textarea:focus{
+      border-color:rgba(59,130,246,.5);
+      box-shadow:0 0 0 4px rgba(59,130,246,.12);
+    }
+
+    textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    .checkbox{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      color:var(--muted);
+      font-size:.92rem;
+      margin:12px 0;
+    }
+
+    .checkbox input{
+      width:18px;
+      height:18px;
+      margin-top:2px;
+      accent-color:var(--brand);
+      flex-shrink:0;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:800;
+      text-decoration:none;
+      transition:.18s ease;
+      border:none;
+      cursor:pointer;
+      font:inherit;
+    }
+
+    .btn-brand{
+      width:100%;
+      background:var(--brand);
+      color:#fff;
+      box-shadow:0 4px 22px rgba(59,130,246,.35);
+    }
+
+    .btn-brand:hover{
+      background:var(--brand-dark);
+      text-decoration:none;
+      transform:translateY(-1px);
+    }
+
+    .btn-brand:disabled{
+      opacity:.65;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .btn-outline{
+      background:transparent;
+      color:var(--ink);
+      border:1px solid var(--line);
+    }
+
+    .btn-outline:hover{
+      text-decoration:none;
+      border-color:rgba(59,130,246,.32);
+      background:rgba(59,130,246,.06);
+    }
+
+    .info-list{
+      display:grid;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .info-row{
+      display:grid;
+      grid-template-columns:190px 1fr;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:var(--card-2);
+      border:1px solid var(--line);
+    }
+
+    .info-row strong{color:var(--ink)}
+    .info-row span{color:var(--muted)}
+
+    .steps{
+      display:grid;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .step{
+      padding:16px;
+      border-radius:16px;
+      background:var(--card-2);
+      border:1px solid var(--line);
+    }
+
+    .step strong{
+      display:block;
+      color:var(--ink);
+      margin-bottom:6px;
+    }
+
+    .step span{
+      display:block;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .form-message{
+      display:none;
+      margin-top:14px;
+    }
+
+    .form-message.show{display:block}
+
+    .footer{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 24px 48px;
+      color:var(--muted-2);
+      font-size:.86rem;
+    }
+
+    .vat-note{
+      margin-top:12px;
+      color:var(--muted-2);
+      font-size:.82rem;
+      line-height:1.6;
+    }
+
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      margin-top:12px;
+    }
+
+    .floating-socials{
+      position:fixed;
+      right:2rem;
+      bottom:2rem;
+      z-index:190;
+      display:flex;
+      flex-direction:column-reverse;
+      align-items:center;
+      gap:.65rem;
+    }
+
+    .floating-socials .social-btn,
+    .floating-socials .whatsapp-btn{
+      position:static;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--card, #121B2E);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      text-decoration:none;
+      color:var(--ink);
+      font-weight:900;
+      font-size:.78rem;
+      letter-spacing:.01em;
+      transition:all .25s;
+      cursor:pointer;
+    }
+
+    .floating-socials .social-btn:hover,
+    .floating-socials .whatsapp-btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 15px 60px rgba(0,0,0,.5);
+      text-decoration:none;
+    }
+
+    .floating-socials .whatsapp-btn:hover{border-color:rgba(37,211,102,.4)}
+    .floating-socials .social-facebook:hover{border-color:rgba(24,119,242,.55)}
+    .floating-socials .social-instagram:hover{border-color:rgba(225,48,108,.55)}
+    .floating-socials .social-linkedin:hover{border-color:rgba(10,102,194,.55)}
+    .floating-socials .social-tiktok:hover{border-color:rgba(255,255,255,.45)}
+
+    .floating-socials .whatsapp-btn svg{
+      width:28px;
+      height:28px;
+      fill:#25D366;
+    }
+
+    .floating-socials .social-btn::after,
+    .floating-socials .whatsapp-btn::after{
+      content:attr(aria-label);
+      position:absolute;
+      right:calc(100% + 12px);
+      top:50%;
+      transform:translateY(-50%);
+      background:var(--card);
+      border:1px solid var(--line);
+      padding:.5rem .85rem;
+      border-radius:8px;
+      font-size:.75rem;
+      color:var(--ink);
+      white-space:nowrap;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s;
+      box-shadow:var(--shadow);
+    }
+
+    .floating-socials .social-btn:hover::after,
+    .floating-socials .whatsapp-btn:hover::after{opacity:1}
+
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+      .info-row{grid-template-columns:1fr}
+      .topbar-inner{padding:14px 16px}
+      .hero{padding:32px 16px 12px}
+      .wrap{padding:14px 16px 56px}
+      .footer{padding:0 16px 42px}
+
+      .floating-socials{
+        right:1rem;
+        bottom:1rem;
+        gap:.45rem;
+      }
+
+      .floating-socials .social-btn,
+      .floating-socials .whatsapp-btn{
+        width:46px;
+        height:46px;
+        font-size:.7rem;
+      }
+
+      .floating-socials .whatsapp-btn svg{
+        width:23px;
+        height:23px;
+      }
+
+      .floating-socials .social-btn::after,
+      .floating-socials .whatsapp-btn::after{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="/index.html">kupuj<em>spolu</em>.sk</a>
+      <a class="back" href="/index.html">← Späť na hlavnú stránku</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">Odstúpenie od zmluvy</div>
+    <h1>Žiadosť o odstúpenie od zmluvy</h1>
+    <p class="hero-sub">
+      Tento formulár slúži na podanie žiadosti o odstúpenie od zmluvy pri digitálnej službe kupujspolu.sk.
+      Po odoslaní formulára bude žiadosť automaticky odoslaná prevádzkovateľovi na vybavenie.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <div class="notice ok">
+      Pre rýchle vybavenie uveď e-mail použitý pri objednávke a Upload ID, ak ho máš k dispozícii.
+      Upload ID nájdeš v potvrdení objednávky alebo na stránke potvrdenej platby.
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Formulár žiadosti</h2>
+        <p>
+          Vyplň údaje nižšie a odošli formulár. Kópia žiadosti bude odoslaná aj na e-mail uvedený vo formulári.
+        </p>
+
+        <form id="withdrawalForm" novalidate>
+          <div class="field">
+            <label for="fullName">Meno a priezvisko / názov firmy *</label>
+            <input id="fullName" name="fullName" type="text" required placeholder="napr. Ján Novák alebo Firma s.r.o.">
+          </div>
+
+          <div class="field">
+            <label for="email">E-mail použitý pri objednávke *</label>
+            <input id="email" name="email" type="email" required placeholder="napr. zakaznik@example.com">
+          </div>
+
+          <div class="field">
+            <label for="uploadId">Upload ID / identifikátor objednávky</label>
+            <input id="uploadId" name="uploadId" type="text" placeholder="napr. UPL-XXXXXXXXXXXXX">
+            <small>Ak ho nevieš nájsť, nechaj pole prázdne a uveď čo najviac údajov v poznámke.</small>
+          </div>
+
+          <div class="field">
+            <label for="reason">Dôvod alebo doplňujúce informácie</label>
+            <textarea id="reason" name="reason" placeholder="Nepovinné. Môžeš doplniť dôvod, popis situácie alebo ďalšie údaje k objednávke."></textarea>
+          </div>
+
+          <label class="checkbox">
+            <input type="checkbox" id="confirmTruth" required>
+            <span>
+              Potvrdzujem, že uvedené údaje sú pravdivé a žiadosť podávam k objednávke alebo platbe, ktorá sa ma týka.
+            </span>
+          </label>
+
+          <label class="checkbox">
+            <input type="checkbox" id="confirmPrivacy" required>
+            <span>
+              Beriem na vedomie, že údaje z tejto žiadosti budú spracované na účely vybavenia žiadosti,
+              komunikácie, evidencie a ochrany právnych nárokov podľa
+              <a href="/gdpr.html" target="_blank" rel="noopener">Ochrany osobných údajov</a>.
+            </span>
+          </label>
+
+          <button type="submit" class="btn btn-brand" id="submitBtn">Odoslať žiadosť o odstúpenie</button>
+
+          <div id="formMessage" class="notice form-message" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Dôležité informácie</h2>
+        <p>
+          kupujspolu.sk poskytuje digitálnu službu spracovania ponuky, anonymizovaného porovnania a skupinového vyjednávania.
+          Podmienky odstúpenia od zmluvy a prípadnej refundácie sú uvedené v obchodných podmienkach.
+        </p>
+
+        <div class="info-list">
+          <div class="info-row">
+            <strong>Prevádzkovateľ</strong>
+            <span>quantivo s.r.o.</span>
+          </div>
+          <div class="info-row">
+            <strong>E-mail</strong>
+            <span><a href="mailto:info@kupujspolu.sk">info@kupujspolu.sk</a></span>
+          </div>
+          <div class="info-row">
+            <strong>Telefón</strong>
+            <span><a href="tel:+421904111311">+421 904 111 311</a></span>
+          </div>
+          <div class="info-row">
+            <strong>DPH</strong>
+            <span>quantivo s.r.o. nie je platiteľom DPH</span>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <strong>1. Podanie žiadosti</strong>
+            <span>Žiadosť odošleš priamo cez tento online formulár.</span>
+          </div>
+
+          <div class="step">
+            <strong>2. Identifikácia objednávky</strong>
+            <span>Podľa e-mailu, Upload ID a údajov v žiadosti preveríme platbu a stav digitálnej služby.</span>
+          </div>
+
+          <div class="step">
+            <strong>3. Posúdenie podľa VOP</strong>
+            <span>Žiadosť posúdime podľa obchodných podmienok, stavu poskytnutia digitálnej služby a príslušných právnych predpisov.</span>
+          </div>
+
+          <div class="step">
+            <strong>4. Odpoveď zákazníkovi</strong>
+            <span>O výsledku vybavenia žiadosti ťa budeme informovať e-mailom.</span>
+          </div>
+        </div>
+
+        <div class="notice warn" style="margin-top:16px;">
+          Odstúpenie od zmluvy a refundácia podľa garancie sú dve odlišné situácie.
+          Refundácia podľa garancie sa posudzuje podľa toho, či bol dosiahnutý garantovaný obchodný výsledok podľa zvoleného plánu.
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+          <a class="btn btn-outline" href="/vop.html">Obchodné podmienky</a>
+          <a class="btn btn-outline" href="/kontakt.html">Kontakt</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>© 2026 kupujspolu.sk</div>
+    <div class="vat-note">quantivo s.r.o. nie je platiteľom DPH. Uvádzané ceny sú konečné.</div>
+    <div class="footer-links">
+      <a href="/vop.html">Obchodné podmienky</a>
+      <a href="/gdpr.html">Ochrana osobných údajov</a>
+      <a href="/kontakt.html">Kontakt</a>
+      <a href="/index.html">Hlavná stránka</a>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('withdrawalForm');
+    const messageBox = document.getElementById('formMessage');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    function setMessage(type, text) {
+      messageBox.className = 'notice form-message show ' + type;
+      messageBox.textContent = text;
+    }
+
+    function fillFromUrl() {
+      const uploadId = getQueryParam('uploadId');
+      const email = getQueryParam('email');
+
+      if (uploadId) {
+        document.getElementById('uploadId').value = uploadId;
+      }
+
+      if (email) {
+        document.getElementById('email').value = email;
+      }
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const payload = {
+        fullName: document.getElementById('fullName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        uploadId: document.getElementById('uploadId').value.trim(),
+        reason: document.getElementById('reason').value.trim(),
+        confirmTruth: document.getElementById('confirmTruth').checked,
+        confirmPrivacy: document.getElementById('confirmPrivacy').checked
+      };
+
+      if (!payload.fullName || !payload.email) {
+        setMessage('error', 'Vyplň meno alebo názov firmy a e-mail použitý pri objednávke.');
+        return;
+      }
+
+      if (!payload.confirmTruth || !payload.confirmPrivacy) {
+        setMessage('error', 'Pred odoslaním potvrď oba povinné súhlasy.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Odosielam...';
+
+      try {
+        const res = await fetch('/api/withdrawal-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || 'Žiadosť sa nepodarilo odoslať.');
+        }
+
+        form.reset();
+        setMessage('ok', 'Žiadosť o odstúpenie od zmluvy bola odoslaná. Potvrdenie bolo odoslané aj na uvedený e-mail.');
+      } catch (error) {
+        setMessage('error', error.message || 'Nastala chyba pri odosielaní žiadosti.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Odoslať žiadosť o odstúpenie';
+      }
+    });
+
+    fillFromUrl();
+  </script>
+
+  <div class="floating-socials" aria-label="Sociálne siete a podpora">
+    <a href="https://wa.me/421904111311?text=Zdrav%C3%ADm%2C%20potrebujem%20pomoc%20s%20kupujspolu.sk.%20M%C3%B4j%20uploadId%20je%3A%20____" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="WhatsApp podpora">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61570756407836&amp;sk=about&amp;locale=sk_SK" target="_blank" rel="noopener" class="social-btn social-facebook" aria-label="Facebook">f</a>
+    <a href="https://www.instagram.com/kupujspoluofficial/" target="_blank" rel="noopener" class="social-btn social-instagram" aria-label="Instagram">IG</a>
+    <a href="https://www.linkedin.com/company/kupujspolu-sk" target="_blank" rel="noopener" class="social-btn social-linkedin" aria-label="LinkedIn">in</a>
+    <a href="https://www.tiktok.com/@kupujspolu.sk" target="_blank" rel="noopener" class="social-btn social-tiktok" aria-label="TikTok">♪</a>
+  </div>
+</body>
+</html>
