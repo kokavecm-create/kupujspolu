@@ -15,7 +15,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" href="/favicon.png" />
-<title>kupujspolu.sk — Skupinové vyjednávanie zľavy pri kúpe nového auta</title>
+<title>kupujspolu.sk — Zľava na nové auto cez skupinové vyjednávanie</title>
+<meta name="description" content="KupujSpolu.sk pomáha zákazníkom pri kúpe nového auta. Nahraj ponuku od autorizovaného dealera alebo konfigurátora a zapoj sa do skupinového vyjednávania lepšieho obchodného výsledku.">
+<link rel="canonical" href="https://www.kupujspolu.sk/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:site_name" content="kupujspolu.sk">
+<meta property="og:title" content="kupujspolu.sk — Zľava na nové auto cez skupinové vyjednávanie">
+<meta property="og:description" content="Skupinové vyjednávanie pri kúpe nového auta. Nahraj ponuku, spoj sa s ďalšími zákazníkmi a získaj silnejšiu pozíciu pri rokovaní s predajcami.">
+<meta property="og:url" content="https://www.kupujspolu.sk/">
+<meta property="og:image" content="https://www.kupujspolu.sk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="kupujspolu.sk — Zľava na nové auto cez skupinové vyjednávanie">
+<meta name="twitter:description" content="Nahraj ponuku na nové auto a zapoj sa do skupinového vyjednávania lepšieho obchodného výsledku.">
+<meta name="twitter:image" content="https://www.kupujspolu.sk/og-image.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -900,6 +913,100 @@ footer{
   .priv-strip{grid-template-columns:1fr}
 }
 
+.seo-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.2rem;
+  margin-top:1.6rem
+}
+.seo-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.5rem;
+  box-shadow:var(--shadow)
+}
+.seo-card strong{
+  display:block;
+  color:var(--ink);
+  font-size:.95rem;
+  margin-bottom:.45rem
+}
+.seo-card p,
+.seo-card span{
+  color:var(--ink-mid);
+  font-size:.86rem;
+  line-height:1.72;
+  font-weight:300
+}
+.brand-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1rem;
+  margin-top:1.5rem
+}
+.brand-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.25rem;
+  transition:all .2s
+}
+.brand-card:hover{
+  border-color:var(--brand-border);
+  transform:translateY(-2px);
+  box-shadow:var(--shadow)
+}
+.brand-card h3{
+  font-size:1rem;
+  color:var(--ink);
+  margin-bottom:.45rem
+}
+.brand-card p{
+  color:var(--ink-mid);
+  font-size:.84rem;
+  line-height:1.68;
+  font-weight:300
+}
+.seo-text{
+  max-width:980px;
+  color:var(--ink-mid);
+  font-size:.94rem;
+  line-height:1.86;
+  font-weight:300
+}
+.seo-text p{
+  margin-bottom:1rem
+}
+.faq-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+  margin-top:1.5rem
+}
+.faq-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.25rem;
+  box-shadow:var(--shadow)
+}
+.faq-item h3{
+  font-size:.95rem;
+  line-height:1.35;
+  color:var(--ink);
+  margin-bottom:.5rem
+}
+.faq-item p{
+  color:var(--ink-mid);
+  font-size:.85rem;
+  line-height:1.7;
+  font-weight:300
+}
+@media(max-width:960px){
+  .seo-grid,.brand-grid,.faq-grid{grid-template-columns:1fr}
+}
+
 
 /* Floating social buttons */
 .floating-socials{
@@ -989,7 +1096,203 @@ footer{
   .floating-socials .whatsapp-btn::after{display:none}
 }
 
+
+/* Oprava optiky slovenskej diakritiky vo veľkých Bebas nadpisoch.
+   Zachováva pôvodný dizajn, nemení obsah, sekcie, CTA ani funkcionalitu. */
+h1.hero-h,
+.sec-h,
+.final-cta .sec-h{
+  line-height:1.12 !important;
+  letter-spacing:.018em;
+  text-rendering:geometricPrecision;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"kern" 1;
+  overflow:visible;
+}
+
+h1.hero-h{
+  font-size:clamp(2.75rem,4.75vw,5.05rem) !important;
+}
+
+.sec-h{
+  font-size:clamp(1.85rem,3.35vw,2.72rem) !important;
+}
+
+.final-cta .sec-h{
+  font-size:clamp(1.85rem,3.3vw,2.65rem) !important;
+}
+
+@media(max-width:960px){
+  h1.hero-h{
+    font-size:clamp(2.45rem,10vw,4.1rem) !important;
+    line-height:1.1 !important;
+  }
+  .sec-h{
+    font-size:clamp(1.8rem,8.5vw,3rem) !important;
+    line-height:1.12 !important;
+  }
+}
+
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.kupujspolu.sk/#organization",
+      "name": "kupujspolu.sk",
+      "legalName": "quantivo s.r.o.",
+      "url": "https://www.kupujspolu.sk/",
+      "email": "info@kupujspolu.sk",
+      "telephone": "+421904111311",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Ulica B. Nemcovej 1022/17",
+        "postalCode": "984 03",
+        "addressLocality": "Lučenec",
+        "addressCountry": "SK"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.kupujspolu.sk/#website",
+      "url": "https://www.kupujspolu.sk/",
+      "name": "kupujspolu.sk",
+      "publisher": {
+        "@id": "https://www.kupujspolu.sk/#organization"
+      },
+      "inLanguage": "sk-SK"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.kupujspolu.sk/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Čo je KupujSpolu.sk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "KupujSpolu.sk je digitálna služba, ktorá spracuje ponuku na nové auto, anonymizuje ju a zaradí ju do systému skupinového vyjednávania."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kupujem auto priamo od KupujSpolu.sk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nie. KupujSpolu.sk nie je predajca vozidiel. Zákazník kupuje digitálnu službu spracovania ponuky a vyjednávania, nie samotné vozidlo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Akú ponuku môžem nahrať?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nahrať je možné čitateľnú ponuku na nové osobné vozidlo od autorizovaného dealera alebo z oficiálneho konfigurátora značky."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Môžem nahrať ponuku na jazdené auto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nie. Služba je určená výhradne pre nové osobné vozidlá."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ako vzniká zľava na nové auto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Lepší obchodný výsledok môže vzniknúť vďaka spojeniu viacerých porovnateľných dopytov a silnejšej pozícii pri rokovaní s predajcami."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Čo znamená skupinové vyjednávanie?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ponuky podobných zákazníkov sa anonymizovane spájajú podľa značky alebo konfigurácie a následne sa rokuje s relevantnými predajcami."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Aké značky môžem riešiť?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Napríklad Škoda, Hyundai, Kia, Toyota, Volkswagen, Ford, Renault, Peugeot a ďalšie značky dostupné u autorizovaných predajcov."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Je moja ponuka anonymizovaná?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Áno. Pred ďalším použitím sa údaje spracúvajú tak, aby sa minimalizovalo zverejnenie identity zákazníka."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Koľko služba stojí?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Dostupné sú servisné plány Štandard a Garancia+. Ceny a garancie sú uvedené na stránke pri nahrávaní ponuky."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Čo ak sa nedosiahne garantovaný výsledok?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ak nie sú splnené podmienky garantovaného výsledku podľa zvoleného plánu a obchodných podmienok, servisný poplatok sa rieši formou refundácie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ako prebieha platba?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Platba servisného poplatku prebieha online cez platobnú bránu Stripe."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Dostanem faktúru?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Áno. Faktúra za digitálnu službu je zasielaná elektronicky spravidla do 2–3 pracovných dní."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Môžem odstúpiť od zmluvy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Podmienky odstúpenia od zmluvy pri digitálnej službe sú uvedené vo VOP. Žiadosť je možné podať cez online formulár."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ako dlho trvá vyjednávanie?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Čas závisí od počtu porovnateľných dopytov, reakcií predajcov a konkrétnej značky alebo konfigurácie vozidla."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Musím po výsledku auto kúpiť?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nie. Samotné rozhodnutie o kúpe vozidla zostáva na zákazníkovi."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <nav>
@@ -1365,6 +1668,172 @@ footer{
         Ilustračný modelový príklad. Každý prípad sa vyhodnocuje individuálne podľa porovnateľnosti ponúk.
       </div>
     </div>
+  </div>
+</section>
+
+
+<section class="sec sec-dark" id="vznik">
+  <div class="rev">
+    <div class="eyebrow">Prečo vznikol KupujSpolu</div>
+    <h2 class="sec-h">Kúpa nového auta nemusí byť osamelé vyjednávanie.</h2>
+    <p class="sec-sub">
+      KupujSpolu.sk vznikol z jednoduchého problému: bežný zákazník prichádza k dealerovi sám,
+      často bez porovnania trhu a bez silnej vyjednávacej pozície. Predajca má skúsenosti, dáta a pravidlá,
+      zákazník má jednu ponuku a obmedzený čas. Cieľom projektu je túto nerovnováhu znížiť.
+    </p>
+  </div>
+
+  <div class="seo-grid rev">
+    <div class="seo-card">
+      <strong>Problém individuálneho vyjednávania</strong>
+      <p>
+        Jeden zákazník má pri kúpe nového auta zvyčajne slabšiu pozíciu. Nevie, aký priestor na zľavu má konkrétny dealer,
+        ako sa líšia ponuky medzi regiónmi a kedy je lepšie rokovať o cene, výbave alebo doplnkových podmienkach.
+      </p>
+    </div>
+    <div class="seo-card">
+      <strong>Sila skupinového nákupu</strong>
+      <p>
+        Ak sa spoja viaceré porovnateľné dopyty, predajca nevidí iba jedného kupujúceho, ale možnosť viacerých obchodov.
+        Práve preto môže mať skupinové vyjednávanie silnejší obchodný význam než samostatné rokovanie jednotlivca.
+      </p>
+    </div>
+    <div class="seo-card">
+      <strong>Cieľ projektu</strong>
+      <p>
+        Cieľom KupujSpolu.sk je pomôcť zákazníkom pri kúpe nového auta získať lepší obchodný výsledok,
+        a to na základe reálnej ponuky, anonymizovaného spracovania a porovnateľnej skupiny dopytov.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="typy-vozidiel">
+  <div class="rev">
+    <div class="eyebrow">Aké vozidlá je možné zaradiť</div>
+    <h2 class="sec-h">Nové autá rôznych kategórií.<br>Vždy na základe reálnej ponuky.</h2>
+    <p class="sec-sub">
+      Do systému je možné zaradiť ponuky na nové osobné vozidlá od autorizovaných dealerov alebo z oficiálnych konfigurátorov.
+      Dôležitá je čitateľná ponuka, porovnateľná konfigurácia a jasne uvedená cena v EUR.
+    </p>
+  </div>
+
+  <div class="seo-grid rev">
+    <div class="seo-card"><strong>SUV</strong><span>Obľúbené rodinné aj firemné vozidlá, pri ktorých býva priestor na vyjednávanie závislý od výbavy, motorizácie a dostupnosti.</span></div>
+    <div class="seo-card"><strong>Rodinné autá</strong><span>Praktické kombi, MPV alebo väčšie hatchbacky vhodné pre rodiny, kde rozhoduje cena, bezpečnosť, priestor a výbava.</span></div>
+    <div class="seo-card"><strong>Mestské autá</strong><span>Kompaktné nové autá vhodné do mesta, kde môže mať význam porovnanie ponúk medzi viacerými predajcami.</span></div>
+    <div class="seo-card"><strong>Firemné vozidlá</strong><span>Autá kupované na IČO alebo do firemného vozového parku, pri ktorých môže skupinový dopyt podporiť silnejšie rokovanie.</span></div>
+    <div class="seo-card"><strong>Elektromobily</strong><span>Elektrické vozidlá s rozdielmi v dostupnosti, výbave, akciových ponukách a možnostiach financovania.</span></div>
+    <div class="seo-card"><strong>Hybridy</strong><span>Hybridné vozidlá pre zákazníkov, ktorí hľadajú kompromis medzi spotrebou, cenou, výkonom a každodennou použiteľnosťou.</span></div>
+  </div>
+</section>
+
+<section class="sec sec-dark" id="znacky">
+  <div class="rev">
+    <div class="eyebrow">Najčastejšie značky</div>
+    <h2 class="sec-h">Značky, pri ktorých zákazníci najčastejšie porovnávajú ponuky.</h2>
+    <p class="sec-sub">
+      KupujSpolu.sk nie je viazaný na jednu značku. Systém je vhodný pre nové autá rôznych výrobcov,
+      ak existuje reálna ponuka od autorizovaného predajcu alebo z oficiálneho konfigurátora.
+    </p>
+  </div>
+
+  <div class="brand-grid rev">
+    <div class="brand-card"><h3>Škoda</h3><p>Škoda patrí medzi najvyhľadávanejšie značky na Slovensku. Pri modeloch ako Octavia, Fabia, Karoq, Kamiq alebo Kodiaq môže byť porovnanie ponúk medzi dealermi veľmi dôležité.</p></div>
+    <div class="brand-card"><h3>Hyundai</h3><p>Hyundai je častou voľbou pri mestských, rodinných aj firemných autách. Pri nových modeloch môže rozhodovať výbava, dostupnosť a aktuálna obchodná politika predajcu.</p></div>
+    <div class="brand-card"><h3>Kia</h3><p>Kia ponúka široké portfólio vozidiel od menších modelov až po SUV a hybridy. Skupinové vyjednávanie môže pomôcť porovnať ceny pri podobných konfiguráciách.</p></div>
+    <div class="brand-card"><h3>Toyota</h3><p>Toyota je silná najmä pri hybridoch, SUV a spoľahlivých rodinných autách. Pri kúpe nového vozidla je dôležité porovnať cenu, výbavu a dostupnosť konkrétnej konfigurácie.</p></div>
+    <div class="brand-card"><h3>Volkswagen</h3><p>Volkswagen je obľúbený pri súkromných aj firemných zákazníkoch. Pri modeloch ako Golf, Tiguan, Passat alebo T-Roc môže mať význam rokovať na základe skupinového dopytu.</p></div>
+    <div class="brand-card"><h3>Ford</h3><p>Ford oslovuje zákazníkov hľadajúcich praktické rodinné alebo firemné autá. Pri nových vozidlách môže byť výsledná ponuka ovplyvnená skladovou dostupnosťou a výbavou.</p></div>
+    <div class="brand-card"><h3>Renault</h3><p>Renault ponúka mestské autá, rodinné modely aj úžitkovo orientované riešenia. Porovnanie viacerých ponúk môže pomôcť lepšie vyhodnotiť skutočnú cenu nového auta.</p></div>
+    <div class="brand-card"><h3>Peugeot</h3><p>Peugeot je častou voľbou pri dizajnových mestských autách, SUV aj firemných vozidlách. Pri kúpe nového auta sa oplatí sledovať cenu, výbavu a aktuálne akcie dealerov.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="seo-sprievodca">
+  <div class="rev">
+    <div class="eyebrow">Sprievodca kúpou nového auta</div>
+    <h2 class="sec-h">Ako rozmýšľať pri kúpe nového auta a vyjednávaní ceny.</h2>
+  </div>
+
+  <div class="seo-text rev">
+    <p>
+      Kúpa nového auta je pre väčšinu ľudí jedno z najväčších finančných rozhodnutí mimo bývania. Zákazník porovnáva značku,
+      model, výbavu, motor, financovanie, dostupnosť vozidla, servisné podmienky a celkovú cenu. Na prvý pohľad sa môže zdať,
+      že cena v ponuke od autorizovaného dealera je pevná. V praxi však pri nových autách často existuje priestor na obchodné
+      rokovanie, a to najmä vtedy, ak zákazník vie porovnať viac ponúk alebo ak predajca vidí väčší obchodný potenciál.
+    </p>
+    <p>
+      Zľava na nové auto nemusí znamenať iba jednoduché zníženie ceny v cenníku. Lepší obchodný výsledok môže mať viac podôb:
+      nižšiu výslednú cenu, výhodnejšiu výbavu, lepšie podmienky pri doplnkoch, výhodnejší balík služieb alebo inú úpravu ponuky,
+      ktorá zlepší celkovú hodnotu nákupu. Dôležité je pracovať s reálnou ponukou, nie iba s orientačnou predstavou.
+      Preto KupujSpolu.sk vychádza z konkrétneho podkladu od autorizovaného predajcu alebo z oficiálneho konfigurátora.
+    </p>
+    <p>
+      Individuálne vyjednávanie ceny auta má svoje limity. Jeden kupujúci môže osloviť viacerých dealerov, no často nevie,
+      či dostal dobrú cenu, alebo iba bežnú obchodnú ponuku. Dealer zároveň posudzuje každý prípad samostatne. Pri skupinovom
+      vyjednávaní sa situácia mení. Ak sa v jednom čase stretnú viacerí zákazníci, ktorí riešia rovnakú značku alebo porovnateľnú
+      konfiguráciu vozidla, vzniká silnejší dopyt. Predajca potom nevidí iba jednu objednávku, ale možnosť viacerých obchodov.
+      Práve tento princíp je jadrom služby KupujSpolu.sk.
+    </p>
+    <p>
+      Kúpa auta cez skupinu neznamená, že zákazník stráca kontrolu nad svojím výberom. Naopak, základom je jeho vlastná ponuka,
+      vlastná značka, model a konfigurácia. Platforma ponuku prijme, spracuje, anonymizuje a zaradí medzi porovnateľné prípady.
+      Cieľom nie je meniť zákazníkovi auto, ale zistiť, či sa pri jeho výbere dá vyjednať lepší obchodný výsledok. Vozidlo zákazník
+      stále nekupuje od platformy KupujSpolu.sk, ale od predajcu alebo subjektu, s ktorým sa následne rozhodne uzavrieť obchod.
+    </p>
+    <p>
+      Autorizovaný dealer má pri kúpe nového vozidla dôležitú úlohu. Poskytuje oficiálnu ponuku, záruky, servisné podmienky,
+      informácie o dostupnosti a možnosti objednania vozidla. Preto je pre zaradenie do systému dôležité, aby nahraná ponuka
+      pochádzala od autorizovaného predajcu alebo z oficiálneho konfigurátora značky. Ponuky na jazdené autá, neúplné kalkulácie
+      alebo neoveriteľné podklady nie sú vhodné, pretože by nebolo možné férovo porovnať konfiguráciu vozidla a vyhodnotiť výsledok.
+    </p>
+    <p>
+      Konfigurácia vozidla je pri vyjednávaní zásadná. Rozdiel v motorizácii, prevodovke, výbavovej línii, farbe, balíkoch alebo doplnkoch
+      môže výrazne zmeniť výslednú cenu. Preto sa porovnávajú najmä podobné alebo porovnateľné prípady. Pri bežných modeloch môže byť
+      výhodou väčší počet zákazníkov s podobným dopytom. Pri drahších konfiguráciách môže byť zasa zaujímavý vyšší obchodný potenciál.
+      V oboch prípadoch platí, že čím kvalitnejší a čitateľnejší podklad zákazník nahrá, tým lepšie sa dá prípad spracovať.
+    </p>
+    <p>
+      KupujSpolu.sk je digitálna služba zameraná na spracovanie ponuky, anonymizované porovnanie a skupinové vyjednávanie.
+      Nejde o predaj auta, rezerváciu vozidla ani financovanie. Zákazník platí za proces, nie za samotné vozidlo. Tento rozdiel je dôležitý,
+      pretože výsledkom služby je obchodný výstup pre jeho ponuku. Cieľom je, aby zákazník nemusel pri kúpe nového auta rokovať úplne sám
+      a aby jeho dopyt mohol byť súčasťou silnejšej skupiny.
+    </p>
+    <p>
+      Prirodzené a férové vyjednávanie ceny auta vychádza z reálnych dát, porovnateľnosti a jasných pravidiel. KupujSpolu.sk preto kladie dôraz
+      na nové vozidlá, overiteľné ponuky, anonymizáciu údajov a transparentné obchodné podmienky. Ak zákazník uvažuje nad kúpou nového auta,
+      má už cenovú ponuku a chce zistiť, či existuje priestor na lepší výsledok, môže nahrať svoju ponuku a zapojiť sa do skupinového
+      vyjednávania. Nie sám, ale spolu s ďalšími zákazníkmi, ktorí riešia podobný nákup.
+    </p>
+  </div>
+</section>
+
+<section class="sec sec-dark" id="faq">
+  <div class="rev">
+    <div class="eyebrow">FAQ</div>
+    <h2 class="sec-h">Najčastejšie otázky ku kúpe nového auta cez KupujSpolu.sk</h2>
+    <p class="sec-sub">
+      Odpovede sú určené na základné vysvetlenie služby. Presné pravidlá poskytovania služby sú uvedené v obchodných podmienkach.
+    </p>
+  </div>
+
+  <div class="faq-grid rev">
+    <div class="faq-item"><h3>Čo je KupujSpolu.sk?</h3><p>KupujSpolu.sk je digitálna služba, ktorá spracuje tvoju ponuku na nové auto, anonymizuje ju a zaradí ju do systému skupinového vyjednávania.</p></div>
+    <div class="faq-item"><h3>Kupujem auto priamo od KupujSpolu.sk?</h3><p>Nie. KupujSpolu.sk nie je predajca vozidiel. Kupuješ digitálnu službu spracovania ponuky a vyjednávania, nie samotné vozidlo.</p></div>
+    <div class="faq-item"><h3>Akú ponuku môžem nahrať?</h3><p>Nahrať môžeš čitateľnú ponuku na nové osobné vozidlo od autorizovaného dealera alebo z oficiálneho konfigurátora značky.</p></div>
+    <div class="faq-item"><h3>Môžem nahrať ponuku na jazdené auto?</h3><p>Nie. Služba je určená výhradne pre nové osobné vozidlá. Jazdené, bazárové alebo neúplné ponuky nie sú vhodné.</p></div>
+    <div class="faq-item"><h3>Ako vzniká zľava na nové auto?</h3><p>Zľava alebo lepší obchodný výsledok môže vzniknúť vďaka tomu, že viac porovnateľných dopytov vytvára silnejšiu pozíciu pri rokovaní s predajcami.</p></div>
+    <div class="faq-item"><h3>Čo znamená skupinové vyjednávanie?</h3><p>Znamená to, že ponuky podobných zákazníkov sa anonymizovane spájajú podľa značky alebo konfigurácie a následne sa rokuje s relevantnými predajcami.</p></div>
+    <div class="faq-item"><h3>Aké značky môžem riešiť?</h3><p>Môže ísť napríklad o značky Škoda, Hyundai, Kia, Toyota, Volkswagen, Ford, Renault, Peugeot a ďalšie značky dostupné u autorizovaných predajcov.</p></div>
+    <div class="faq-item"><h3>Je moja ponuka anonymizovaná?</h3><p>Áno. Pred ďalším použitím sa údaje spracúvajú tak, aby sa minimalizovalo zverejnenie identity zákazníka voči tretím stranám.</p></div>
+    <div class="faq-item"><h3>Koľko služba stojí?</h3><p>Aktuálne sú dostupné servisné plány Štandard a Garancia+. Ceny a garancie sú uvedené priamo na stránke pri nahrávaní ponuky.</p></div>
+    <div class="faq-item"><h3>Čo ak sa nedosiahne garantovaný výsledok?</h3><p>Ak nie sú splnené podmienky garantovaného výsledku podľa zvoleného plánu a obchodných podmienok, servisný poplatok sa rieši formou refundácie.</p></div>
+    <div class="faq-item"><h3>Ako prebieha platba?</h3><p>Platba servisného poplatku prebieha online cez platobnú bránu Stripe. Po úspešnej platbe je prípad zaradený do spracovania.</p></div>
+    <div class="faq-item"><h3>Dostanem faktúru?</h3><p>Áno. Faktúra za digitálnu službu je zasielaná elektronicky spravidla do 2–3 pracovných dní podľa údajov uvedených v objednávke.</p></div>
+    <div class="faq-item"><h3>Môžem odstúpiť od zmluvy?</h3><p>Podmienky odstúpenia od zmluvy pri digitálnej službe sú uvedené vo VOP. Žiadosť je možné podať cez online formulár Odstúpenie od zmluvy.</p></div>
+    <div class="faq-item"><h3>Ako dlho trvá vyjednávanie?</h3><p>Čas závisí od počtu porovnateľných dopytov, reakcií predajcov a konkrétnej značky alebo konfigurácie vozidla.</p></div>
+    <div class="faq-item"><h3>Musím po výsledku auto kúpiť?</h3><p>Nie. Výsledok služby je obchodný výstup pre tvoju ponuku. Samotné rozhodnutie o kúpe vozidla zostáva na tebe.</p></div>
   </div>
 </section>
 
